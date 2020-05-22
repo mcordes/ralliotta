@@ -64,9 +64,13 @@ export default {
     },
 
     clearUser() {
-        this.state.user = null;
         this.state._sessionId = '';
         this.state._securityToken = '';
+        this.state.user = null;
+
+        localStorage.removeItem(USERNAME_STORAGE_KEY);
+        localStorage.removeItem(SESSION_ID_STORAGE_KEY);
+        localStorage.removeItem(SECURITY_TOKEN_STORAGE_KEY);
     }
 
 };

@@ -1,15 +1,16 @@
 <template>
     <div>
         <h2>Login</h2>
-        <div>
-            <!-- TODO-mrc: switch to MDInput / label? -->
-            <label for="username">Username</label>
-            <input id="username" type="text" v-model="username"/>
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input id="password" type="text" v-model="password"/>
-        </div>
+
+        <md-field>
+            <label>Username</label>
+            <md-input id="username" type="text" v-model="username"/>
+        </md-field>
+
+        <md-field>
+            <label>Password</label>
+            <md-input id="password" type="password" v-model="password"/>
+        </md-field>
 
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}

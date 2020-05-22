@@ -3,7 +3,9 @@ import App from './components/App.vue';
 
 // TODO-mrc: find definition files
 // @ts-ignore
-import {MdDialog, MdButton, MdTabs, MdIcon, MdSelect, MdTextarea, MdInput, MdLabel} from 'vue-material/dist/components';
+import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField} from 'vue-material/dist/components';
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -12,7 +14,6 @@ import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
 import MyItemsList from "./components/MyItemsList.vue";
-
 import VueRouter from "vue-router";
 
 const routes = [
@@ -30,13 +31,14 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false;
 
+//Vue.use(VueMaterial);
+
+Vue.use(MdField);
+Vue.use(MdButton)
+Vue.use(MdContent)
+Vue.use(MdTabs)
 Vue.use(MdDialog);
-Vue.use(MdButton);
-Vue.use(MdTabs);
 Vue.use(MdIcon);
-// TODO-mrc: Vue.use(MdLabel);
-// TODO-mrc: fix me - is this the right thing to include? How does MdContent relate?
-//Vue.use(MdInput);
 Vue.use(VueRouter);
 
 new Vue({
