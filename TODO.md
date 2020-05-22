@@ -1,8 +1,8 @@
 
 ## TODO next:
 
-
-* detail page is a modal and exiting from it returns you to the list page?   
+* add / update comment  [MattC]
+* detail page is a modal and exiting from it returns you to the list page? [MattC]
 * organize fields better 
     ? do we want fully defined models or just bags of fields? 
 * caching
