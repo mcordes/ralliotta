@@ -1,5 +1,5 @@
 {
-  "name": "rally2",
+  "name": "rally-alt",
   "private": true,
   "dependencies": {
     "cors": "^2.8.5",
