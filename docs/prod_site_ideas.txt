@@ -1,0 +1,30 @@
+What is Rally?
+
+Rally is a tool for software development. If you asked them I'm sure they'd say they do something 
+with agile, but ultimately it's a task / defect tracking tool with the usual amount of Agile / Scrum
+language sprinkled about. 
+
+What does this site do? 
+
+The Rally UI is.. shall we say... cumbersome to use. With rallyX (or whatever) we use the rally api
+under the covers and show you a more modern looking user interface with improved safety features (like only saving fields you've changed, rather than saving everything on the model potentially overwriting someone elses changes)
+
+Improvements..
+
+1. editable comments (hopefully)
+2. modern look (fonts you can read, design that pleases the eyes)
+3. simplify rally's vast model thingey - too many, we care about 3 - defects, task and stories 
+4. combine all tasks assigned to me in one place 
+5. comments - first class citizen 
+6. Add @mentions to comments (hopefully) with user notifications
+
+
+Why do this? 
+
+Many of us are forced to use Rally (rallydev) despite it not being very good. I'm sure beneath the UI
+it's a perfectly good database - let's use that part and put our own less lame UI over it. 
+
+
+
+? how much do we want to bash rally? (a little?)
+
