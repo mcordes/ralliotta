@@ -3,6 +3,7 @@
 
 * add / update comment  [MattC]
 * detail page is a modal and exiting from it returns you to the list page? [MattC]
+* inline editable content on detail page. Probably just do the description
 * organize fields better 
     ? do we want fully defined models or just bags of fields? 
 * caching
