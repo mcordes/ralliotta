@@ -1,0 +1,62 @@
+{
+  "name": "rally2",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "modernizr": "3.9.1",
+    "rally": "^2.1.3",
+    "request": "^2.88.2",
+    "underscore": "^1.9.2",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.2",
+    "vue-hot-reload-api": "^2.3.4",
+    "vue-material": "^1.0.0-beta-13",
+    "vue-picture-input": "^2.1.6",
+    "vue-property-decorator": "^8.3.0",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.1.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/component-compiler-utils": "^3.1.1",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "eslint": "^6.0.0",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-vue": "^6.0.0",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.3",
+    "typescript": "^3.7.5",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended",
+      "@vue/typescript/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "rules": {
+      "@typescript-eslint/ban-ts-ignore": "off",
+      "@typescript-eslint/no-explicit-any": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "scripts": {
+    "postinstall": "npx modernizr -c ./conf/modernizr-conf.json -d ./node_modules/modernizr",
+    "watch": "npx parcel watch templates/index_template.html --public-url / --out-file index.html --cache-dir /tmp/rally2-cache",
+    "build": "npx parcel build templates/index_template.html --public-url / --out-file index.html --no-cache",
+    "test": "npx tsc --noEmit",
+    "lint": "eslint 'assets/**/*.ts'"
+  }
+}

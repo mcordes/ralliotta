@@ -1,0 +1,10 @@
+node_modules
+docker-compose.yaml
+Dockerfile
+runserver.py
+test-sql
+.cache
+dist/*
+.git
+.idea
+.gitignore

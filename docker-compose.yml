@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "33306:3306"
+    volumes:
+      - ./test-sql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=rally2
+      - MYSQL_ROOT_PASSWORD=root
+
+  server:
+    build:
+      context: .
+    image: rally2:latest
+    ports:
+      - "8000:80"
+      - "8088:8088"
+    volumes:
+      - ./assets:/app/assets
+      - ./templates:/app/templates
+    links:
+      - db
+    environment:  
+      - DB_HOST=db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - LOCAL=1
+

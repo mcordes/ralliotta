@@ -1,0 +1,10 @@
+.idea
+node_modules
+package-lock.json
+dist
+.cache
+static
+
+assets/**/*.map
+assets/**/*.js
+
