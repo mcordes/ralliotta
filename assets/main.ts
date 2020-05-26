@@ -10,10 +10,14 @@ import 'vue-material/dist/theme/default.css'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import ItemList from "./components/ItemList.vue";
+import ItemDetail from "./components/ItemList.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
 import MyItemsList from "./components/MyItemsList.vue";
 import VueRouter from "vue-router";
+
+// include common css file
+import 'assets/app.css';
 
 const routes = [
     { path: '/', component: Home },
