@@ -7,7 +7,7 @@ export abstract class Model {
     }
 
     // TODO-mrc rename to 'ref' to reduce confusion? Or getRef() or something.
-    getID() {
+    getRef() {
         return this.data._ref;
     }
 }

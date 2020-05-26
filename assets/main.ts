@@ -10,7 +10,6 @@ import 'vue-material/dist/theme/default.css'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import ItemList from "./components/ItemList.vue";
-import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
 import MyItemsList from "./components/MyItemsList.vue";
@@ -31,8 +30,6 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false;
 
-//Vue.use(VueMaterial);
-
 Vue.use(MdField);
 Vue.use(MdButton)
 Vue.use(MdContent)
@@ -44,10 +41,5 @@ Vue.use(VueRouter);
 new Vue({
     render: h => h(App),
     router,
-//    el: "#app",
 }).$mount("#app");
-
-
-// TODO-mrc: what's the difference between el and mount?
-
 

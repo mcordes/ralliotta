@@ -53,7 +53,6 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     items = items.filter(item => (item.FormattedID === formattedID));
     const item = items.length > 0 ? new Item(items[0]) : null;
 
-    // TODO-mrc: this could be null, maybe catch that and do something about it?
     // TODO-mrc:
     if (!item) {
         // TODO-mrc: can I throw an exeption for a 404?
@@ -61,7 +60,7 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     }
 
     // NOTE: do a second fetch to get back all the fields now that we know the item type
-    return new Item(await fetchSingleItemByRef(item.getID()));
+    return new Item(await fetchSingleItemByRef(item.getRef()));
 }
 
 export interface SearchResults {
@@ -169,6 +168,5 @@ export function filterOutFieldsExcludedFromDisplay(fields: string[]) {
     return fields.filter(f => !excludedFields.has(f));
 }
 
-// TODO-mrc: it would be nice to just make this return all fields (maybe there's some performance issue?)
 export const ARTIFACT_SEARCH_FIELDS = ['FormattedID', 'Name', 'ObjectID', 'Owner', 'Project', 'Release', 'Iteration', 'CreationDate', 'Parent',
     'Description', 'Attachments', 'Notes', 'ScheduleState', '_ref'];

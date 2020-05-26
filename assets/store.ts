@@ -27,8 +27,6 @@ export default {
         _username: toString(username),
         _sessionId: toString(sessionId),
         _securityToken: toString(securityToken),
-
-        // TODO-mrc: isLoading: false,
     },
 
     isLoggedIn() {

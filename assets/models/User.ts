@@ -84,9 +84,5 @@ export class User extends Model {
     }
 }
 
-// TODO-mrc: this doesn't seem to include the static method and gets confused by that. Fix me.
-export type UserType = typeof User;
-
-
 // TODO-mrc:
 // NOTE: ArtifactsOwned, and ArtifactsCreated looks interesting

@@ -20,8 +20,6 @@
     import store from "../store";
     import {createItem} from "../util";
 
-    // TODO-mrc: this is probably easiest as a modal too
-
     @Component
     export default class CommentForm extends Vue {
         // Reference to the item we'll attach the comment to
