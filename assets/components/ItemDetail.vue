@@ -4,29 +4,42 @@
             <h2>{{ item.data.FormattedID }} - {{ item.data.Name }}</h2>
 
             <div>
-                {{ item.data.Description }}
+                <!-- TODO-mrc: could also just pass in item and field name, then we can get the value -->
+                <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
             </div>
 
 
-            <!-- TODO-mrc: fix me -->
-            <h3>Assorted fields</h3>
-
-            <div v-for="field in itemFields" v-bind:field="field">
-                <div class="field">{{ field }}</div>
-                <div class="value">{{ item.data[field] }}</div>
-                <!-- TODO-mrc: determine field type and list that too until we figure out how to display each type -->
+            <!-- TODO-mrc: this is for debugging and inspiration purposes -->
+            <div>
+                <h3 @click="toggleShowAllFields" title="toggle showing all fields">
+                    <span v-if="showAllFields"> - </span>
+                    <span v-else> + </span>
+                    Assorted fields</h3>
+                <div v-if="showAllFields">
+                    <div v-for="field in itemFields" v-bind:field="field">
+                        <div class="field">{{ field }}</div>
+                        <div class="value">{{ item.data[field] }}</div>
+                        <!-- TODO-mrc: determine field type and list that too until we figure out how to display each type -->
+                    </div>
+                </div>
             </div>
+
+            <br>
+            <br>
 
             <md-tabs md-dynamic-height>
                 <md-tab md-label="Comments">
                     <div v-for="comment in comments" v-bind:comment="comment">
-                        <div>Author: {{ comment.User._refObjectName }}</div>
-                        <div>Post Number: {{ comment.PostNumber }}</div>
-                        <div>Text: {{ comment }}</div>
-                        <div>Ref: {{ comment._ref }}</div>
-
-                        <!-- NOTE: no created date? -->
+                        <Comment v-bind:data="comment" v-bind:itemRef="item.getRef()"/>
+                        <br>
+                        <br>
                     </div>
+
+                    <!-- Add one for the new comment form as well -->
+                    <!-- TODO-mrc
+                    <Comment v-bind:itemRef="item.getRef()"/>
+                    -->
+
                 </md-tab>
 
                 <md-tab md-label="History">
@@ -46,13 +59,14 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Prop} from 'vue-property-decorator';
+    import {Component, Vue} from 'vue-property-decorator';
     import store from "../store";
     import {
         fetchListOfItems, fetchSingleItemByFormattedID3,
-        filterOutFieldsExcludedFromDisplay,
         queryUtils
     } from "../util";
+    import Comment from "./Comment.vue";
+    import EditableTextArea from "./EditableTextArea.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -74,15 +88,14 @@
 
         const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef);
 
-//        fetchListOfItems("revision", [], query)
-//        https://rally1.rallydev.com/slm/webservice/v2.0/revisionhistory/384725176552/revisions
-
         // TODO-mrc: sort by revision#
         const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User'], query);
         return result.items;
     }
 
-    @Component
+    @Component({
+        components: {EditableTextArea, Comment},
+    })
     export default class ItemDetail extends Vue {
         // TODO-mrc: use UserType fix me
         item: any = {data: {}};
@@ -90,7 +103,7 @@
         comments: any[] = [];
         revisions: any[] = [];
         sharedState = store.state;
-
+        showAllFields = false;
 
         async created() {
             const formattedID = this.$route.params['formattedID'];
@@ -101,13 +114,17 @@
                 throw new Error("implement me");
             }
 
-            this.comments = await fetchComments(this.item.getID());
+            this.comments = await fetchComments(this.item.getRef());
             this.revisions = await fetchRevisionHistory(this.item.data['RevisionHistory']);
 
 
             // TODO-mrc: fix me
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
             this.itemFields = Object.keys(this.item.data);
+        },
+
+        toggleShowAllFields() {
+            this.showAllFields = !this.showAllFields;
         }
     }
 

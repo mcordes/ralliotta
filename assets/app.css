@@ -1,0 +1,15 @@
+/* Put global styles here. 
+Style for individual pages should go in the individual *.vue files
+*/
+
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+}

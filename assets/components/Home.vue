@@ -10,9 +10,6 @@
                 <router-link to="/list">List items</router-link>
             </li>
         </ul>
-
-        <md-button class="md-primary" @click="submit">Test update</md-button>
-
     </div>
 </template>
 
@@ -22,25 +19,8 @@
     import {getRallyAPI, updateItem} from "../util";
     import store from "../store";
 
-    // TODO-mrc: update object test
-
     @Component
     export default class Home extends Vue {
-        async submit() {
-            const api = getRallyAPI(store.getCredentials());
-            const ref = "https://rally1.rallydev.com/slm/webservice/v2.0/hierarchicalrequirement/367283016592";
-
-            try {
-                await updateItem(ref, {'Name': 'Ni User Story 2'})
-            }
-            catch(e) {
-                const msg = "error updating item -" + e;
-                console.log(msg);
-                throw new Error(msg);
-            }
-
-            alert('it worked?');
-        }
     }
 
 </script>

@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div v-if="sharedState.user != null">
+        <div v-if="store.hasCredentials() && sharedState.user == null">
+            <p>Loading...</p>
+        </div>
+
+        <div v-else-if="store.hasCredentials() && sharedState.user">
             <h3>Hello {{ sharedState.user.data.FirstName }}</h3>
             <div>
                 <md-button class="md-primary" @click="logout">Logout</md-button>
@@ -30,7 +34,7 @@
 
 <script lang="ts">
 
-    import {Component, Prop, PropSync, Vue} from 'vue-property-decorator';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
     import store from "../store";
     import Login from "./Login.vue";
     import {User} from "../models/User";
@@ -40,6 +44,7 @@
     })
     export default class App extends Vue {
         sharedState = store.state;
+        store = store;
 
         logout() {
             store.clearUser();

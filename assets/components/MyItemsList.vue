@@ -37,7 +37,7 @@
 
         async fetchResults(startIndex: number = 1, pageSize: number = 20) {
             // TODO-mrc: will user be set here? What about a getter / setter would that work better?
-            const userRef = this.sharedState.user.getID();
+            const userRef = this.sharedState.user.getRef();
             const query = queryUtils.where('Owner', '=', userRef);
             const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query);
             this.items.push(...results.items);

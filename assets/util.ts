@@ -4,6 +4,7 @@ import rally from 'rally';
 import {Item} from "./models/Item";
 
 export const queryUtils = rally.util.query;
+export const refUtils = rally.util.ref;
 
 export function getRallyAPI(credentials: Credentials) {
     const restApi = rally({
@@ -129,6 +130,9 @@ export async function updateItem(ref: string, data: AddUpdateFieldData) {
     });
 
     validateRallyResponseOrThrow(resp);
+
+    // TODO-mrc: correct?
+    return resp.Object;
 }
 
 export async function createItem(type: string, data: AddUpdateFieldData) {
