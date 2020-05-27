@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="store.hasCredentials() && sharedState.user == null">
-            <p>Loading...</p>
+            <p>Loading.....</p>
         </div>
 
         <div v-else-if="store.hasCredentials() && sharedState.user">

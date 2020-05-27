@@ -7,11 +7,8 @@ export class User extends Model {
     userProfileImage = "";
     defaultProject: Project | null = null;
 
-    // TOOD-mrc: throws exception
     static async fetchCurrentUser() {
-
-
-        // NOTE: Looking users without a query string returns a single user - the logged in user
+        // NOTE: Looking for users without a query string returns a single user - the logged in user
         const resp = await getRallyAPI(store.getCredentials()).query({
             type: 'user',
             start: 1, // 1-based

@@ -9,8 +9,9 @@ Alternative UI for Rally
 
 # Running the application using docker and watcher
 
-docker-compose build && docker-compose up
-./bin/run_watcher.sh
+* docker-compose build 
+* docker-compose up
+* ./bin/run_watcher.sh
 
 
 # Making changes 
@@ -27,14 +28,5 @@ First try `docker-compose down` and then `docker-compose build && docker-compose
 # Connecting to the docker created mysql db
 
 mysql -u root -p -h 127.0.0.1 -P 33306
-
-
-
-# Delete all docker containers / images
-
-* docker container ls  --all 2>&1 | tr -s ' ' | cut -d ' ' -f 1 | xargs docker container rm
-* docker image ls  --all 2>&1 | tr -s ' ' | cut -d ' ' -f 3 | xargs docker image rm
-
-
 
 

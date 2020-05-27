@@ -6,7 +6,6 @@ export abstract class Model {
         this.data = data;
     }
 
-    // TODO-mrc rename to 'ref' to reduce confusion? Or getRef() or something.
     getRef() {
         return this.data._ref;
     }
