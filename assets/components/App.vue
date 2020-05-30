@@ -5,21 +5,26 @@
         </div>
 
         <div v-else-if="store.hasCredentials() && sharedState.user">
-            <h3>Hello {{ sharedState.user.data.FirstName }}</h3>
-            <div>
-                <md-button class="md-primary" @click="logout">Logout</md-button>
-            </div>
+            <div class="md-toolbar md-dense md-elevation-0">
+                <div class="md-toolbar-row">
+                    <div class="md-toolbar-section-start">
+                        <h3 class="md-subheading">Hello {{ sharedState.user.data.FirstName }}</h3>
+                    </div>
+                    <div class="md-toolbar-section-end">
+                        <md-button class="md-raised" @click="logout">Logout</md-button>
+                        <div v-if="sharedState.user.userProfileImage">
+                            <!-- NOTE: the weird urls here b/c parcel mangles them otherwise -->
+                            <img class="user-img" :src="`${sharedState.user.userProfileImage }`">
+                        </div>
+                    </div>
+                </div>
 
-            <div v-if="sharedState.user.userProfileImage">
-                <!-- NOTE: the weird urls here b/c parcel mangles them otherwise -->
-                <img :src="`${sharedState.user.userProfileImage }`">
+                <nav class="md-toolbar-row">
+                    <router-link to="/">Home</router-link>
+                    <router-link to="/list">List items</router-link>
+                    <router-link to="/list/my">My items</router-link>
+                </nav>
             </div>
-
-            <nav>
-                <router-link to="/">Home</router-link>
-                <router-link to="/list">List items</router-link>
-                <router-link to="/list/my">My items</router-link>
-            </nav>
 
             <router-view />
         </div>

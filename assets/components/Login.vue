@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h2>Login</h2>
+    <div class="login-wrapper">
+        <h2 class="login-header">Login</h2>
 
         <md-field>
             <label>Username</label>
@@ -15,7 +15,7 @@
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}
         </div>
-        <md-button class="md-primary" @click="submit">Submit</md-button>
+        <md-button class="md-primary md-raised" @click="submit">Submit</md-button>
     </div>
 </template>
 
