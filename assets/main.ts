@@ -5,10 +5,8 @@ import App from './components/App.vue';
 // @ts-ignore
 import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
+import 'vue-material/dist/theme/black-green-light.css'
 
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
 import ItemList from "./components/ItemList.vue";
 import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
