@@ -116,15 +116,3 @@ a:hover { border-color: #222; }
 .md-table-head:last-child,
 .md-table-cell:last-child { padding-right: 5px; }
 
-
-@media all and (max-width: 400px), (max-height: 400px) {
-    .login-wrapper {
-        height: 100%;
-        left: 0;
-        margin: 0 auto;
-        position: relative;
-        top: 0;
-        transform: translate(0);
-        width: 100%;
-    }
-}

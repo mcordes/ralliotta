@@ -1,9 +1,29 @@
 
 ## TODO next:
 
+
+V0:
+
+* Add search filters to ItemList page 
+  * Project
+  * Owner (assignee)
+  * Name / Description
+  * Release
+  * Iteration
+  * Milestone?
+  * ScheduleState / FlowState? 
 * add / update comment  [MattC]
+* Add relevant fields to detail page (description, title, project, iteration, story points, flow state / status)
+* Add attachments to detail page
+* User can add / edit comments on detail page
+
+
+
+
+Future:
+
 * detail page is a modal and exiting from it returns you to the list page? [MattC]
-* inline editable content on detail page. Probably just do the description
+
 * organize fields better 
     ? do we want fully defined models or just bags of fields? 
 * caching
@@ -23,10 +43,6 @@
 * Monitor when session token will expire and warn user before hand
 * Take user back to login page when session token expires (probably just need to set store.clearUser())
     ? maybe go the lazy way and just watch for 401s. If we get one take them to the login page?
-
-
-
-## Future
 
 1. show all fields (mostly hidden by default)
 2. get project schema information ??  [might not need this]
