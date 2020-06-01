@@ -7,22 +7,22 @@
                 <span v-else>List page</span>
             </h2>
 
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Assignee</th>
-                    <th>Reporter</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                    <th>Last Updated</th>
+            <table class="items-table">
+                <tr class="md-table-row">
+                    <th class="md-table-head">ID</th>
+                    <th class="md-table-head">Title</th>
+                    <th class="md-table-head">Assignee</th>
+                    <th class="md-table-head">Reporter</th>
+                    <th class="md-table-head">Status</th>
+                    <th class="md-table-head">Created</th>
+                    <th class="md-table-head">Last Updated</th>
                 </tr>
 
                 <ItemSummary v-for="item in items" v-bind:item="item"></ItemSummary>
             </table>
 
-            <div v-if="hasMoreRecords">
-                <md-button class="md-primary" @click="showMore" :disabled="isLoading">Show more</md-button>
+            <div v-if="hasMoreRecords" style="text-align: center;">
+                <md-button class="md-primary md-raised" @click="showMore" :disabled="isLoading">Show more</md-button>
             </div>
 
         </div>

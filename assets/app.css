@@ -49,7 +49,72 @@ a:hover { border-color: #222; }
     margin: 10px auto 15px;
 }
 
-.user-img { max-width: 50px; }
+
+/* Toolbar / nav items */
+.md-toolbar {
+    background-color: #FFF;;
+    border-bottom: 1px solid #EEE;
+}
+
+.md-toolbar-row { position: relative; }
+.md-toolbar-row .md-toolbar-section-start {
+    display: flex;
+    height: 100%;
+    position: absolute;
+}
+
+.md-toolbar-section-start nav {
+    display: flex;
+    height: 100%;
+}
+
+.md-toolbar-section-start nav a {
+    border: none;
+    display: flex;
+    margin: 0;
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.md-toolbar-section-start nav a:hover { background-color: #EEE; }
+
+.user-img {
+    margin: 0 10px;
+    max-width: 30px;
+}
+
+
+/* Content wrapper */
+.content-wrapper {
+    padding: 10px 25px 50px;
+}
+
+
+/* table styles */
+.items-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.md-table-row td { transition: all 0.1s ease; }
+.md-table-row:hover td {
+    background-color: #F3F3F3;
+}
+
+.md-table-row th {
+    border-bottom: 1px solid #b1b1b1;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.md-table-row td { border-bottom: 1px solid #ECECEC; }
+
+.md-table-head,
+.md-table-cell { padding-left: 5px; }
+
+.md-table-head:last-child,
+.md-table-cell:last-child { padding-right: 5px; }
 
 
 @media all and (max-width: 400px), (max-height: 400px) {

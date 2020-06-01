@@ -1,12 +1,12 @@
 <template>
-    <tr class="item-detail">
-        <td><router-link :to="detailLink">{{ item.FormattedID }}</router-link></td>
-        <td>{{ item.Name }}</td>
-        <td>{{ ownerName }}</td>
-        <td> {{ reporterName }} </td>
-        <td> {{ status }}</td>
-        <td>{{ item.CreationDate | formatDate }}</td>
-        <td>{{ item.LastUpdateDate | formatDate }}</td>
+    <tr class="item-detail md-table-row">
+        <td class="md-table-cell"><router-link :to="detailLink">{{ item.FormattedID }}</router-link></td>
+        <td class="md-table-cell">{{ item.Name }}</td>
+        <td class="md-table-cell">{{ ownerName }}</td>
+        <td class="md-table-cell"> {{ reporterName }} </td>
+        <td class="md-table-cell"> {{ status }}</td>
+        <td class="md-table-cell">{{ item.CreationDate | formatDate }}</td>
+        <td class="md-table-cell">{{ item.LastUpdateDate | formatDate }}</td>
 
         <!-- TODO-mrc: more? release, project, iteration, has attachments? -->
     </tr>
