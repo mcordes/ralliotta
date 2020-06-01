@@ -29,10 +29,8 @@
             <router-view />
         </div>
 
-        <!-- NOTE: else block -->
-        <div v-else>
-            <Login/>
-        </div>
+        <!-- NOTE: this will show / hide itself appropriately -->
+        <LoginModal/>
     </div>
 </template>
 
@@ -41,11 +39,11 @@
 
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import store from "../store";
-    import Login from "./Login.vue";
+    import LoginModal from "./LoginModal.vue";
     import {User} from "../models/User";
 
     @Component({
-        components: {Login}
+        components: {LoginModal}
     })
     export default class App extends Vue {
         sharedState = store.state;
