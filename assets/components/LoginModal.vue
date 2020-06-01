@@ -2,11 +2,11 @@
     <md-dialog :md-active.sync="!store.hasCredentials()"
                md-close-on-esc="false"
                md-click-outside-to-close="false"
+               class="login-modal-wrapper"
     >
         <md-dialog-title>Login</md-dialog-title>
 
-        <div class="">
-
+        <div>
             <md-field>
                 <label>Username</label>
                 <md-input id="username" type="text" v-model="username"/>
@@ -81,37 +81,33 @@
 
 
 <style lang="css" scoped>
-
-    /* FIX ME caleb
-    .login-wrapper {
+    /*
+        seems to not work because this is scoped strangely,
+        outputted rules targeting data atttributes so we have less
+        control over the wrapper container itself
+        E.g. `.login-modal-wrapper .md-dialog-container[data-v-54d765]`
+     */
+    .login-modal-wrapper .md-dialog-container {
         border-radius: 20px;
-        border: 4px solid #EEE;
-        left: 50%;
-        margin: 0 auto;
-        max-width: 400px;
-        overflow: hidden;
-        padding: 10px;
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        overflow: scroll;
+        padding: 15px;
     }
 
-    .login-wrapper .md-primary {
+    .login-modal-wrapper .md-dialog-title {
+        padding: 14px 0 0;
+        text-align: center;
+    }
+
+    .login-modal-wrapper .md-primary {
         display: block;
         margin: 10px auto 15px;
     }
 
-
     @media all and (max-width: 400px), (max-height: 400px) {
-        .login-wrapper {
+        .login-modal-wrapper .md-dialog-container {
             height: 100%;
-            left: 0;
-            margin: 0 auto;
-            position: relative;
-            top: 0;
-            transform: translate(0);
+            max-height: 95%;
             width: 100%;
         }
     }
-     */
 </style>
