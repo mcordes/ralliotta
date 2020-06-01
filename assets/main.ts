@@ -53,4 +53,15 @@ Vue.filter("formatDate", function (value: any) {
         return "";
     }
     return DateTime.fromISO(value).toFormat("mm/dd/yyyy");
-})
+});
+
+
+Vue.filter("formatDateTime", function (value: any) {
+    if (!value) {
+        return "";
+    }
+    return DateTime.fromISO(value).toFormat("mm/dd/yyyy HH:MM");
+});
+
+
+

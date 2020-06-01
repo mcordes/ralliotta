@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="comment">
         <div v-if="isEdit">
             <md-field>
                 <md-textarea v-model="text" required maxlength="32768"/>
@@ -15,11 +15,10 @@
             </div>
         </div>
         <div v-else>
-            <div>Author: {{ data.User._refObjectName }}</div>
-            <div>Post Number: {{ data.PostNumber }}</div>
-            <div>Text: {{ data.Text }}</div>
-            <div>Ref: {{ data._ref }}</div>
-
+            {{ authorName }} said @ {{ data.CreationDate | formatDateTime }}
+            <div>
+                {{ data.Text }}
+            </div>
             <md-button class="md-primary" @click="edit">Edit</md-button>
         </div>
     </div>
@@ -30,7 +29,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, updateItem} from "../util";
+    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../util";
 
     @Component
     export default class Comment extends Vue {
@@ -47,12 +46,14 @@
         errorMessage = '';
         isEdit = false;
         isNewComment = false;
+        authorName = '';
 
         created() {
             // if we're creating a new comment, then show the editable form
             this.text = this.data?.Text || '';
             this.isNewComment = !this.data;
             this.isEdit = this.isNewComment;
+            this.authorName = getDataFromReference(this.data.User).name;
         }
 
         async submit() {
@@ -91,4 +92,5 @@
 
 
 <style lang="css" scoped>
+    .comment { margin-bottom: 10px }
 </style>
