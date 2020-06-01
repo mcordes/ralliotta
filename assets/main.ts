@@ -52,7 +52,7 @@ Vue.filter("formatDate", function (value: any) {
     if (!value) {
         return "";
     }
-    return DateTime.fromISO(value).toFormat("mm/dd/yyyy");
+    return DateTime.fromISO(value).toFormat("MM/dd/yyyy");
 });
 
 
@@ -60,7 +60,7 @@ Vue.filter("formatDateTime", function (value: any) {
     if (!value) {
         return "";
     }
-    return DateTime.fromISO(value).toFormat("mm/dd/yyyy HH:MM");
+    return DateTime.fromISO(value).toFormat("MM/dd/yyyy HH:mm");
 });
 
 
