@@ -3,7 +3,8 @@
         <div class="item-list">
 
             <h2>
-                List page
+                <span v-if="showMyItemsOnly">My items</span>
+                <span v-else>List page</span>
             </h2>
 
             <table>
@@ -30,7 +31,7 @@
 
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
+    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
     import {ARTIFACT_SEARCH_FIELDS, fetchListOfItems, queryUtils} from "../util";
@@ -48,8 +49,14 @@
 
         // TODO-mrc: I think this will become more generic as we add more search stuff.
         // For now it's just a way to have a single view for the list page and the assigned to me page.
-        @Prop()
-        showMyItemsOnly = false;
+        @Prop({default: false})
+        showMyItemsOnly: boolean;
+
+        @Watch("$route")
+        async onRouteChange(to: any, from: any) {
+            this.items = [];
+            await this.fetchResults();
+        }
 
         async created() {
             await this.fetchResults();
