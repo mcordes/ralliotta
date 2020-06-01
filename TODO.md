@@ -22,6 +22,8 @@ V0:
 
 Future:
 
+* Show other user's avatar images next to their names on the list and detail pages
+
 * detail page is a modal and exiting from it returns you to the list page? [MattC]
 
 * organize fields better 
