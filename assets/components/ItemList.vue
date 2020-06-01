@@ -55,6 +55,7 @@
         @Watch("$route")
         async onRouteChange(to: any, from: any) {
             this.items = [];
+            this.hasMoreRecords = false;
             await this.fetchResults();
         }
 
