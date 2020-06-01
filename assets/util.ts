@@ -172,5 +172,29 @@ export function filterOutFieldsExcludedFromDisplay(fields: string[]) {
     return fields.filter(f => !excludedFields.has(f));
 }
 
-export const ARTIFACT_SEARCH_FIELDS = ['FormattedID', 'Name', 'ObjectID', 'Owner', 'Project', 'Release', 'Iteration', 'CreationDate', 'Parent',
-    'Description', 'Attachments', 'Notes', 'ScheduleState', '_ref'];
+export const ARTIFACT_SEARCH_FIELDS = ['FormattedID', 'Name', 'Owner', 'Project', 'Release', 'Iteration',
+    'CreationDate', 'Parent', 'Description', 'ScheduleState', 'FlowState', 'CreationDate', 'CreatedBy', 'LastUpdateDate'];
+
+
+export interface RallyReferenceObject {
+    _type: string;
+    _ref: string;
+    _refObjectName: string;
+}
+
+export interface ReferenceObject {
+    type: string;
+    ref: string;
+    name: string;
+}
+
+// NOTE: For most nested objects rally just returns a reference (a handful of fields) to the object. The only interesting
+// ones are _ref (the id), _refObjectName (the Name field from the object) and the _type (the type).
+// Why these are prefixed with an underscore is anyone's guess.
+export function getDataFromReference(obj: RallyReferenceObject): ReferenceObject {
+    return {
+        name: obj._refObjectName,
+        ref: obj._ref,
+        type: obj._type
+    };
+}

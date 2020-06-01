@@ -2,11 +2,23 @@
     <div>
         <div class="item-list">
 
-            <div>
+            <h2>
                 List page
-            </div>
+            </h2>
 
-            <ItemSummary v-for="item in items" v-bind:item="item"></ItemSummary>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Assignee</th>
+                    <th>Reporter</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Last Updated</th>
+                </tr>
+
+                <ItemSummary v-for="item in items" v-bind:item="item"></ItemSummary>
+            </table>
 
             <div v-if="hasMoreRecords">
                 <md-button class="md-primary" @click="showMore" :disabled="isLoading">Show more</md-button>
@@ -34,6 +46,11 @@
         totalRecords = 0;
         isLoading = false;
 
+        // TODO-mrc: I think this will become more generic as we add more search stuff.
+        // For now it's just a way to have a single view for the list page and the assigned to me page.
+        @Prop()
+        showMyItemsOnly = false;
+
         async created() {
             await this.fetchResults();
         }
@@ -51,7 +68,13 @@
         protected async fetchResults(startIndex = 1, pageSize = 20) {
             const projectRef = this.sharedState.user.getDefaultProjectID();
             // TODO-mrc: make this configurable - I envision a bunch of form fields at first
-            const query = queryUtils.where('Project', '=', projectRef);
+            let query = queryUtils.where('Project', '=', projectRef);
+
+            if (this.showMyItemsOnly) {
+                const userRef = this.sharedState.user.getRef();
+                query = query.and('Owner', '=', userRef);
+            }
+
             const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query, startIndex, pageSize);
 
             this.items.push(...results.items);
@@ -65,6 +88,3 @@
 
 <style scoped>
 </style>
-
-
-

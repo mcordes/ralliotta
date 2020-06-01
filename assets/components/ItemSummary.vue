@@ -1,53 +1,59 @@
 <template>
-    <div class="item-detail">
-        <h3>XXX</h3>
+    <tr class="item-detail">
+        <td><router-link :to="detailLink">{{ item.FormattedID }}</router-link></td>
+        <td>{{ item.Name }}</td>
+        <td>{{ ownerName }}</td>
+        <td> {{ reporterName }} </td>
+        <td> {{ status }}</td>
+        <td>{{ item.CreationDate | formatDate }}</td>
+        <td>{{ item.LastUpdateDate | formatDate }}</td>
 
-        <div>
-            TODO:
-            <ul>
-                <li>Name: {{ item.Name }}</li>
-                <li>Owner: {{ item.Owner }}</li>
-                <li>ID: {{ item.ObjectID }}</li>
-                <li>FormattedID: {{ item.FormattedID }}</li>
-                <li>ScheduleState: {{ item.ScheduleState }}</li>
-
-                <li><router-link :to="detailLink">Detail</router-link></li>
-
-                <!-- TODO-mrc fix these
-                <li>Release: {{ item.Release?._refObjectName }}</li>
-                <li>Project: {{ item.Project?._refObjectName }}</li>
-                <li>Iteration: {{ item.Iteration?._refObjectName }}</li>
-                <li>Parent: {{ item.Parent?._refObjectName }}</li>
-                <li>Creation Date: {{ item.CreatinDate }}</li>
-                <li>Description: {{ item.Description }}</li>
-                <li>Attachments: {{ item.Attachments }}</li>
-                <li>Notes: {{ item.Notes }}</li>
-                -->
-
-            </ul>
-
-        </div>
-    </div>
+        <!-- TODO-mrc: more? release, project, iteration, has attachments? -->
+    </tr>
 </template>
 
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
+    import {getDataFromReference} from "../util";
 
     @Component
     export default class ItemSummary extends Vue {
         @Prop()
         item: any;
 
-        detailLink: string = "";
+        detailLink = "";
         sharedState = store.state;
+        ownerName = "";
+        reporterName = "";
+        status = "";
 
         async created() {
             const formattedID = this.item['FormattedID'];
 
             // TODO-mrc: is there a better way to do this? Seems unnecessary
             this.detailLink = `/detail/${formattedID}`;
+
+            if (this.item.Owner) {
+                const data = getDataFromReference(this.item.Owner);
+                this.ownerName = data.name;
+            }
+
+            if (this.item.CreatedBy) {
+                const data = getDataFromReference(this.item.CreatedBy);
+                this.reporterName = data.name;
+            }
+
+            if (this.item.ScheduleState) {
+                let flowStateName = "";
+                if (this.item.FlowState) {
+                    const data = getDataFromReference(this.item.FlowState);
+                    flowStateName = data.name;
+                }
+
+                this.status = `${this.item.ScheduleState}: ${flowStateName}`;
+            }
         }
     }
 

@@ -79,6 +79,10 @@
 
 
 <style scoped>
+    nav a {
+        padding: 5px;
+        margin-right: 10px;
+    }
 </style>
 
 

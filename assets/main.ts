@@ -11,16 +11,16 @@ import ItemList from "./components/ItemList.vue";
 import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
-import MyItemsList from "./components/MyItemsList.vue";
 import VueRouter from "vue-router";
 
 // include common css file
 import './app.css';
+import {DateTime} from "luxon";
 
 const routes = [
     { path: '/', component: Home },
     { path: '/list', component: ItemList },
-    { path: '/list/my', component: MyItemsList },
+    { path: '/list/my', component: ItemList, props: {showMyItemsOnly: true}},
     { path: '/detail/:formattedID', component: ItemDetail },
     { path: '*', component: InvalidRoute }
 ];
@@ -45,3 +45,12 @@ new Vue({
     router,
 }).$mount("#app");
 
+
+// filters
+
+Vue.filter("formatDate", function (value: any) {
+    if (!value) {
+        return "";
+    }
+    return DateTime.fromISO(value).toFormat("mm/dd/yyyy");
+})
