@@ -1,8 +1,8 @@
 <template>
     <md-dialog :md-active.sync="!store.hasCredentials()"
-               md-close-on-esc="false"
-               md-click-outside-to-close="false"
-               class="login-modal-wrapper"
+        v-bind:md-close-on-esc="false"
+        v-bind:md-click-outside-to-close="false"
+        class="login-modal-wrapper"
     >
         <md-dialog-title>Login</md-dialog-title>
 

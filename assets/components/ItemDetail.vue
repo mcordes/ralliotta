@@ -31,8 +31,6 @@
                 <md-tab md-label="Comments">
                     <div v-for="comment in comments" v-bind:comment="comment">
                         <Comment v-bind:data="comment" v-bind:itemRef="item.getRef()"/>
-                        <br>
-                        <br>
                     </div>
 
                     <!-- Add one for the new comment form as well -->
@@ -44,11 +42,7 @@
 
                 <md-tab md-label="History">
                     <div v-for="revision in revisions" v-bind:revision="revision">
-                        <div>Author: {{ revision.User._refObjectName }}</div>
-                        <div>Revision Number: {{ revision.RevisionNumber }}</div>
-                        <div>Description: {{ revision.Description }}</div>
-
-                        <!-- NOTE: no created date? -->
+                        <Revision v-bind:data="revision"/>
                     </div>
                 </md-tab>
             </md-tabs>
@@ -67,6 +61,7 @@
     } from "../util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
+    import Revision from "./Revision.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -77,7 +72,7 @@
 
         // TODO-mrc: sort by PostNumber
         // TODO-mrc: I have no idea what one does with Object Id , ditch it
-        const results = await fetchListOfItems('conversationPost', ['Name', 'PostNumber', 'Text', 'User'], query);
+        const results = await fetchListOfItems('conversationPost', ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'], query);
         return results.items;
     }
 
@@ -89,12 +84,13 @@
         const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef);
 
         // TODO-mrc: sort by revision#
-        const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User'], query);
+        const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User',
+            'CreationDate'], query);
         return result.items;
     }
 
     @Component({
-        components: {EditableTextArea, Comment},
+        components: {EditableTextArea, Comment, Revision},
     })
     export default class ItemDetail extends Vue {
         // TODO-mrc: use UserType fix me
@@ -121,7 +117,7 @@
             // TODO-mrc: fix me
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
             this.itemFields = Object.keys(this.item.data);
-        },
+        }
 
         toggleShowAllFields() {
             this.showAllFields = !this.showAllFields;
