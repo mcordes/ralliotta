@@ -23,5 +23,96 @@ a:hover {
 a { border-bottom: 1px solid #CCC; }
 a:hover { border-color: #222; }
 
-.user-img { max-width: 50px; }
+.login-wrapper {
+    border-radius: 20px;
+    border: 4px solid #EEE;
+    left: 50%;
+    margin: 0 auto;
+    max-width: 400px;
+    overflow: hidden;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-wrapper .login-header {
+    background: #EEE;
+    color: #222;
+    margin: -10px -10px 0px -10px;
+    padding: 15px 0 20px;
+    text-align: center;
+}
+
+.login-wrapper .md-primary {
+    display: block;
+    margin: 10px auto 15px;
+}
+
+
+/* Toolbar / nav items */
+.md-toolbar {
+    background-color: #FFF;;
+    border-bottom: 1px solid #EEE;
+}
+
+.md-toolbar-row { position: relative; }
+.md-toolbar-row .md-toolbar-section-start {
+    display: flex;
+    height: 100%;
+    position: absolute;
+}
+
+.md-toolbar-section-start nav {
+    display: flex;
+    height: 100%;
+}
+
+.md-toolbar-section-start nav a {
+    border: none;
+    display: flex;
+    margin: 0;
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.md-toolbar-section-start nav a:hover { background-color: #EEE; }
+
+.user-img {
+    margin: 0 10px;
+    max-width: 30px;
+}
+
+
+/* Content wrapper */
+.content-wrapper {
+    padding: 10px 25px 50px;
+}
+
+
+/* table styles */
+.items-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.md-table-row td { transition: all 0.1s ease; }
+.md-table-row:hover td {
+    background-color: #F3F3F3;
+}
+
+.md-table-row th {
+    border-bottom: 1px solid #b1b1b1;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.md-table-row td { border-bottom: 1px solid #ECECEC; }
+
+.md-table-head,
+.md-table-cell { padding-left: 5px; }
+
+.md-table-head:last-child,
+.md-table-cell:last-child { padding-right: 5px; }
 
