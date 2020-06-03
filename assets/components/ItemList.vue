@@ -72,8 +72,8 @@
 
         // TODO-mrc: I think this will become more generic as we add more search stuff.
         // For now it's just a way to have a single view for the list page and the assigned to me page.
-        @Prop({default: false})
-        showMyItemsOnly: boolean;
+        @Prop()
+        showMyItemsOnly!: boolean;
 
         @Watch("$route")
         async onRouteChange(to: any, from: any) {
@@ -136,7 +136,7 @@
             }
 
             try {
-                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query, startIndex, pageSize);
+                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {query, startIndex, pageSize});
                 this.items.push(...results.items);
                 this.hasMoreRecords = results.hasMoreResults;
                 this.totalRecords = results.totalRecords;

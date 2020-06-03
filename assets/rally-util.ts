@@ -2,6 +2,7 @@ import store, {Credentials} from "./store";
 // @ts-ignore
 import rally from 'rally';
 import {Item} from "./models/Item";
+import {orderBy} from "lodash";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -45,7 +46,7 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     const query = queryUtils.where('FormattedID', '=', formattedID);
 
     // TODO-mrc: is artifact the right choice here?
-    const results = await fetchListOfItems('artifact', ['ObjectID', 'FormattedID'], query);
+    const results = await fetchListOfItems('artifact', ['ObjectID', 'FormattedID'], {query});
     let items = results.items;
 
     // NOTE: formattedIDS are in this format: 'US12345' or 'TR67890'
@@ -70,19 +71,25 @@ export interface SearchResults {
     totalRecords: number;
 }
 
-export async function fetchListOfItems(type: string, fields: string[], query = "", startIndex= 1,  pageSize=20) {
+interface ListOptions {
+    query?: string;
+    startIndex?: number;
+    pageSize?: number;
+}
+
+export async function fetchListOfItems(type: string, fields: string[], options: ListOptions) {
     console.assert(type != null);
     console.assert(fields != null);
 
     const resp = await getRallyAPI(store.getCredentials()).query({
         type: type,
-        start: startIndex, // 1-based
-        pageSize: pageSize,
-        limit: pageSize,
+        start: options.startIndex || 1, // 1-based
+        pageSize: options.pageSize || 20,
+        limit: options.pageSize || 20,
 
         //    order: 'Rank', // TODO-mrc
         fetch: fields,
-        query: query,
+        query: options.query,
         scope: {
             //        project: '/project/2345' //specify to query a specific project
             //        up: false //true to include parent project results, false otherwise
@@ -197,4 +204,53 @@ export function getDataFromReference(obj: RallyReferenceObject): ReferenceObject
         ref: obj._ref,
         type: obj._type
     };
+}
+
+
+export async function fetchComments(itemIdentifier: string) {
+    const query = queryUtils.where('Artifact', '=', itemIdentifier);
+
+    // TODO-mrc: sort by PostNumber
+    // TODO-mrc: I have no idea what one does with Object Id , ditch it
+    const results = await fetchListOfItems('conversationPost', ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'],
+        {query, pageSize: 100});
+    return results.items;
+}
+
+export async function fetchRevisionHistory(revisionHistoryRef: string) {
+    if (!revisionHistoryRef) {
+        return [];
+    }
+
+    // filter out comments, and some other things we don't need
+    const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef)
+        .and('Description', '!contains', 'DISCUSSION')
+        .and('Description', '!=', 'Original revision');
+
+    const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User',
+        'CreationDate'], {query, pageSize: 100});
+    return result.items;
+}
+
+export interface ActivityItem {
+    type: "comment" | "revision",
+    data: any;
+    date: Date;
+}
+
+export async function getActivityForItem(itemRef: string, revisionHistoryRef: string) {
+    let activity: ActivityItem[] = [];
+
+    const comments = await fetchComments(itemRef);
+    for (const comment of comments) {
+        activity.push({type: "comment", data: comment, date: comment.CreationDate})
+    }
+
+    // TODO-mrc: filter out initial revision? filter out DISCUSSION revisions
+    const revisions = await fetchRevisionHistory(revisionHistoryRef);
+    for (const revision of revisions) {
+        activity.push({type: "revision", data: revision, date: revision.CreationDate})
+    }
+
+    return orderBy(activity, ['date']);
 }

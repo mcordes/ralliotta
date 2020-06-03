@@ -16,7 +16,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
+    import {ActivityItem, createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
     import {showErrorToast, showSuccessToast} from "../util";
 
     @Component
@@ -26,7 +26,7 @@
         itemRef!: string;
 
         @Prop()
-        comments!: any[];
+        activityItems!: ActivityItem[];
 
         text = '';
         sharedState = store.state;

@@ -8,6 +8,19 @@
                 <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
             </div>
 
+            <div v-for="activity in activityItems" v-bind:activity="activity">
+                <div v-if="activity.type === 'comment'">
+                    <Comment v-bind:data="activity.data" v-bind:itemRef="item.getRef()"/>
+                </div>
+                <div v-else>
+                    <Revision v-bind:data="activity.data"/>
+                </div>
+                <br>
+                <br>
+            </div>
+
+            <AddComment v-bind:itemRef="item.getRef()" v-bind:activityItems="activityItems"/>
+
 
             <!-- TODO-mrc: this is for debugging and inspiration purposes -->
             <div>
@@ -27,22 +40,6 @@
             <br>
             <br>
 
-            <md-tabs md-dynamic-height>
-                <md-tab md-label="Comments">
-                    <div v-for="comment in comments" v-bind:comment="comment">
-                        <Comment v-bind:data="comment" v-bind:itemRef="item.getRef()"/>
-                    </div>
-
-                    <AddComment v-bind:itemRef="item.getRef()" v-bind:comments="comments"/>
-
-                </md-tab>
-
-                <md-tab md-label="History">
-                    <div v-for="revision in revisions" v-bind:revision="revision">
-                        <Revision v-bind:data="revision"/>
-                    </div>
-                </md-tab>
-            </md-tabs>
 
         </div>
     </div>
@@ -53,8 +50,9 @@
     import {Component, Vue} from 'vue-property-decorator';
     import store from "../store";
     import {
-        fetchListOfItems, fetchSingleItemByFormattedID3,
-        queryUtils
+        ActivityItem,
+        fetchComments, fetchRevisionHistory,
+        fetchSingleItemByFormattedID3, getActivityForItem
     } from "../rally-util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
@@ -65,28 +63,6 @@
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
-    async function fetchComments(itemIdentifier: string) {
-        const query = queryUtils.where('Artifact', '=', itemIdentifier);
-
-        // TODO-mrc: sort by PostNumber
-        // TODO-mrc: I have no idea what one does with Object Id , ditch it
-        const results = await fetchListOfItems('conversationPost', ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'], query);
-        return results.items;
-    }
-
-    async function fetchRevisionHistory(revisionHistoryRef: string) {
-        if (!revisionHistoryRef) {
-            return [];
-        }
-
-        const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef);
-
-        // TODO-mrc: sort by revision#
-        const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User',
-            'CreationDate'], query);
-        return result.items;
-    }
-
     @Component({
         components: {EditableTextArea, Comment, Revision, AddComment},
     })
@@ -94,8 +70,7 @@
         // TODO-mrc: use UserType fix me
         item: any = {data: {}};
         itemFields: string[] = [];
-        comments: any[] = [];
-        revisions: any[] = [];
+        activityItems: ActivityItem[] = [];
         sharedState = store.state;
         showAllFields = false;
 
@@ -108,9 +83,7 @@
                 throw new Error("implement me");
             }
 
-            this.comments = await fetchComments(this.item.getRef());
-            this.revisions = await fetchRevisionHistory(this.item.data['RevisionHistory']);
-
+            this.activityItems = await getActivityForItem(this.item.getRef(), this.item.data['RevisionHistory']);
 
             // TODO-mrc: fix me
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));

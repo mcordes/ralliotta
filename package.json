@@ -2,9 +2,11 @@
   "name": "rally-alt",
   "private": true,
   "dependencies": {
+    "@types/lodash": "^4.14.154",
     "@types/luxon": "^1.24.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "lodash": "^4.17.15",
     "luxon": "^1.24.1",
     "modernizr": "3.11.2",
     "rally": "^2.1.3",
