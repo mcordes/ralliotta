@@ -79,6 +79,12 @@
     nav a {
         padding: 5px;
         margin-right: 10px;
+        color: inherit;
+    }
+
+    /* Added for by vue-router */
+    nav a.router-link-exact-active {
+        color: blue;
     }
 </style>
 
