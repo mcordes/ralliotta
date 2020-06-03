@@ -15,7 +15,12 @@
                 <li>TODO: filter by schedule state / flow state?</li>
                 <li>TODO: assigned to me / user</li>
                 <li>TODO: search title / body? for some text</li>
-                <li>TODO: search by id</li>
+                <li>
+                    <md-field>
+                        <label>Search by ID:</label>
+                        <md-input v-model="searchFormattedId"/>
+                    </md-field>
+                </li>
                 <li>TODO: project (defaulted to default project)</li>
                 <li>TODO: iteration / release</li>
                 <li>TODO: sort by last updated - descending / ascending </li>
@@ -62,6 +67,7 @@
         totalRecords = 0;
         isLoading = false;
         showOpenItemsOnly = true;
+        searchFormattedId = '';
 
         // TODO-mrc: I think this will become more generic as we add more search stuff.
         // For now it's just a way to have a single view for the list page and the assigned to me page.
@@ -72,6 +78,19 @@
         async onRouteChange(to: any, from: any) {
             this.items = [];
             this.hasMoreRecords = false;
+            await this.fetchResults();
+        }
+
+        // TODO-mrc: combine these (and the many more to come somehow?)
+        @Watch("showOpenItemsOnly")
+        async onShowOpenItemsOnlyChanged() {
+            // TODO-mrc: maybe watch and interupt already in progress searches?
+            await this.fetchResults();
+        }
+
+        @Watch("searchFormattedId")
+        async onSearchFormattedIdChanged() {
+            // TODO-mrc: maybe watch and interupt already in progress searches?
             await this.fetchResults();
         }
 
@@ -104,6 +123,17 @@
                 query = query.and('ScheduleState', '!=', 'Accepted');
             }
 
+            if (this.searchFormattedId) {
+                query = query.and('FormattedID', '=', this.searchFormattedId);
+            }
+
+            // clear all results if we're showing the first page worth of data
+            if (startIndex === 1) {
+                this.items = [];
+                this.hasMoreRecords = false;
+                this.totalRecords = 0;
+            }
+
             try {
                 const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query, startIndex, pageSize);
                 this.items.push(...results.items);
@@ -112,9 +142,6 @@
             }
             catch(e) {
                 showErrorToast();
-                this.items = [];
-                this.hasMoreRecords = false;
-                this.totalRecords = 0;
             }
         }
     };
