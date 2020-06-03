@@ -12,10 +12,20 @@ V0:
   * Iteration
   * Milestone?
   * ScheduleState / FlowState? 
-* add / update comment  [MattC]
 * Add relevant fields to detail page (description, title, project, iteration, story points, flow state / status)
 * Add attachments to detail page
-* User can add / edit comments on detail page
+* provide a way to change schedulestate / flowstate
+* Better formatting of description
+* rich text editor for description (and other fields?)
+* show history inline like github does? Basically the comments and revision are the stream of the ticket. No need to show comment revisions and maybe a few others too
+* login by api key rather than username / password?
+* show avatar images for other users
+   - cache and be smart
+   - when / how do we refresh? minutes? hours?
+
+
+
+
 
 
 
