@@ -25,7 +25,8 @@
 <script lang="ts">
     import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
     import store from "../store";
-    import {AddUpdateFieldData, updateItem} from "../util";
+    import {AddUpdateFieldData, updateItem} from "../rally-util";
+    import {showErrorToast, showSuccessToast} from "../util";
 
     @Component
     export default class Comment extends Vue {
@@ -47,16 +48,17 @@
         async submit() {
             this.errorMessage = '';
 
-            // TODO-mrc: will it fill in the user for me?
             const data: AddUpdateFieldData = {};
             data[this.fieldName] = this.value;
 
-            const result = await updateItem(this.itemRef, data)
-
-            // TODO-mrc: do something with result
-            this.value = result[this.fieldName];
-
-            // TODO-mrc: success message?
+            try {
+                const result = await updateItem(this.itemRef, data)
+                this.value = result[this.fieldName];
+                showSuccessToast(this, "Saved.");
+            }
+            catch (e) {
+                showErrorToast(this, {e});
+            }
 
             this.isEdit = false;
         }

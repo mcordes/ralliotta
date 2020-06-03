@@ -29,7 +29,8 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../util";
+    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
+    import {showErrorToast, showSuccessToast} from "../util";
 
     @Component
     export default class Comment extends Vue {
@@ -64,12 +65,17 @@
 
             // TODO-mrc: error handling
             let result;
-            if (this.isNewComment) {
-                result = await createItem("conversationpost", data)
+            try {
+                if (this.isNewComment) {
+                    result = await createItem("conversationpost", data)
+                } else {
+                    const commentRef = this.data._ref;
+                    result = await updateItem(commentRef, data)
+                }
+                showSuccessToast(this, "Saved.");
             }
-            else {
-                const commentRef = this.data._ref;
-                result = await updateItem(commentRef, data)
+            catch(e) {
+                showErrorToast(this);
             }
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)

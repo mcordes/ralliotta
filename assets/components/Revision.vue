@@ -12,7 +12,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../util";
+    import {getDataFromReference} from "../rally-util";
 
     @Component
     export default class Revision extends Vue {

@@ -13,6 +13,10 @@ import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
 import VueRouter from "vue-router";
 
+// TODO-mrc: find definition files
+// @ts-ignore
+import VueToastify from "vue-toastify";
+
 // include common css file
 import './app.css';
 import {DateTime} from "luxon";
@@ -39,6 +43,7 @@ Vue.use(MdTabs)
 Vue.use(MdDialog);
 Vue.use(MdIcon);
 Vue.use(VueRouter);
+Vue.use(VueToastify);
 
 new Vue({
     render: h => h(App),

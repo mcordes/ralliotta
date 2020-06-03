@@ -3,7 +3,7 @@
         <h3>Page not found</h3>
 
         <div>
-            <p>Show a 404 style page? Or can we get nginx to do it for us?</p>
+            <p>404 - Page not found</p>
         </div>
     </div>
 </template>

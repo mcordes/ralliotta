@@ -1,4 +1,4 @@
-import {fetchSingleItemByRef, getRallyAPI, validateRallyResponseOrThrow} from "../util";
+import {fetchSingleItemByRef, getRallyAPI, validateRallyResponseOrThrow} from "../rally-util";
 import {Model} from "./Model";
 import {Project} from "./Project";
 import store from "../store";
@@ -32,7 +32,7 @@ export class User extends Model {
         return user;
     }
 
-    static async fetchCurrentSession(username: string, password: string) {
+    static async login(username: string, password: string) {
 
         // TODO-mrc: url for authorization proxy.
         const response = await fetch("http://localhost:8088/lookup",

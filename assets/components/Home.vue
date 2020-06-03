@@ -13,8 +13,6 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {getRallyAPI, updateItem} from "../util";
-    import store from "../store";
 
     @Component
     export default class Home extends Vue {

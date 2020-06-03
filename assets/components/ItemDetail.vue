@@ -58,7 +58,7 @@
     import {
         fetchListOfItems, fetchSingleItemByFormattedID3,
         queryUtils
-    } from "../util";
+    } from "../rally-util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import Revision from "./Revision.vue";

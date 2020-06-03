@@ -16,7 +16,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {getDataFromReference} from "../util";
+    import {getDataFromReference} from "../rally-util";
 
     @Component
     export default class ItemSummary extends Vue {

@@ -12,6 +12,7 @@ Alternative UI for Rally
 * docker-compose build 
 * docker-compose up
 * ./bin/run_watcher.sh
+* Visit http://localhost:8000
 
 
 # Making changes 

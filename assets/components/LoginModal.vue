@@ -57,7 +57,7 @@
 
             // TODO-mrc: do these in parallel and return an invalid password error if either fail (?)
             try {
-                const session = await User.fetchCurrentSession(this.username, this.password);
+                const session = await User.login(this.username, this.password);
                 store.setCredentials(this.username, this.password, session.sessionId, session.securityToken);
             }
             catch (e) {
