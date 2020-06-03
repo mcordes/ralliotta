@@ -8,7 +8,7 @@
                 <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
             </div>
 
-            <div v-for="activity in activityItems" v-bind:activity="activity">
+            <div v-for="activity in activityItems">
                 <div v-if="activity.type === 'comment'">
                     <Comment v-bind:data="activity.data" v-bind:itemRef="item.getRef()"/>
                 </div>
