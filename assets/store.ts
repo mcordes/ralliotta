@@ -1,5 +1,3 @@
-import {UserType} from "./models/User";
-
 // TODO-mrc: fix me
 const foo: any = null; // TODO-mrc: UserType | null = null;
 

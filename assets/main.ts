@@ -3,7 +3,7 @@ import App from './components/App.vue';
 
 // TODO-mrc: find definition files
 // @ts-ignore
-import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField} from 'vue-material/dist/components';
+import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/black-green-light.css'
 
@@ -15,7 +15,8 @@ import VueRouter from "vue-router";
 
 // TODO-mrc: find definition files
 // @ts-ignore
-import VueToastify from "vue-toastify";
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-default.css";
 
 // include common css file
 import './app.css';
@@ -41,9 +42,10 @@ Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(MdDialog);
+Vue.use(MdCheckbox);
 Vue.use(MdIcon);
 Vue.use(VueRouter);
-Vue.use(VueToastify);
+Vue.use(VueToast);
 
 new Vue({
     render: h => h(App),

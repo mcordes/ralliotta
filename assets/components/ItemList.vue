@@ -7,6 +7,19 @@
                 <span v-else>List page</span>
             </h2>
 
+            <h3>Search filters</h3>
+            <ul>
+                <li>
+                    <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
+                </li>
+                <li>TODO: assigned to me / user</li>
+                <li>TODO: search title / body? for some text</li>
+                <li>TODO: search by id</li>
+                <li>TODO: project (defaulted to default project)</li>
+                <li>TODO: iteration / release</li>
+                <li>TODO: sort by last updated - descending / ascending </li>
+            </ul>
+
             <table class="items-table">
                 <tr class="md-table-row">
                     <th class="md-table-head">ID</th>
@@ -35,6 +48,7 @@
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
     import {ARTIFACT_SEARCH_FIELDS, fetchListOfItems, queryUtils} from "../rally-util";
+    import {showErrorToast} from "../util";
 
 
     @Component({
@@ -46,6 +60,7 @@
         hasMoreRecords = false;
         totalRecords = 0;
         isLoading = false;
+        showOpenItemsOnly = true;
 
         // TODO-mrc: I think this will become more generic as we add more search stuff.
         // For now it's just a way to have a single view for the list page and the assigned to me page.
@@ -83,11 +98,23 @@
                 query = query.and('Owner', '=', userRef);
             }
 
-            const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query, startIndex, pageSize);
+            if (this.showOpenItemsOnly) {
+                // TODO-mrc: include Completed too? Probably make what defines an open ticket configurable
+                query = query.and('ScheduleState', '!=', 'Accepted');
+            }
 
-            this.items.push(...results.items);
-            this.hasMoreRecords = results.hasMoreResults;
-            this.totalRecords = results.totalRecords;
+            try {
+                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, query, startIndex, pageSize);
+                this.items.push(...results.items);
+                this.hasMoreRecords = results.hasMoreResults;
+                this.totalRecords = results.totalRecords;
+            }
+            catch(e) {
+                showErrorToast();
+                this.items = [];
+                this.hasMoreRecords = false;
+                this.totalRecords = 0;
+            }
         }
     };
 

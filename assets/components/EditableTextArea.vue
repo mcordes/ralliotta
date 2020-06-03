@@ -54,10 +54,10 @@
             try {
                 const result = await updateItem(this.itemRef, data)
                 this.value = result[this.fieldName];
-                showSuccessToast(this, "Saved.");
+                showSuccessToast("Saved.");
             }
             catch (e) {
-                showErrorToast(this, {e});
+                showErrorToast({e});
             }
 
             this.isEdit = false;

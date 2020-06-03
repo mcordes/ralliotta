@@ -72,10 +72,10 @@
                     const commentRef = this.data._ref;
                     result = await updateItem(commentRef, data)
                 }
-                showSuccessToast(this, "Saved.");
+                showSuccessToast("Saved.");
             }
             catch(e) {
-                showErrorToast(this);
+                showErrorToast();
             }
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
