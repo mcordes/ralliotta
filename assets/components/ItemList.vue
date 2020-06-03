@@ -12,6 +12,7 @@
                 <li>
                     <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
                 </li>
+                <li>TODO: filter by schedule state / flow state?</li>
                 <li>TODO: assigned to me / user</li>
                 <li>TODO: search title / body? for some text</li>
                 <li>TODO: search by id</li>
