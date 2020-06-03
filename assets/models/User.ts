@@ -19,7 +19,6 @@ export class User extends Model {
         validateRallyResponseOrThrow(resp)
 
         // TODO-mrc: NOTE: there seems to be no wrapping Results element here. I wonder why.
-        // TODO-mrc: validate # of results?
         const data = resp;
         const user = new User(data);
 
@@ -47,7 +46,6 @@ export class User extends Model {
         );
 
         if (!response.ok) {
-            // TODO-mrc: fix me
             console.log(`Error fetching current session - ${response.body}`);
             throw new Error("Error fetching current session ");
         }

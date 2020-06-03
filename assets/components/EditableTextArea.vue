@@ -32,14 +32,14 @@
     export default class Comment extends Vue {
         // Reference to the item this field is part of
         @Prop()
-        itemRef = '';
+        itemRef!: string;
 
         // TODO-mrc: I think this needs to be a prop-sync b/c we're going to mutate it
         @Prop()
-        value = ''
+        value!: any;
 
         @Prop()
-        fieldName = '';
+        fieldName!: string;
 
         sharedState = store.state;
         errorMessage = '';
