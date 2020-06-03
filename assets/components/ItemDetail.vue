@@ -33,10 +33,7 @@
                         <Comment v-bind:data="comment" v-bind:itemRef="item.getRef()"/>
                     </div>
 
-                    <!-- Add one for the new comment form as well -->
-                    <!-- TODO-mrc
-                    <Comment v-bind:itemRef="item.getRef()"/>
-                    -->
+                    <AddComment v-bind:itemRef="item.getRef()" v-bind:comments="comments"/>
 
                 </md-tab>
 
@@ -62,6 +59,7 @@
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import Revision from "./Revision.vue";
+    import AddComment from "./AddComment.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -90,7 +88,7 @@
     }
 
     @Component({
-        components: {EditableTextArea, Comment, Revision},
+        components: {EditableTextArea, Comment, Revision, AddComment},
     })
     export default class ItemDetail extends Vue {
         // TODO-mrc: use UserType fix me

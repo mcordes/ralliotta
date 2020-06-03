@@ -1,0 +1,66 @@
+<template>
+    <div class="add-comment">
+        <md-field>
+            <md-textarea v-model="text" required maxlength="32768"/>
+        </md-field>
+
+        <div v-if="errorMessage" class="errorMessage">
+            {{ errorMessage }}
+        </div>
+        <md-button class="md-primary" @click="submit">Submit</md-button>
+    </div>
+</template>
+
+
+
+<script lang="ts">
+    import {Component, Vue, Prop} from 'vue-property-decorator';
+    import store from "../store";
+    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
+    import {showErrorToast, showSuccessToast} from "../util";
+
+    @Component
+    export default class AddComment extends Vue {
+        // Reference to the item we'll attach the comment to
+        @Prop()
+        itemRef!: string;
+
+        @Prop()
+        comments!: any[];
+
+        text = '';
+        sharedState = store.state;
+        errorMessage = '';
+
+        async submit() {
+            this.errorMessage = '';
+            const data = {'Text': this.text, 'Artifact': this.itemRef};
+
+            let result;
+            try {
+                result = await createItem("conversationpost", data)
+                showSuccessToast("Saved.");
+            }
+            catch(e) {
+                showErrorToast();
+            }
+
+            // re-retrive comment with all the fields included (the responses above just include a subset of them)
+            const persistedComment = await fetchSingleItemByRef(result._ref);
+
+            // add to list of comments
+            this.comments.push(persistedComment);
+            this.clear();
+        }
+
+        clear() {
+            this.text = '';
+            this.errorMessage = '';
+        }
+    };
+</script>
+
+
+<style lang="css" scoped>
+    .add-comment { margin-bottom: 10px }
+</style>

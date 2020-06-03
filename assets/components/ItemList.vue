@@ -15,6 +15,7 @@
                 <li>TODO: filter by schedule state / flow state?</li>
                 <li>TODO: assigned to me / user</li>
                 <li>TODO: search title / body? for some text</li>
+                <li>TODO: Caleb, let's try to make this as simple as possible. Maybe something like github does?</li>
                 <li>
                     <md-field>
                         <label>Search by ID:</label>
