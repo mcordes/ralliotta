@@ -7,11 +7,14 @@
 
             <div class="item-summary">
                 <div class="item-fields">
-                    <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                    v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
-
-                    <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState"
-                                    v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
+                    <div>
+                        <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
+                                        v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
+                    </div>
+                    <div>
+                        <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
+                                        v-bind:itemRef="item._ref" v-bind:options="flowStateOptions"/>
+                    </div>
 
                 </div>
 
@@ -56,7 +59,7 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {fetchSingleItemByFormattedID3} from "../utils/rally-util";
+    import {fetchSingleItemByFormattedID3, getFlowStateOptions} from "../utils/rally-util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import Revision from "./Revision.vue";
@@ -83,6 +86,8 @@
         activityItems: ActivityItem[] = [];
         isReady = false;
         scheduleStateOptions!: SelectOption[];
+        flowStateOptions!: SelectOption[];
+
 
         async created() {
             const formattedID = this.$route.params['formattedID'];
@@ -94,6 +99,9 @@
             }
 
             this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
+
+            // TODO-mrc: probably just cache these
+            this.flowStateOptions = await getFlowStateOptions();
 
             this.isReady = true;
 

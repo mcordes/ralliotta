@@ -1,8 +1,8 @@
 <template>
-    <span>
+    <div>
         <span v-if="isEdit">
             <md-field>
-                <md-label>{{ fieldName }}</md-label>
+                <label>{{ fieldName }}</label>
                 <md-select v-model="value" name="movie" id="movie">
                     <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
                 </md-select>
@@ -16,12 +16,12 @@
         </span>
         <span v-else>
             <md-field>
-                <md-label>{{ fieldName }}</md-label>
-                <span v-html="value"></span>
+                <label>{{ fieldName }}</label>
+                <span>{{ label }}</span>
             </md-field>
             <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
         </span>
-    </span>
+    </div>
 </template>
 
 
@@ -50,6 +50,14 @@
         fieldName!: string;
         errorMessage = '';
         isEdit = false;
+        label = '';
+
+        created() {
+            const option = this.options.find(o => o.value === this.value);
+            if (option) {
+                this.label = option.label ? option.label : option.value;
+            }
+        }
 
         async submit() {
             this.errorMessage = '';

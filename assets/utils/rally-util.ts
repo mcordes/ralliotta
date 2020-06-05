@@ -1,7 +1,10 @@
 import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
-import {Artifact} from "../types/Artifact";
+import {Artifact, COMMENT_SEARCH_FIELDS} from "../types/Artifact";
+import {Ref} from "../types/Ref";
+import {SelectOption} from "../types/SelectOption";
+import {FlowState} from "../types/FlowState";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -180,5 +183,18 @@ export function getDataFromReference(obj: RallyReferenceObject): ReferenceObject
         ref: obj._ref,
         type: obj._type
     };
+}
+
+// TODO-mrc: cache me
+export async function getFlowStateList() {
+    const response = await fetchListOfItems('flowstate', ['ScheduleStateMapping', 'Name'],{pageSize: 100});
+    const items: FlowState[] = response.items;
+    return items;
+}
+
+export async function getFlowStateOptions() {
+    const items = await getFlowStateList();
+    const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r.Name}; });
+    return results;
 }
 
