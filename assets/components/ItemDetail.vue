@@ -34,6 +34,7 @@
 
                         AcceptedDate: {{ item.AcceptedDate | timeSince }}<br>
                         BlockedReason: {{ item.BlockedReason }}<br>
+                        PlanEstimate: {{ item.PlanEstimate }}<br>
 
                         Tasks: {{ item.Tasks.Count }} <br>
                         <!-- TODO-mrc need to do something with tasks on this page too

@@ -20,6 +20,7 @@ export interface Artifact extends Ref {
     AcceptedDate: Date;
     BlockedReason: any;
     Tasks: RefWithCount;
+    PlanEstimate: number;
 
 
     /*
