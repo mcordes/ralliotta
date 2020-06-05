@@ -8,15 +8,26 @@
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </div>
-            <md-button class="md-primary" @click="submit">Submit</md-button>
-            <md-button class="md-primary" @click="cancel">Cancel</md-button>
+            <md-button class="md-primary md-raised" @click="submit">Submit</md-button>
+            <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </div>
         <div v-else>
-            {{ authorName }} said @ {{ data.CreationDate | formatDateTime }}
-            <div>
+            <div class="comment-header">
+                <div class="comment-date">
+                    {{ data.CreationDate | formatDateTime }}
+                </div>
+                <div class="comment-author">
+                    {{ authorName }} said:
+                </div>
+            </div>
+            <div class="comment-details">
                 {{ data.Text }}
             </div>
-            <md-button class="md-primary" @click="edit">Edit</md-button>
+            <div class="comment-actions">
+                <md-button class="md-icon-button md-mini" @click="edit">
+                    <md-icon>&#9998;</md-icon>
+                </md-button>
+            </div>
         </div>
     </div>
 </template>
@@ -28,6 +39,7 @@
     import store from "../store";
     import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
     import {showErrorToast, showSuccessToast} from "../util";
+    import VueFroala from 'vue-froala-wysiwyg';
 
     @Component
     export default class Comment extends Vue {
@@ -85,5 +97,52 @@
 
 
 <style lang="css" scoped>
-    .comment { margin-bottom: 10px }
+    .comment {
+        background: #FFF;
+        border-radius: 6px;
+        border: 1px solid #CCC;
+        margin-bottom: 10px;
+        max-width: 1000px;
+        padding: 6px 8px;
+        position: relative;
+    }
+
+    .comment:after {
+        background: #CCC;
+        bottom: -11px;
+        content: '';
+        height: 10px;
+        left: 10px;
+        position: absolute;
+        width: 2px;
+    }
+
+    .comment-header {
+        background: #EAEAEA;
+        border-bottom: 1px solid #CCC;
+        border-radius: 5px 5px 0 0;
+        margin: -6px -8px 5px;
+        padding: 2px 8px;
+    }
+
+    .comment-date {
+        border-right: 1px solid #CCC;
+        display: inline-block;
+        font-weight: 600;
+        padding-right: 12px;
+    }
+
+    .comment-author {
+        display: inline-block;
+        padding-left: 10px;
+    }
+
+    .comment-details {}
+
+    .comment-actions {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .comment-actions .md-button { float: right; }
 </style>

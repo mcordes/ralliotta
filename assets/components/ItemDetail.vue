@@ -3,10 +3,14 @@
         <div>
             <h2>{{ item.data.FormattedID }} - {{ item.data.Name }}</h2>
 
-            <div>
+            <div class="item-summary">
+                <div class="item-fields">Maybe fields go here?</div> <!-- TODO: make me a separate compentent? -->
+
                 <!-- TODO-mrc: could also just pass in item and field name, then we can get the value -->
                 <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
             </div>
+
+            <hr style="margin: 50px 0;">
 
             <div v-for="activity in activityItems">
                 <div v-if="activity.type === 'comment'">
@@ -15,8 +19,6 @@
                 <div v-else>
                     <Revision v-bind:data="activity.data"/>
                 </div>
-                <br>
-                <br>
             </div>
 
             <AddComment v-bind:itemRef="item.getRef()" v-bind:activityItems="activityItems"/>
@@ -36,11 +38,6 @@
                     </div>
                 </div>
             </div>
-
-            <br>
-            <br>
-
-
         </div>
     </div>
 </template>
@@ -99,7 +96,16 @@
 
 <style scoped>
     .value, .field {display: inline-block; padding: 10px }
-
+    .item-summary { width: 100%; }
+    .item-fields {
+        background: #FFF;
+        border-radius: 6px;
+        border: 1px solid #e4e4e4;
+        float: right;
+        min-height: 500px; /* temporary for POC of layout */
+        padding: 10px 20px;
+        width: 20%;
+    }
 </style>
 
 

@@ -1,13 +1,13 @@
 <template>
     <div class="add-comment">
         <md-field>
-            <md-textarea v-model="text" required maxlength="32768"/>
+            <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"/>
         </md-field>
 
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}
         </div>
-        <md-button class="md-primary" @click="submit">Submit</md-button>
+        <md-button class="md-raised" @click="submit">Submit</md-button>
     </div>
 </template>
 
@@ -62,5 +62,12 @@
 
 
 <style lang="css" scoped>
-    .add-comment { margin-bottom: 10px }
+    .add-comment {
+        margin-bottom: 10px;
+        max-width: 1000px;
+    }
+
+    .add-comment .md-field { padding-top: 0; }
+
+    .comment-textarea { background: #FFF; }
 </style>

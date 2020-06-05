@@ -1,21 +1,21 @@
 <template>
-    <div>
+    <div class="item-description-wrapper">
         <div v-if="isEdit">
             <!-- TODO-mrc: use md-textarea and limit size -->
             <md-field>
-                <md-textarea v-model="value" required/>
+                <!-- <md-textarea v-model="value" required/> -->
+                <froala :tag="'textarea'" :config="config" v-model="value" required></froala>
             </md-field>
 
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </div>
-            <md-button class="md-primary" @click="submit">Submit</md-button>
-            <md-button class="md-primary" @click="cancel">Cancel</md-button>
+            <md-button class="md-primary md-raised" @click="submit">Submit</md-button>
+            <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </div>
         <div v-else>
-            <div>{{ value }}</div>
-
-            <md-button class="md-primary" @click="edit">Edit</md-button>
+            <div class="item-description-read" v-html="value"></div>
+            <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
         </div>
     </div>
 </template>
@@ -27,6 +27,7 @@
     import store from "../store";
     import {AddUpdateFieldData, updateItem} from "../rally-util";
     import {showErrorToast, showSuccessToast} from "../util";
+    import VueFroala from 'vue-froala-wysiwyg';
 
     @Component
     export default class Comment extends Vue {
@@ -70,10 +71,17 @@
         cancel() {
             this.isEdit = false;
         }
-
     };
 </script>
 
 
-<style lang="css" scoped>
+<style lang="css">
+    .item-description-wrapper { width: calc(80% - 20px); }
+    .item-description-read {
+        background: #FFF;
+        border: 1px solid #e4e4e4;
+        border-radius: 6px;
+        padding: 10px 20px;
+    }
+    .fr-box #logo { display: none; }
 </style>

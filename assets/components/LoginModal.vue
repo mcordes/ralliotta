@@ -80,13 +80,7 @@
 </script>
 
 
-<style lang="css" scoped>
-    /*
-        seems to not work because this is scoped strangely,
-        outputted rules targeting data atttributes so we have less
-        control over the wrapper container itself
-        E.g. `.login-modal-wrapper .md-dialog-container[data-v-54d765]`
-     */
+<style lang="css">
     .login-modal-wrapper .md-dialog-container {
         border-radius: 20px;
         overflow: scroll;

@@ -7,6 +7,11 @@ import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox} from
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/black-green-light.css'
 
+import 'froala-editor/js/froala_editor.pkgd.min.js'
+import 'froala-editor/css/froala_editor.pkgd.min.css'
+import 'froala-editor/css/froala_style.min.css'
+import VueFroala from 'vue-froala-wysiwyg';
+
 import ItemList from "./components/ItemList.vue";
 import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
@@ -46,6 +51,7 @@ Vue.use(MdCheckbox);
 Vue.use(MdIcon);
 Vue.use(VueRouter);
 Vue.use(VueToast);
+Vue.use(VueFroala);
 
 new Vue({
     render: h => h(App),
