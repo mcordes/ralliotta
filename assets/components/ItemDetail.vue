@@ -23,18 +23,14 @@
                 <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
             </div>
 
-            <div>
-                <h3 @click="toggleShowAllFields" title="toggle showing all fields">
-                    <span v-if="showAllFields"> - </span>
-                    <span v-else> + </span>
-                    All fields</h3>
-                <div v-if="showAllFields">
+            <ExpandableSection label="All fields" title="toggle showing all fields">
+                <div>
                     <div v-for="field in itemFields" v-bind:field="field">
                         <div class="field">{{ field }}</div>
                         <div class="value">{{ item[field] }}</div>
                     </div>
-                </div>
-            </div>
+               </div>
+            </ExpandableSection>
         </div>
     </div>
 </template>
@@ -42,10 +38,8 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import store from "../store";
     import {
         ActivityItem,
-        fetchComments, fetchRevisionHistory,
         fetchSingleItemByFormattedID3, getActivityForItem
     } from "../utils/rally-util";
     import Comment from "./Comment.vue";
@@ -53,19 +47,19 @@
     import Revision from "./Revision.vue";
     import AddComment from "./AddComment.vue";
     import {Artifact} from "../types/Artifact";
+    import ExpandableSection from "./ExpandableSection.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
     @Component({
-        components: {EditableTextArea, Comment, Revision, AddComment},
+        components: {EditableTextArea, Comment, Revision, AddComment, ExpandableSection},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
-        showAllFields = false;
         isReady = false;
 
         async created() {
@@ -84,10 +78,6 @@
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
             this.itemFields = Object.keys(this.item);
 
-        }
-
-        toggleShowAllFields() {
-            this.showAllFields = !this.showAllFields;
         }
     }
 
