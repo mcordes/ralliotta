@@ -1,8 +1,9 @@
 import {Ref} from "../types/Ref";
 import {orderBy} from "lodash";
-import {fetchListOfItems, queryUtils} from "./rally-util";
+import {fetchListOfItems, fetchSingleItemByRef, queryUtils} from "./rally-util";
 import {Artifact, COMMENT_SEARCH_FIELDS, REVISION_SEARCH_FIELDS} from "../types/Artifact";
 import {Attachment, ATTACHMENT_SEARCH_FIELDS} from "../types/Attachment";
+import {User} from "../types/User";
 
 export interface ActivityItem {
     type: "comment" | "revision" | "attachment",
@@ -30,7 +31,7 @@ export async function getActivityForItem(item: Artifact) {
     }
 
     for (const attachment of attachments) {
-        activity.push({type: "attachment", data: attachments, date: attachment.CreationDate})
+        activity.push({type: "attachment", data: attachment, date: attachment.CreationDate})
     }
 
     return orderBy(activity, ['date']);
@@ -66,6 +67,14 @@ async function fetchAttachments(itemRef: string) {
 
     const results = await fetchListOfItems('attachment', ATTACHMENT_SEARCH_FIELDS, {query, pageSize: 100});
     return results.items;
+}
 
 
+export async function fetchAttachmentContent(attachment: Attachment) {
+    const contentRef = attachment.Content;
+    const contentType = attachment.ContentType;
+    const result = await fetchSingleItemByRef(contentRef._ref);
+    // NOTE: doesn't already have a prefix for some reason
+    const prefix = `data:${contentType};base64, `;
+    return  prefix + result['Content'];
 }

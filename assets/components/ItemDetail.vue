@@ -18,8 +18,7 @@
                     <Revision v-bind:data="activity.data"/>
                 </div>
                 <div v-if="activity.type === 'attachment'">
-
-                    XXXXXXXXXXX ATTACHMENT XXXXXXXX
+                    <AttachmentSummary v-bind:data="activity.data"/>
                 </div>
             </div>
 
@@ -50,13 +49,14 @@
     import {Artifact} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
     import {ActivityItem, getActivityForItem} from "../utils/activity-util";
+    import AttachmentSummary from "./AttachmentSummary.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
     @Component({
-        components: {EditableTextArea, Comment, Revision, AddComment, ExpandableSection},
+        components: {EditableTextArea, Comment, Revision, AddComment, ExpandableSection, AttachmentSummary},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;

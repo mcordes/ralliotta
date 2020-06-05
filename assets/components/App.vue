@@ -59,7 +59,6 @@
             if (this.sharedState.hasCredentials()) {
                 try {
                     const user = await fetchCurrentUser();
-                    console.log("Set user!!");
                     store.setUser(user);
                 }
                 catch(e) {
