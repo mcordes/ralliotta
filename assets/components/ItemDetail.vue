@@ -1,7 +1,9 @@
 <template>
     <div class="item-detail">
         <div v-if="isReady">
-            <h2>{{ item.FormattedID }} - {{ item.Name }}</h2>
+            <h2>{{ item.FormattedID }} -
+                <EditableText v-bind:field-name="Name" v-bind:value="item.Name" v-bind:item-ref="item._ref"/>
+            </h2>
 
             <div class="item-summary">
                 <div class="item-fields">Maybe fields go here?</div>
@@ -55,13 +57,14 @@
     import ExpandableSection from "./ExpandableSection.vue";
     import {ActivityItem, getActivityForItem} from "../utils/activity-util";
     import AttachmentSummary from "./AttachmentSummary.vue";
+    import EditableText from "./EditableText.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
     @Component({
-        components: {EditableTextArea, Comment, Revision, AddComment, ExpandableSection, AttachmentSummary},
+        components: {EditableText, EditableTextArea, Comment, Revision, AddComment, ExpandableSection, AttachmentSummary},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
