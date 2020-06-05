@@ -28,6 +28,7 @@
     import {showErrorToast, showSuccessToast} from "../utils/util";
     // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
+    import {updateSingleItemAndShowToast} from "../utils/component-util";
 
     @Component
     export default class Comment extends Vue {
@@ -45,19 +46,7 @@
 
         async submit() {
             this.errorMessage = '';
-
-            const data: AddUpdateFieldData = {};
-            data[this.fieldName] = this.value;
-
-            try {
-                const result = await updateItem(this.itemRef, data)
-                this.value = result[this.fieldName];
-                showSuccessToast("Saved.");
-            }
-            catch (e) {
-                showErrorToast({e});
-            }
-
+            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.itemRef)
             this.isEdit = false;
         }
 

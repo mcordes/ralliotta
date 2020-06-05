@@ -2,7 +2,10 @@
     <span>
         <span v-if="isEdit">
             <md-field>
-                <md-input type="text" v-model="value"/>
+                <md-label>{{ fieldName }}</md-label>
+                <md-select v-model="value" name="movie" id="movie">
+                    <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
+                </md-select>
             </md-field>
 
             <span v-if="errorMessage" class="errorMessage">
@@ -12,6 +15,7 @@
             <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </span>
         <span v-else>
+            <md-label>{{ fieldName }}</md-label>
             <span v-html="value"></span>
             <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
         </span>
@@ -24,16 +28,21 @@
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
+    import {Ref} from "../types/Ref";
+    import {SelectOption} from "../types/SelectOption";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
 
     @Component
-    export default class EditableText extends Vue {
+    export default class EditableSelect extends Vue {
         // Reference to the item this field is part of
         @Prop()
         itemRef!: string;
 
         @Prop()
         value!: any;
+
+        @Prop()
+        options!: SelectOption[];
 
         @Prop()
         fieldName!: string;

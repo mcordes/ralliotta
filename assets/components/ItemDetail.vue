@@ -6,7 +6,11 @@
             </h2>
 
             <div class="item-summary">
-                <div class="item-fields">Maybe fields go here?</div>
+                <div class="item-fields">
+                    <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
+                                    v-bind:itemref="item._ref" v-bind:options="scheduleStateOptions"/>
+                </div>
+
                 <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>
             </div>
 
@@ -58,19 +62,23 @@
     import {ActivityItem, getActivityForItem} from "../utils/activity-util";
     import AttachmentSummary from "./AttachmentSummary.vue";
     import EditableText from "./EditableText.vue";
+    import EditableSelect from "./EditableSelect.vue";
+    import {SelectOption} from "../types/SelectOption";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
     @Component({
-        components: {EditableText, EditableTextArea, Comment, Revision, AddComment, ExpandableSection, AttachmentSummary},
+        components: {EditableText, EditableTextArea, Comment, Revision, AddComment, ExpandableSection,
+            AttachmentSummary, EditableSelect},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
         isReady = false;
+        scheduleStateOptions!: SelectOption[];
 
         async created() {
             const formattedID = this.$route.params['formattedID'];
@@ -80,6 +88,9 @@
                 // TODO-mrc: show 404 page? We didn't find it
                 throw new Error("implement me");
             }
+
+            this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
+
             this.isReady = true;
 
             this.activityItems = await getActivityForItem(this.item);
