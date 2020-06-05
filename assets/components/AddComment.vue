@@ -1,20 +1,26 @@
 <template>
     <div class="add-comment">
         <md-field>
-            <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"/>
+            <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"
+                         placeholder="Your comment..."/>
         </md-field>
 
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}
         </div>
-        <md-button class="md-raised" @click="submit">Submit</md-button>
+
+        <div v-if="isEdit">
+            <md-button class="md-raised" @click="submit">Save</md-button>
+            <md-button class="md-raised" @click="cancel">Cancel</md-button>
+        </div>
+
     </div>
 </template>
 
 
 
 <script lang="ts">
-    import {Component, Vue, Prop} from 'vue-property-decorator';
+    import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
     import store from "../store";
     import {ActivityItem, createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
     import {showErrorToast, showSuccessToast} from "../util";
@@ -28,9 +34,15 @@
         @Prop()
         activityItems!: ActivityItem[];
 
+        @Watch("text")
+        onTextChange() {
+            this.isEdit = !!this.text;  // set to true if text is non blank / null
+        }
+
         text = '';
         sharedState = store.state;
         errorMessage = '';
+        isEdit = false;
 
         async submit() {
             this.errorMessage = '';
@@ -48,9 +60,13 @@
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
             const persistedComment = await fetchSingleItemByRef(result._ref);
 
-            // add to list of comments
-            this.comments.push(persistedComment);
+            // add to list of activities
+            this.activityItems.push(persistedComment);
             this.clear();
+        }
+
+        cancel() {
+            this.text = '';
         }
 
         clear() {

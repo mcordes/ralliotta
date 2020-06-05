@@ -19,12 +19,17 @@
                 </div>
             </div>
 
+            XXXXX ref : {{ item.getRef() }}
+
             <AddComment v-bind:itemRef="item.getRef()" v-bind:activityItems="activityItems"/>
 
 
             <!-- TODO-mrc: why doesn't this appear? -->
             <!-- TODO-mrc: this is for debugging and inspiration purposes -->
+            TEST3
+            <!--
             <div>
+                TEST
                 <h3 @click="toggleShowAllFields" title="toggle showing all fields">
                     <span v-if="showAllFields"> - </span>
                     <span v-else> + </span>
@@ -33,10 +38,10 @@
                     <div v-for="field in itemFields" v-bind:field="field">
                         <div class="field">{{ field }}</div>
                         <div class="value">{{ item.data[field] }}</div>
-                        <!-- TODO-mrc: determine field type and list that too until we figure out how to display each type -->
                     </div>
                 </div>
             </div>
+    -->
         </div>
     </div>
 </template>
