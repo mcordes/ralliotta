@@ -3,10 +3,11 @@
         <div @click="toggleExpanded" :title="title">
             <span v-if="isExpanded"> - </span>
             <span v-else> + </span>
-            {{ label }}</div>
+            <slot name="header"/>
+        </div>
         <div v-if="isExpanded">
             <!-- NOTE: child elements of this component will appear here -->
-            <slot></slot>
+            <slot name="main"/>
         </div>
     </div>
 </template>
@@ -17,9 +18,6 @@
 
     @Component
     export default class ExpandableSection extends Vue {
-        @Prop()
-        label!: string;
-
         @Prop()
         title!: string;
 

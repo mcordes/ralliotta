@@ -26,13 +26,18 @@
                 <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
             </div>
 
-            <ExpandableSection label="All fields" title="toggle showing all fields">
-                <div>
-                    <div v-for="field in itemFields" v-bind:field="field">
-                        <div class="field">{{ field }}</div>
-                        <div class="value">{{ item[field] }}</div>
+            <ExpandableSection title="toggle showing all fields">
+                <template v-slot:header>
+                    <h3>All fields</h3>
+                </template>
+                <template v-slot:main>
+                    <div>
+                        <div v-for="field in itemFields" v-bind:field="field">
+                            <div class="field">{{ field }}</div>
+                            <div class="value">{{ item[field] }}</div>
+                        </div>
                     </div>
-               </div>
+                </template>
             </ExpandableSection>
         </div>
     </div>

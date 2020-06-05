@@ -1,35 +1,61 @@
 <template>
-    <div class="revision">
-        <div class="revision-header">
-            <div class="revision-date">
-                {{ data.CreationDate | formatDateTime }}
+    <ExpandableSection title="View details">
+        <template v-slot:header>
+            <div class="revision-header">
+                <div class="revision-date">
+                    {{ data.CreationDate | formatDateTime }}
+                </div>
+                <div class="revision-author">
+                    {{ label }}
+                </div>
             </div>
-            <div class="revision-author">
-                {{ authorName }} made a change
+        </template>
+        <template v-slot:main>
+            <div class="revision">
+                <div class="revision-details">
+                    {{ data.Description }}
+                </div>
             </div>
-        </div>
-        <div class="revision-details">
-            {{ data.Description }}
-        </div>
-    </div>
+        </template>
+    </ExpandableSection>
 </template>
 
 
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import store from "../store";
     import {getDataFromReference} from "../utils/rally-util";
-
-    @Component
+    import ExpandableSection from "./ExpandableSection.vue";
+    @Component({
+        components: {ExpandableSection}
+    })
     export default class Revision extends Vue {
         @Prop()
         data: any;
 
         authorName = '';
+        label = '';
 
         created() {
             this.authorName = getDataFromReference(this.data.User).name;
+            this.label = this.getLabel();
+        }
+
+        getLabel() {
+            const desc = this.data.Description || '';
+            const changedFields: string[] = desc.split(", ").map((change: any) => {
+                // NOTE: the first words of each change is the FIELD name in caps.
+                const matches = /^([A-Z\s]+)/.exec(change);
+                return matches ? matches[1].trim() : '';
+            });
+
+            const len = changedFields.length;
+            if (len > 1) {
+                return `${this.authorName} changed fields ` + changedFields.slice(0, len -1).join(", ") + " and " + changedFields[len - 1];
+            }
+            else {
+                return `${this.authorName} changed the field ${changedFields[0]}`;
+            }
         }
     };
 </script>
