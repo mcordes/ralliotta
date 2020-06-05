@@ -19,21 +19,15 @@
                 </div>
             </div>
 
-            XXXXX ref : {{ item._ref }}
-
-            <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
-
-
-            <!-- TODO-mrc: why doesn't this appear? -->
-            <!-- TODO-mrc: this is for debugging and inspiration purposes -->
-            TEST3
-            <!--
             <div>
-                TEST
+                <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
+            </div>
+
+            <div>
                 <h3 @click="toggleShowAllFields" title="toggle showing all fields">
                     <span v-if="showAllFields"> - </span>
                     <span v-else> + </span>
-                    Assorted fields</h3>
+                    All fields</h3>
                 <div v-if="showAllFields">
                     <div v-for="field in itemFields" v-bind:field="field">
                         <div class="field">{{ field }}</div>
@@ -41,7 +35,6 @@
                     </div>
                 </div>
             </div>
-    -->
         </div>
     </div>
 </template>
@@ -83,6 +76,7 @@
                 // TODO-mrc: show 404 page? We didn't find it
                 throw new Error("implement me");
             }
+            this.isReady = true;
 
             this.activityItems = await getActivityForItem(this.item._ref, this.item.RevisionHistory);
 
@@ -90,7 +84,6 @@
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
             this.itemFields = Object.keys(this.item);
 
-            this.isReady = true;
         }
 
         toggleShowAllFields() {
