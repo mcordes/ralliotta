@@ -3,7 +3,6 @@ import store from "../store";
 import {Project} from "../types/Project";
 import {User} from "../types/User";
 
-
 export async function fetchCurrentUser() {
     // NOTE: Looking for users without a query string returns a single user - the logged in user
     const resp = await getRallyAPI(store.getCredentials()).query({

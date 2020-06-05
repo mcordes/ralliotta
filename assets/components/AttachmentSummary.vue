@@ -13,7 +13,7 @@
             <!-- TODO-mrc:shrink to preview -->
             <!-- TODO-mc: click to view full sized attachment -->
             <div v-if="attachmentContent">
-                <img :src="attachmentContent" @click="toggleViewFullImage()" title="Click to larger image">
+                <img :src="attachmentContent" @click="toggleViewFullImage()" title="Click to view larger image">
             </div>
         </div>
 

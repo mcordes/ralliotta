@@ -1,8 +1,6 @@
 import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
-import {orderBy} from "lodash";
-import {Ref} from "../types/Ref";
 import {Artifact} from "../types/Artifact";
 
 export const queryUtils = rally.util.query;

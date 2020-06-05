@@ -3,7 +3,6 @@ import {orderBy} from "lodash";
 import {fetchListOfItems, fetchSingleItemByRef, queryUtils} from "./rally-util";
 import {Artifact, COMMENT_SEARCH_FIELDS, REVISION_SEARCH_FIELDS} from "../types/Artifact";
 import {Attachment, ATTACHMENT_SEARCH_FIELDS} from "../types/Attachment";
-import {User} from "../types/User";
 
 export interface ActivityItem {
     type: "comment" | "revision" | "attachment",
@@ -55,14 +54,15 @@ async function fetchRevisionHistory(revisionHistoryRef: Ref) {
     const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef)
         .and('Description', '!contains', 'DISCUSSION')
         .and('Description', '!=', 'Original revision')
-        .and('Description', '!contains', 'ATTACHMENTS');
+        .and('Description', '!contains', 'ATTACHMENTS')
+        // NOTE: this one is weird, it's actually the comment text changing and not the Artifact. Investigate
+        .and('Description', '!contains', 'TEXT');
 
     const result = await fetchListOfItems("revision", REVISION_SEARCH_FIELDS, {query, pageSize: 100});
     return result.items;
 }
 
 async function fetchAttachments(itemRef: string) {
-    const attachments: Attachment[] = [];
     const query = queryUtils.where('Artifact', '=', itemRef);
 
     const results = await fetchListOfItems('attachment', ATTACHMENT_SEARCH_FIELDS, {query, pageSize: 100});

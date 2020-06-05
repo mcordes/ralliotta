@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h3 @click="toggleExpanded" :title="title">
+        <div @click="toggleExpanded" :title="title">
             <span v-if="isExpanded"> - </span>
             <span v-else> + </span>
-            {{ label }}</h3>
+            {{ label }}</div>
         <div v-if="isExpanded">
             <!-- NOTE: child elements of this component will appear here -->
             <slot></slot>
