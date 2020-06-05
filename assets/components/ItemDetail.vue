@@ -12,7 +12,7 @@
                         <!-- Make this editable
                             try to cache users or just do a real time search?
                         -->
-                        Assignee: {{ item.Owner._refObjectName }}<br>
+                        Assignee: {{ item.Owner ? item.Owner._refObjectName : '' }}<br>
 
                         <div>
                             Created: <TimeSinceDate v-bind:date="item.CreationDate"/>
