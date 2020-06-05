@@ -14,14 +14,14 @@
         <div v-else>
             <div class="comment-header">
                 <div class="comment-date">
-                    {{ data.CreationDate | formatDateTime }}
+                    {{ comment.CreationDate | formatDateTime }}
                 </div>
                 <div class="comment-author">
-                    {{ authorName }} said:
+                    {{ activity.userName }} said:
                 </div>
             </div>
             <div class="comment-details">
-                {{ data.Text }}
+                {{ comment.Text }}
             </div>
             <div class="comment-actions">
                 <md-button class="md-icon-button md-mini" @click="edit">
@@ -36,32 +36,33 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import store from "../store";
-    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../utils/rally-util";
+    import {fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
-
+    import {Comment} from "../types/Comment";
     // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
+    import {ActivityItem} from "../utils/activity-util";
 
     @Component
-    export default class Comment extends Vue {
+    export default class CommentInfo extends Vue {
         // Reference to the item we'll attach the comment to
         @Prop()
         itemRef!: string;
 
         // Optional - only set when editing an existing comment
         @Prop()
-        data: any;
+        activity!: ActivityItem;
+
+        // Optional - only set when editing an existing comment
+        comment!: Comment;
 
         text = '';
         errorMessage = '';
         isEdit = false;
-        authorName = '';
 
         created() {
-            // if we're creating a new comment, then show the editable form
-            this.text = this.data?.Text || '';
-            this.authorName = getDataFromReference(this.data.User).name;
+            this.comment = this.activity.data;
+            this.text = this.comment?.Text || '';
         }
 
         async submit() {
@@ -70,8 +71,7 @@
 
             let result;
             try {
-                const commentRef = this.data._ref;
-                result = await updateItem(commentRef, data)
+                result = await updateItem(this.comment._ref, data)
                 showSuccessToast("Saved.");
             }
             catch(e) {
@@ -80,7 +80,7 @@
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
             const persistedComment = await fetchSingleItemByRef(result._ref);
-            this.data = persistedComment;
+            this.comment = persistedComment;
 
             this.isEdit = false;
         }

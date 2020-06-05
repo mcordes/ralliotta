@@ -13,8 +13,6 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import store from "../store";
-    import {getDataFromReference} from "../utils/rally-util";
 
     @Component
     export default class ItemSummary extends Vue {
@@ -31,20 +29,17 @@
             this.detailLink = `/detail/${formattedID}`;
 
             if (this.item.Owner) {
-                const data = getDataFromReference(this.item.Owner);
-                this.ownerName = data.name;
+                this.ownerName = this.item.Owner._refObjectName;
             }
 
             if (this.item.CreatedBy) {
-                const data = getDataFromReference(this.item.CreatedBy);
-                this.reporterName = data.name;
+                this.reporterName = this.item.CreatedBy._refObjectName;
             }
 
             if (this.item.ScheduleState) {
                 let flowStateName = "";
                 if (this.item.FlowState) {
-                    const data = getDataFromReference(this.item.FlowState);
-                    flowStateName = data.name;
+                    flowStateName = this.item.FlowState._refObjectName;
                 }
 
                 this.status = `${this.item.ScheduleState}: ${flowStateName}`;

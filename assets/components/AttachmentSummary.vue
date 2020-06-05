@@ -2,10 +2,10 @@
     <div class="attachment">
         <div class="attachment-header">
             <div class="attachment-date">
-                {{ data.CreationDate | formatDateTime }}
+                {{ attachment.CreationDate | formatDateTime }}
             </div>
             <div class="attachment-author">
-                {{ authorName }} added an attachment
+                {{ activity.userName }} added an attachment
             </div>
         </div>
         <div class="attachment-details">
@@ -17,7 +17,7 @@
         </div>
 
         <div v-if="viewFullImage">
-            <AttachmentViewModal v-bind:attachment="data" v-bind:attachment-content="attachmentContent"/>
+            <AttachmentViewModal v-bind:attachment="attachment" v-bind:attachment-content="attachmentContent"/>
         </div>
     </div>
 </template>
@@ -26,8 +26,7 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {getDataFromReference} from "../utils/rally-util";
-    import {fetchAttachmentContent} from "../utils/activity-util";
+    import {ActivityItem, fetchAttachmentContent} from "../utils/activity-util";
     import {Attachment} from "../types/Attachment";
     import AttachmentViewModal from "./AttachmentViewModal.vue";
     @Component({
@@ -35,17 +34,17 @@
     })
     export default class AttachmentSummary extends Vue {
         @Prop()
-        data!: Attachment;
+        activity!: ActivityItem;
 
-        authorName = '';
+        attachment!: Attachment;
         attachmentContent = '';
         viewFullImage = false;
 
         async created() {
-            this.authorName = getDataFromReference(this.data.User).name;
+            this.attachment = this.activity.data;
 
             // TODO-mrc: error handling
-            this.attachmentContent = await fetchAttachmentContent(this.data);
+            this.attachmentContent = await fetchAttachmentContent(this.attachment);
         }
 
         toggleViewFullImage() {

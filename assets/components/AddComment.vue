@@ -22,8 +22,9 @@
 <script lang="ts">
     import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
     import store from "../store";
-    import {ActivityItem, createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../utils/rally-util";
+    import {createItem, fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
+    import {ActivityItem, toActivityItem} from "../utils/activity-util";
 
     @Component
     export default class AddComment extends Vue {
@@ -61,7 +62,7 @@
             const comment = await fetchSingleItemByRef(result._ref);
 
             // add to list of activities
-            this.activityItems.push({type: "comment", data: comment, date: comment.CreationDate})
+            this.activityItems.push(toActivityItem(comment, "comment"));
 
             this.clear();
         }

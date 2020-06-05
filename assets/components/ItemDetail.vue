@@ -24,14 +24,16 @@
             <hr style="margin: 50px 0;">
 
             <div v-for="activity in activityItems">
+                <img :src="activity.userAvatarURL">
+
                 <div v-if="activity.type === 'comment'">
-                    <Comment v-bind:data="activity.data" v-bind:itemRef="item._ref"/>
+                    <Comment v-bind:activity="activity" v-bind:itemRef="item._ref"/>
                 </div>
                 <div v-if="activity.type === 'revision'">
-                    <Revision v-bind:data="activity.data"/>
+                    <Revision v-bind:activity="activity"/>
                 </div>
                 <div v-if="activity.type === 'attachment'">
-                    <AttachmentSummary v-bind:data="activity.data"/>
+                    <AttachmentSummary v-bind:activity="activity"/>
                 </div>
             </div>
 
@@ -60,9 +62,9 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {fetchSingleItemByFormattedID3, getFlowStateOptions} from "../utils/rally-util";
-    import Comment from "./Comment.vue";
+    import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
-    import Revision from "./Revision.vue";
+    import RevisionInfo from "./RevisionInfo.vue";
     import AddComment from "./AddComment.vue";
     import {Artifact} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
@@ -77,7 +79,7 @@
     }
 
     @Component({
-        components: {EditableText, EditableTextArea, Comment, Revision, AddComment, ExpandableSection,
+        components: {EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment, ExpandableSection,
             AttachmentSummary, EditableSelect},
     })
     export default class ItemDetail extends Vue {

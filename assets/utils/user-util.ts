@@ -67,7 +67,3 @@ export async function fetchDefaultProject(user: User) {
     user.defaultProject = project;
     return project;
 }
-
-export function getDefaultProjectID(user: User) {
-    return user.DefaultProject._ref;
-}

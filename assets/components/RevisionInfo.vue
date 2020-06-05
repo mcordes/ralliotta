@@ -3,7 +3,7 @@
         <template v-slot:header>
             <div class="revision-header">
                 <div class="revision-date">
-                    {{ data.CreationDate | formatDateTime }}
+                    {{ revision.CreationDate | formatDateTime }}
                 </div>
                 <div class="revision-author">
                     {{ label }}
@@ -13,7 +13,7 @@
         <template v-slot:main>
             <div class="revision">
                 <div class="revision-details">
-                    {{ data.Description }}
+                    {{ revision.Description }}
                 </div>
             </div>
         </template>
@@ -24,25 +24,26 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {getDataFromReference} from "../utils/rally-util";
     import ExpandableSection from "./ExpandableSection.vue";
+    import {ActivityItem} from "../utils/activity-util";
+    import {Revision} from "../types/Revision";
     @Component({
         components: {ExpandableSection}
     })
-    export default class Revision extends Vue {
+    export default class RevisionInfo extends Vue {
         @Prop()
-        data: any;
+        activity!: ActivityItem;
 
-        authorName = '';
+        revision!: Revision;
         label = '';
 
         created() {
-            this.authorName = getDataFromReference(this.data.User).name;
+            this.revision = this.activity.data;
             this.label = this.getLabel();
         }
 
         getLabel() {
-            const desc = this.data.Description || '';
+            const desc = this.revision.Description || '';
             const changedFields: string[] = desc.split(", ").map((change: any) => {
                 // NOTE: the first words of each change is the FIELD name in caps.
                 const matches = /^([A-Z\s]+)/.exec(change);
@@ -51,10 +52,10 @@
 
             const len = changedFields.length;
             if (len > 1) {
-                return `${this.authorName} changed fields ` + changedFields.slice(0, len -1).join(", ") + " and " + changedFields[len - 1];
+                return `${this.activity.userName} changed fields ` + changedFields.slice(0, len -1).join(", ") + " and " + changedFields[len - 1];
             }
             else {
-                return `${this.authorName} changed the field ${changedFields[0]}`;
+                return `${this.activity.userName} changed the field ${changedFields[0]}`;
             }
         }
     };

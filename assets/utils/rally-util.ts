@@ -1,8 +1,7 @@
 import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
-import {Artifact, COMMENT_SEARCH_FIELDS} from "../types/Artifact";
-import {Ref} from "../types/Ref";
+import {Artifact} from "../types/Artifact";
 import {SelectOption} from "../types/SelectOption";
 import {FlowState} from "../types/FlowState";
 
@@ -160,29 +159,6 @@ export async function createItem(type: string, data: AddUpdateFieldData) {
     });
 
     return result.Object;
-}
-
-export interface RallyReferenceObject {
-    _type: string;
-    _ref: string;
-    _refObjectName: string;
-}
-
-export interface ReferenceObject {
-    type: string;
-    ref: string;
-    name: string;
-}
-
-// NOTE: For most nested objects rally just returns a reference (a handful of fields) to the object. The only interesting
-// ones are _ref (the id), _refObjectName (the Name field from the object) and the _type (the type).
-// Why these are prefixed with an underscore is anyone's guess.
-export function getDataFromReference(obj: RallyReferenceObject): ReferenceObject {
-    return {
-        name: obj._refObjectName,
-        ref: obj._ref,
-        type: obj._type
-    };
 }
 
 // TODO-mrc: cache me

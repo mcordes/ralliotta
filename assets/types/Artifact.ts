@@ -27,7 +27,3 @@ export interface Artifact extends Ref {
 export const ARTIFACT_SEARCH_FIELDS: Array<keyof Artifact> = ['FormattedID', 'Name', 'Owner', 'Project', 'Release',
     'Iteration', 'CreationDate', 'Parent', 'Description', 'ScheduleState', 'FlowState', 'CreationDate', 'CreatedBy',
     'LastUpdateDate'];
-
-export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'];
-
-export const REVISION_SEARCH_FIELDS = ['Description', 'RevisionNumber', 'User', 'CreationDate'];

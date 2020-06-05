@@ -1,7 +1,5 @@
 import {AddUpdateFieldData, updateItem} from "./rally-util";
 import {showErrorToast, showSuccessToast} from "./util";
-import {Ref} from "../types/Ref";
-
 
 export async function updateSingleItemAndShowToast(fieldName: string, value: string, itemRef: string) {
     const data: AddUpdateFieldData = {};
