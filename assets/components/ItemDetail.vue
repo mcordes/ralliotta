@@ -2,7 +2,7 @@
     <div class="item-detail">
         <div v-if="isReady">
             <h2>{{ item.FormattedID }} -
-                <EditableText v-bind:field-name="Name" v-bind:value="item.Name" v-bind:item-ref="item._ref"/>
+                <EditableText fieldName="Name" v-bind:value="item.Name" v-bind:itemRef="item._ref"/>
             </h2>
 
             <div class="item-summary">
