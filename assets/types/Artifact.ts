@@ -24,7 +24,6 @@ export interface Artifact extends Ref {
 
 }
 
-// TODO-mrc: there's no better way than this?
 export const ARTIFACT_SEARCH_FIELDS: Array<keyof Artifact> = ['FormattedID', 'Name', 'Owner', 'Project', 'Release',
     'Iteration', 'CreationDate', 'Parent', 'Description', 'ScheduleState', 'FlowState', 'CreationDate', 'CreatedBy',
     'LastUpdateDate'];

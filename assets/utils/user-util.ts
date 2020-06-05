@@ -14,7 +14,7 @@ export async function fetchCurrentUser() {
 
     validateRallyResponseOrThrow(resp)
 
-    // TODO-mrc: NOTE: there seems to be no wrapping Results element here. I wonder why.
+    // NOTE: The result isn't wrapped with a top level element like the others
     const user: User = resp;
 
     // TODO-mrc: error handling

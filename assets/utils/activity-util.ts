@@ -49,7 +49,6 @@ async function fetchRevisionHistory(revisionHistoryRef: Ref) {
         return [];
     }
 
-    // TODO-mrc: make this better
     // filter out comments, and some other things we don't need
     const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef)
         .and('Description', '!contains', 'DISCUSSION')

@@ -1,4 +1,3 @@
-// TODO-mrc: fix me
 import {User} from "./types/User";
 
 const foo: any = null; // TODO-mrc: UserType | null = null;

@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import App from './components/App.vue';
 
-// TODO-mrc: find definition files
 // @ts-ignore
 import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
@@ -20,7 +19,6 @@ import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
 import VueRouter from "vue-router";
 
-// TODO-mrc: find definition files
 // @ts-ignore
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-default.css";

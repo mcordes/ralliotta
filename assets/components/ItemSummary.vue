@@ -7,8 +7,6 @@
         <td class="md-table-cell"> {{ status }}</td>
         <td class="md-table-cell">{{ item.CreationDate | formatDate }}</td>
         <td class="md-table-cell">{{ item.LastUpdateDate | formatDate }}</td>
-
-        <!-- TODO-mrc: more? release, project, iteration, has attachments? -->
     </tr>
 </template>
 
@@ -30,8 +28,6 @@
 
         async created() {
             const formattedID = this.item['FormattedID'];
-
-            // TODO-mrc: is there a better way to do this? Seems unnecessary
             this.detailLink = `/detail/${formattedID}`;
 
             if (this.item.Owner) {
