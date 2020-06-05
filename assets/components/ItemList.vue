@@ -54,8 +54,8 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {ARTIFACT_SEARCH_FIELDS, fetchListOfItems, queryUtils} from "../rally-util";
-    import {showErrorToast} from "../util";
+    import {ARTIFACT_SEARCH_FIELDS, fetchListOfItems, queryUtils} from "../utils/rally-util";
+    import {showErrorToast} from "../utils/util";
 
 
     @Component({
@@ -63,7 +63,7 @@
     })
     export default class ItemList extends Vue {
         items: any[] = [];
-        sharedState = store.state;
+        sharedState = store;
         hasMoreRecords = false;
         totalRecords = 0;
         isLoading = false;
@@ -110,13 +110,13 @@
         }
 
         protected async fetchResults(startIndex = 1, pageSize = 20) {
-            const projectRef = this.sharedState.user.getDefaultProjectID();
+            const user = this.sharedState.getUser();
+            const projectRef = user.DefaultProject;
             // TODO-mrc: make this configurable - I envision a bunch of form fields at first
             let query = queryUtils.where('Project', '=', projectRef);
 
             if (this.showMyItemsOnly) {
-                const userRef = this.sharedState.user.getRef();
-                query = query.and('Owner', '=', userRef);
+                query = query.and('Owner', '=', user._ref);
             }
 
             if (this.showOpenItemsOnly) {

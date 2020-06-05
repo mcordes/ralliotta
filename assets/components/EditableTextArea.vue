@@ -22,10 +22,11 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
+    import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {AddUpdateFieldData, updateItem} from "../rally-util";
-    import {showErrorToast, showSuccessToast} from "../util";
+    import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
+    import {showErrorToast, showSuccessToast} from "../utils/util";
+    // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
 
     @Component
@@ -39,8 +40,6 @@
 
         @Prop()
         fieldName!: string;
-
-        sharedState = store.state;
         errorMessage = '';
         isEdit = false;
 

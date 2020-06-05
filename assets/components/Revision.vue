@@ -19,14 +19,13 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {getDataFromReference} from "../rally-util";
+    import {getDataFromReference} from "../utils/rally-util";
 
     @Component
     export default class Revision extends Vue {
         @Prop()
         data: any;
 
-        sharedState = store.state;
         authorName = '';
 
         created() {

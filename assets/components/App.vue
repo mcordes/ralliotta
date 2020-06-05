@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-if="store.hasCredentials() && sharedState.user == null">
+        <div v-if="sharedState.hasCredentials() && !sharedState.getUser()">
             <p>Loading.....</p>
         </div>
 
-        <div v-else-if="store.hasCredentials() && sharedState.user">
+        <div v-else-if="sharedState.hasCredentials() && sharedState.getUser()">
             <div class="md-toolbar md-dense md-elevation-0">
                 <div class="md-toolbar-row">
                     <div class="md-toolbar-section-start">
@@ -15,10 +15,10 @@
                         </nav>
                     </div>
                     <div class="md-toolbar-section-end">
-                        <h3 class="md-subheading">Hello, {{ sharedState.user.data.FirstName }}!</h3>
-                        <div v-if="sharedState.user.userProfileImage">
+                        <h3 class="md-subheading">Hello, {{ sharedState.getUser().FirstName }}!</h3>
+                        <div v-if="sharedState.getUser().userProfileImage">
                             <!-- NOTE: the weird urls here b/c parcel mangles them otherwise -->
-                            <img class="user-img" :src="`${sharedState.user.userProfileImage }`">
+                            <img class="user-img" :src="`${sharedState.getUser().userProfileImage }`">
                         </div>
                         <md-button class="md-raised" @click="logout">Logout</md-button>
                     </div>
@@ -39,17 +39,16 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import store from "../store";
     import LoginModal from "./LoginModal.vue";
-    import {User} from "../models/User";
+    import {fetchCurrentUser} from "../utils/user-util";
 
     @Component({
         components: {LoginModal}
     })
     export default class App extends Vue {
-        sharedState = store.state;
-        store = store;
+        sharedState = store;
 
         logout() {
-            store.clearUser();
+            this.sharedState.clearUser();
             // TODO: navigate back to home page?
             // TODO: add 'are you sure' modal at some point.
         }
@@ -57,9 +56,10 @@
         async created() {
             // If we have the user's credentials then try to retrieve the current user.
             // NOTE: This isn't a login, its continuing a session that's already active
-            if (store.hasCredentials()) {
+            if (this.sharedState.hasCredentials()) {
                 try {
-                    const user = await User.fetchCurrentUser();
+                    const user = await fetchCurrentUser();
+                    console.log("Set user!!");
                     store.setUser(user);
                 }
                 catch(e) {

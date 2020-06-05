@@ -16,7 +16,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {getDataFromReference} from "../rally-util";
+    import {getDataFromReference} from "../utils/rally-util";
 
     @Component
     export default class ItemSummary extends Vue {
@@ -24,7 +24,6 @@
         item: any;
 
         detailLink = "";
-        sharedState = store.state;
         ownerName = "";
         reporterName = "";
         status = "";

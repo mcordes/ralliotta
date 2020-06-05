@@ -1,4 +1,6 @@
 // TODO-mrc: fix me
+import {User} from "./types/User";
+
 const foo: any = null; // TODO-mrc: UserType | null = null;
 
 const USERNAME_STORAGE_KEY = "username";
@@ -21,14 +23,14 @@ function toString(s: string | null) {
 
 export default {
     state: {
-        user: foo,
+        _user: foo,
         _username: toString(username),
         _sessionId: toString(sessionId),
         _securityToken: toString(securityToken),
     },
 
     isLoggedIn() {
-        return this.state.user != null;
+        return this.state._user != null;
     },
 
     setCredentials(username: string, password: string, sessionId: string, securityToken: string) {
@@ -51,18 +53,22 @@ export default {
 
     hasCredentials() {
         const c = this.getCredentials();
-        return c.username && c.sessionId && c.securityToken;
+        return !!(c.username && c.sessionId && c.securityToken);
     },
 
     // TODO: use UserType if possible; fix me
-    setUser(user: any) {
-        this.state.user = user;
+    setUser(user: User) {
+        this.state._user = user;
+    },
+
+    getUser(): User {
+        return this.state._user;
     },
 
     clearUser() {
         this.state._sessionId = '';
         this.state._securityToken = '';
-        this.state.user = null;
+        this.state._user = null;
 
         localStorage.removeItem(USERNAME_STORAGE_KEY);
         localStorage.removeItem(SESSION_ID_STORAGE_KEY);

@@ -37,8 +37,10 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
-    import {showErrorToast, showSuccessToast} from "../util";
+    import {createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../utils/rally-util";
+    import {showErrorToast, showSuccessToast} from "../utils/util";
+
+    // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
 
     @Component
@@ -52,7 +54,6 @@
         data: any;
 
         text = '';
-        sharedState = store.state;
         errorMessage = '';
         isEdit = false;
         authorName = '';

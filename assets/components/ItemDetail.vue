@@ -1,27 +1,27 @@
 <template>
     <div class="item-detail">
-        <div>
-            <h2>{{ item.data.FormattedID }} - {{ item.data.Name }}</h2>
+        <div v-if="isReady">
+            <h2>{{ item.FormattedID }} - {{ item.Name }}</h2>
 
             <div class="item-summary">
                 <div class="item-fields">Maybe fields go here?</div>
-                <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
+                <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>
             </div>
 
             <hr style="margin: 50px 0;">
 
             <div v-for="activity in activityItems">
                 <div v-if="activity.type === 'comment'">
-                    <Comment v-bind:data="activity.data" v-bind:itemRef="item.getRef()"/>
+                    <Comment v-bind:data="activity.data" v-bind:itemRef="item._ref"/>
                 </div>
                 <div v-else>
                     <Revision v-bind:data="activity.data"/>
                 </div>
             </div>
 
-            XXXXX ref : {{ item.getRef() }}
+            XXXXX ref : {{ item._ref }}
 
-            <AddComment v-bind:itemRef="item.getRef()" v-bind:activityItems="activityItems"/>
+            <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
 
 
             <!-- TODO-mrc: why doesn't this appear? -->
@@ -37,7 +37,7 @@
                 <div v-if="showAllFields">
                     <div v-for="field in itemFields" v-bind:field="field">
                         <div class="field">{{ field }}</div>
-                        <div class="value">{{ item.data[field] }}</div>
+                        <div class="value">{{ item[field] }}</div>
                     </div>
                 </div>
             </div>
@@ -54,11 +54,12 @@
         ActivityItem,
         fetchComments, fetchRevisionHistory,
         fetchSingleItemByFormattedID3, getActivityForItem
-    } from "../rally-util";
+    } from "../utils/rally-util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import Revision from "./Revision.vue";
     import AddComment from "./AddComment.vue";
+    import {Artifact} from "../types/Artifact";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -68,11 +69,11 @@
         components: {EditableTextArea, Comment, Revision, AddComment},
     })
     export default class ItemDetail extends Vue {
-        item: any = {data: {}};
+        item!: Artifact;
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
-        sharedState = store.state;
         showAllFields = false;
+        isReady = false;
 
         async created() {
             const formattedID = this.$route.params['formattedID'];
@@ -83,11 +84,13 @@
                 throw new Error("implement me");
             }
 
-            this.activityItems = await getActivityForItem(this.item.getRef(), this.item.data['RevisionHistory']);
+            this.activityItems = await getActivityForItem(this.item._ref, this.item.RevisionHistory);
 
             // TODO-mrc: fix me
             // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
-            this.itemFields = Object.keys(this.item.data);
+            this.itemFields = Object.keys(this.item);
+
+            this.isReady = true;
         }
 
         toggleShowAllFields() {

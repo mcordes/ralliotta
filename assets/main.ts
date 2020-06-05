@@ -4,12 +4,14 @@ import App from './components/App.vue';
 // TODO-mrc: find definition files
 // @ts-ignore
 import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox} from 'vue-material/dist/components';
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/black-green-light.css'
+import 'vue-material/dist/vue-material.min.css';
+import 'vue-material/dist/theme/black-green-light.css';
 
-import 'froala-editor/js/froala_editor.pkgd.min.js'
-import 'froala-editor/css/froala_editor.pkgd.min.css'
-import 'froala-editor/css/froala_style.min.css'
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
+
+// @ts-ignore
 import VueFroala from 'vue-froala-wysiwyg';
 
 import ItemList from "./components/ItemList.vue";

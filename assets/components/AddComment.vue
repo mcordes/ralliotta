@@ -22,8 +22,8 @@
 <script lang="ts">
     import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
     import store from "../store";
-    import {ActivityItem, createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../rally-util";
-    import {showErrorToast, showSuccessToast} from "../util";
+    import {ActivityItem, createItem, fetchSingleItemByRef, getDataFromReference, updateItem} from "../utils/rally-util";
+    import {showErrorToast, showSuccessToast} from "../utils/util";
 
     @Component
     export default class AddComment extends Vue {
@@ -40,7 +40,7 @@
         }
 
         text = '';
-        sharedState = store.state;
+        sharedState = store;
         errorMessage = '';
         isEdit = false;
 
@@ -58,10 +58,11 @@
             }
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
-            const persistedComment = await fetchSingleItemByRef(result._ref);
+            const comment = await fetchSingleItemByRef(result._ref);
 
             // add to list of activities
-            this.activityItems.push(persistedComment);
+            this.activityItems.push({type: "comment", data: comment, date: comment.CreationDate})
+
             this.clear();
         }
 

@@ -1,8 +1,9 @@
-import store, {Credentials} from "./store";
+import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
-import {Item} from "./models/Item";
 import {orderBy} from "lodash";
+import {Ref} from "../types/Ref";
+import {Artifact} from "../types/Artifact";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -45,7 +46,6 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
 
     const query = queryUtils.where('FormattedID', '=', formattedID);
 
-    // TODO-mrc: is artifact the right choice here?
     const results = await fetchListOfItems('artifact', ['ObjectID', 'FormattedID'], {query});
     let items = results.items;
 
@@ -53,7 +53,7 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     // NOTE: the search by FormattedID only compare the #s and ignores the prefixed so we may get extra results
     // NOTE: we just need to find the one that matches our FormattedID and return it
     items = items.filter(item => (item.FormattedID === formattedID));
-    const item = items.length > 0 ? new Item(items[0]) : null;
+    const item: Artifact = items.length > 0 ? items[0] : null;
 
     // TODO-mrc:
     if (!item) {
@@ -62,7 +62,8 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     }
 
     // NOTE: do a second fetch to get back all the fields now that we know the item type
-    return new Item(await fetchSingleItemByRef(item.getRef()));
+    const result: Artifact = await fetchSingleItemByRef(item._ref);
+    return result;
 }
 
 export interface SearchResults {
@@ -217,7 +218,7 @@ export async function fetchComments(itemIdentifier: string) {
     return results.items;
 }
 
-export async function fetchRevisionHistory(revisionHistoryRef: string) {
+export async function fetchRevisionHistory(revisionHistoryRef: Ref) {
     if (!revisionHistoryRef) {
         return [];
     }
@@ -238,8 +239,8 @@ export interface ActivityItem {
     date: Date;
 }
 
-export async function getActivityForItem(itemRef: string, revisionHistoryRef: string) {
-    let activity: ActivityItem[] = [];
+export async function getActivityForItem(itemRef: string, revisionHistoryRef: Ref) {
+    const activity: ActivityItem[] = [];
 
     const comments = await fetchComments(itemRef);
     for (const comment of comments) {
