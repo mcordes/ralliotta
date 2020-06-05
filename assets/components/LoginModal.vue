@@ -36,8 +36,6 @@
     import store from "../store";
     import {User} from "../models/User";
 
-    // TODO-mrc: make this a real dialog?
-
     @Component
     export default class LoginModal extends Vue {
         username = '';
@@ -47,7 +45,6 @@
         store = store;
 
         async created() {
-            // TODO-mrc: maybe ditch the individual username/password fields and just store them in the store / state?
             const credentials = store.getCredentials();
             this.username = credentials.username;
         }
@@ -55,7 +52,6 @@
         async submit() {
             this.errorMessage = '';
 
-            // TODO-mrc: do these in parallel and return an invalid password error if either fail (?)
             try {
                 const session = await User.login(this.username, this.password);
                 store.setCredentials(this.username, this.password, session.sessionId, session.securityToken);

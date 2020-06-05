@@ -4,9 +4,7 @@
             <h2>{{ item.data.FormattedID }} - {{ item.data.Name }}</h2>
 
             <div class="item-summary">
-                <div class="item-fields">Maybe fields go here?</div> <!-- TODO: make me a separate compentent? -->
-
-                <!-- TODO-mrc: could also just pass in item and field name, then we can get the value -->
+                <div class="item-fields">Maybe fields go here?</div>
                 <EditableTextArea v-bind:value="item.data.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item.getRef()"/>
             </div>
 
@@ -24,6 +22,7 @@
             <AddComment v-bind:itemRef="item.getRef()" v-bind:activityItems="activityItems"/>
 
 
+            <!-- TODO-mrc: why doesn't this appear? -->
             <!-- TODO-mrc: this is for debugging and inspiration purposes -->
             <div>
                 <h3 @click="toggleShowAllFields" title="toggle showing all fields">
@@ -64,7 +63,6 @@
         components: {EditableTextArea, Comment, Revision, AddComment},
     })
     export default class ItemDetail extends Vue {
-        // TODO-mrc: use UserType fix me
         item: any = {data: {}};
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];

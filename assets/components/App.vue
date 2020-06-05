@@ -50,16 +50,13 @@
 
         logout() {
             store.clearUser();
-            // TODO-mrc: navigate back to home page?
-            // TODO-mrc: add 'are you sure' modal at some point.
+            // TODO: navigate back to home page?
+            // TODO: add 'are you sure' modal at some point.
         }
 
         async created() {
             // If we have the user's credentials then try to retrieve the current user.
-            // TODO-mrc: the login page might still flash. Fix that.
             // NOTE: This isn't a login, its continuing a session that's already active
-
-            // TODO-mrc: verify session (do we know when it's going to expire, if so check that too)
             if (store.hasCredentials()) {
                 try {
                     const user = await User.fetchCurrentUser();

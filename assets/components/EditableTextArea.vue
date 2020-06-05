@@ -1,7 +1,6 @@
 <template>
     <div class="item-description-wrapper">
         <div v-if="isEdit">
-            <!-- TODO-mrc: use md-textarea and limit size -->
             <md-field>
                 <!-- <md-textarea v-model="value" required/> -->
                 <froala :tag="'textarea'" :config="config" v-model="value" required></froala>
@@ -35,7 +34,6 @@
         @Prop()
         itemRef!: string;
 
-        // TODO-mrc: I think this needs to be a prop-sync b/c we're going to mutate it
         @Prop()
         value!: any;
 

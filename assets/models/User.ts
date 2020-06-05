@@ -32,7 +32,6 @@ export class User extends Model {
     }
 
     static async login(username: string, password: string) {
-
         // TODO-mrc: url for authorization proxy.
         const response = await fetch("http://localhost:8088/lookup",
             {
