@@ -161,29 +161,6 @@ export async function createItem(type: string, data: AddUpdateFieldData) {
     return result.Object;
 }
 
-
-const excludedFields = new Set<string>(['_rallyAPIMajor',
-    '_rallyAPIMinor',
-//    '_ref',
-    '_refObjectUUID',
-    '_objectVersion',
-    '_refObjectName',
-    'DirectChildrenCount',
-    'Errors',
-    'Warnings',
-    'Results',
-    'StartIndex',
-    'PageSize']);
-
-// Return list of fields to exclude from an item
-export function filterOutFieldsExcludedFromDisplay(fields: string[]) {
-    return fields.filter(f => !excludedFields.has(f));
-}
-
-export const ARTIFACT_SEARCH_FIELDS = ['FormattedID', 'Name', 'Owner', 'Project', 'Release', 'Iteration',
-    'CreationDate', 'Parent', 'Description', 'ScheduleState', 'FlowState', 'CreationDate', 'CreatedBy', 'LastUpdateDate'];
-
-
 export interface RallyReferenceObject {
     _type: string;
     _ref: string;
@@ -207,55 +184,3 @@ export function getDataFromReference(obj: RallyReferenceObject): ReferenceObject
     };
 }
 
-
-export async function fetchComments(itemIdentifier: string) {
-    const query = queryUtils.where('Artifact', '=', itemIdentifier);
-
-    // TODO-mrc: sort by PostNumber
-    // TODO-mrc: I have no idea what one does with Object Id , ditch it
-    const results = await fetchListOfItems('conversationPost', ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'],
-        {query, pageSize: 100});
-    return results.items;
-}
-
-export async function fetchRevisionHistory(revisionHistoryRef: Ref) {
-    if (!revisionHistoryRef) {
-        return [];
-    }
-
-    // filter out comments, and some other things we don't need
-    const query = queryUtils.where('RevisionHistory', '=', revisionHistoryRef)
-        .and('Description', '!contains', 'DISCUSSION')
-        .and('Description', '!=', 'Original revision');
-
-    const result = await fetchListOfItems("revision", ['Description', 'RevisionNumber', 'User',
-        'CreationDate'], {query, pageSize: 100});
-    return result.items;
-}
-
-export interface ActivityItem {
-    type: "comment" | "revision",
-    data: any;
-    date: Date;
-}
-
-export async function getActivityForItem(itemRef: string, revisionHistoryRef: Ref) {
-    const activity: ActivityItem[] = [];
-
-    const comments = await fetchComments(itemRef);
-    for (const comment of comments) {
-        activity.push({type: "comment", data: comment, date: comment.CreationDate})
-    }
-
-    // TODO-mrc: filter out initial revision? filter out DISCUSSION revisions
-    const revisions = await fetchRevisionHistory(revisionHistoryRef);
-    for (const revision of revisions) {
-        activity.push({type: "revision", data: revision, date: revision.CreationDate})
-    }
-
-    return orderBy(activity, ['date']);
-
-
-
-
-}

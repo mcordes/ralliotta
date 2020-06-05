@@ -54,8 +54,9 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {ARTIFACT_SEARCH_FIELDS, fetchListOfItems, queryUtils} from "../utils/rally-util";
+    import {fetchListOfItems, queryUtils} from "../utils/rally-util";
     import {showErrorToast} from "../utils/util";
+    import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
 
 
     @Component({

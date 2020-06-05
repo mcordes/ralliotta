@@ -14,8 +14,12 @@
                 <div v-if="activity.type === 'comment'">
                     <Comment v-bind:data="activity.data" v-bind:itemRef="item._ref"/>
                 </div>
-                <div v-else>
+                <div v-if="activity.type === 'revision'">
                     <Revision v-bind:data="activity.data"/>
+                </div>
+                <div v-if="activity.type === 'attachment'">
+
+                    XXXXXXXXXXX ATTACHMENT XXXXXXXX
                 </div>
             </div>
 
@@ -38,16 +42,14 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {
-        ActivityItem,
-        fetchSingleItemByFormattedID3, getActivityForItem
-    } from "../utils/rally-util";
+    import {fetchSingleItemByFormattedID3} from "../utils/rally-util";
     import Comment from "./Comment.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import Revision from "./Revision.vue";
     import AddComment from "./AddComment.vue";
     import {Artifact} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
+    import {ActivityItem, getActivityForItem} from "../utils/activity-util";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -72,10 +74,8 @@
             }
             this.isReady = true;
 
-            this.activityItems = await getActivityForItem(this.item._ref, this.item.RevisionHistory);
+            this.activityItems = await getActivityForItem(this.item);
 
-            // TODO-mrc: fix me
-            // this.itemFields = filterOutFieldsExcludedFromDisplay(Object.keys(this.item));
             this.itemFields = Object.keys(this.item);
 
         }
