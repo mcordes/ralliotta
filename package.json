@@ -6,6 +6,7 @@
     "@types/luxon": "^1.24.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "javascript-time-ago": "^2.0.7",
     "lodash": "^4.17.15",
     "luxon": "^1.24.1",
     "modernizr": "3.11.2",

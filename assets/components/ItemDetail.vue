@@ -8,13 +8,56 @@
             <div class="item-summary">
                 <div class="item-fields">
                     <div>
+
+                        <!-- Make this editable
+                            try to cache users or just do a real time search?
+                        -->
+                        Assignee: {{ item.Owner._refObjectName }}<br>
+
+                        <div>
+                            Created: <TimeSinceDate v-bind:date="item.CreationDate"/>
+                        </div>
+                        <div>
+                            Last Updated: <TimeSinceDate v-bind:date="item.LastUpdateDate"/>
+                        </div>
+
+                        <!-- TODO-mrc: link to search page with this project selected -->
+                        Project: {{ item.Project._refObjectName }}<br>
+
+                        <!-- TODO-mrc: editable -->
+                        <!-- TODO-mrc: link to search page with this project selected -->
+                        Iteration: {{ item.Iteration._refObjectName }}<br>
+
+                        <!-- TODO-mrc: editable -->
+                        <!-- TODO-mrc: link to search page with this project selected -->
+                        Release: {{ item.Iteration._refObjectName }}<br>
+
+                        AcceptedDate: {{ item.AcceptedDate | timeSince }}<br>
+                        BlockedReason: {{ item.BlockedReason }}<br>
+
+                        Tasks: {{ item.Tasks.Count }} <br>
+                        <!-- TODO-mrc need to do something with tasks on this page too
+                        Tasks - Count attrib looks good
+                        -->
+
+                        <!--
+                        // TODO-mrc: are either of these two interesting?
+                        c_DeploymentStatus
+                        EPIC
+                        -->
+
+                    </div>
+                    <div>
                         <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
                                         v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
                     </div>
+
+                    <!--
                     <div>
                         <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
                                         v-bind:itemRef="item._ref" v-bind:options="flowStateOptions"/>
                     </div>
+                    -->
 
                 </div>
 
@@ -24,7 +67,11 @@
             <hr style="margin: 50px 0;">
 
             <div v-for="activity in activityItems">
-                <img :src="activity.userAvatarURL">
+
+                <!-- TODO-mrc: I'm no sure if we can support this. It's not exposed on other people's User object. I wonder why.
+                    It is acessible here,
+                    <img :src="activity.userAvatarURL">
+                -->
 
                 <div v-if="activity.type === 'comment'">
                     <Comment v-bind:activity="activity" v-bind:itemRef="item._ref"/>
@@ -73,13 +120,16 @@
     import EditableText from "./EditableText.vue";
     import EditableSelect from "./EditableSelect.vue";
     import {SelectOption} from "../types/SelectOption";
+    import TimeSinceDate from "./TimeSinceDate.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
     }
 
     @Component({
-        components: {EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment, ExpandableSection,
+        components: {
+            TimeSinceDate,
+            EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment, ExpandableSection,
             AttachmentSummary, EditableSelect},
     })
     export default class ItemDetail extends Vue {

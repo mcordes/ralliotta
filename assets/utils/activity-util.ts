@@ -103,8 +103,10 @@ export function getUserAvatarURL(userRef: Ref) {
     /*
     const objectId = refUtils.getId(userRef._ref);
 
-    // The size seems to pretty adjustable here. Just change the # at the end
+    // The size seems to be pretty adjustable here. Just change the # at the end
     const imageSize = 50;
+
+    // TODO-mrc: can I pass my session id as header or cookie or something?
     return `https://rally1.rallydev.com/slm/profile/image/${objectId}/${imageSize}.sp`;
      */
 }

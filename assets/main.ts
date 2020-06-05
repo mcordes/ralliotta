@@ -27,6 +27,13 @@ import "vue-toast-notification/dist/theme-default.css";
 import './app.css';
 import {DateTime} from "luxon";
 
+// @ts-ignore
+import TimeAgo from 'javascript-time-ago';
+// @ts-ignore
+import en from 'javascript-time-ago/locale/en';
+
+
+
 const routes = [
     { path: '/', component: Home },
     { path: '/list', component: ItemList },
@@ -63,7 +70,7 @@ new Vue({
 
 // filters
 
-Vue.filter("formatDate", function (value: any) {
+Vue.filter("formatDate", function (value: string) {
     if (!value) {
         return "";
     }
@@ -71,11 +78,23 @@ Vue.filter("formatDate", function (value: any) {
 });
 
 
-Vue.filter("formatDateTime", function (value: any) {
+Vue.filter("formatDateTime", function (value: string) {
     if (!value) {
         return "";
     }
     return DateTime.fromISO(value).toFormat("MM/dd/yyyy HH:mm");
+});
+
+
+Vue.filter("timeSince", function (value: string) {
+    if (!value) {
+        return "";
+    }
+
+    const date = DateTime.fromISO(value).toJSDate();
+    TimeAgo.addLocale(en)
+    const timeAgo = new TimeAgo('en-US')
+    return timeAgo.format(date);
 });
 
 

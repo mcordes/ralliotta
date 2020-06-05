@@ -1,4 +1,5 @@
 import {Ref} from "./Ref";
+import {RefWithCount} from "./RefWithCount";
 
 export interface Artifact extends Ref {
     Name: string;
@@ -6,16 +7,19 @@ export interface Artifact extends Ref {
     FormattedID: string;
     CreationDate: Date;
     LastUpdateDate: Date;
-    Iteration: any;
-    Release: any;
-    Owner: any;
-    CreatedBy: any;
+    Iteration: Ref;
+    Release: Ref;
+    Owner: Ref;
+    CreatedBy: Ref;
     ScheduleState: any;
     FlowState: Ref;
     Attachments: Ref;
     Project: Ref;
     RevisionHistory: Ref;
     Parent: Ref;
+    AcceptedDate: Date;
+    BlockedReason: any;
+    Tasks: RefWithCount;
 
 
     /*

@@ -3,7 +3,7 @@
         <template v-slot:header>
             <div class="revision-header">
                 <div class="revision-date">
-                    {{ revision.CreationDate | formatDateTime }}
+                    <TimeSinceDate v-bind:date="revision.CreationDate"/>
                 </div>
                 <div class="revision-author">
                     {{ label }}
@@ -27,8 +27,9 @@
     import ExpandableSection from "./ExpandableSection.vue";
     import {ActivityItem} from "../utils/activity-util";
     import {Revision} from "../types/Revision";
+    import TimeSinceDate from "./TimeSinceDate.vue";
     @Component({
-        components: {ExpandableSection}
+        components: {ExpandableSection, TimeSinceDate}
     })
     export default class RevisionInfo extends Vue {
         @Prop()

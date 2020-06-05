@@ -14,7 +14,7 @@
         <div v-else>
             <div class="comment-header">
                 <div class="comment-date">
-                    {{ comment.CreationDate | formatDateTime }}
+                    <TimeSinceDate v-bind:date="comment.CreationDate"/>
                 </div>
                 <div class="comment-author">
                     {{ activity.userName }} said:
@@ -42,8 +42,11 @@
     // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
     import {ActivityItem} from "../utils/activity-util";
+    import TimeSinceDate from "./TimeSinceDate.vue";
 
-    @Component
+    @Component({
+        components: {TimeSinceDate},
+    })
     export default class CommentInfo extends Vue {
         // Reference to the item we'll attach the comment to
         @Prop()
