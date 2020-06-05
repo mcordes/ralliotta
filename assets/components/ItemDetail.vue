@@ -8,7 +8,11 @@
             <div class="item-summary">
                 <div class="item-fields">
                     <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                    v-bind:itemref="item._ref" v-bind:options="scheduleStateOptions"/>
+                                    v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
+
+                    <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState"
+                                    v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
+
                 </div>
 
                 <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>

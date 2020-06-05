@@ -15,8 +15,10 @@
             <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </span>
         <span v-else>
-            <md-label>{{ fieldName }}</md-label>
-            <span v-html="value"></span>
+            <md-field>
+                <md-label>{{ fieldName }}</md-label>
+                <span v-html="value"></span>
+            </md-field>
             <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
         </span>
     </span>

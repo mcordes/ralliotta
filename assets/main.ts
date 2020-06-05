@@ -3,7 +3,7 @@ import App from './components/App.vue';
 
 // TODO-mrc: find definition files
 // @ts-ignore
-import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox} from 'vue-material/dist/components';
+import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
 
@@ -51,6 +51,8 @@ Vue.use(MdTabs)
 Vue.use(MdDialog);
 Vue.use(MdCheckbox);
 Vue.use(MdIcon);
+Vue.use(MdMenu);
+Vue.use(MdList);
 Vue.use(VueRouter);
 Vue.use(VueToast);
 Vue.use(VueFroala);
