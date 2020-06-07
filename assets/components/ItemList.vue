@@ -1,27 +1,35 @@
 <template>
     <div>
         <div class="item-list">
-
             <h2>
                 <span v-if="showMyItemsOnly">My items</span>
                 <span v-else>List page</span>
             </h2>
 
             <h3>Search filters</h3>
-            <ul>
-                <li>
+
+            <div class="search-filters">
+                <div class="filter-item">
                     <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
-                </li>
-                <li>TODO: filter by schedule state / flow state?</li>
-                <li>TODO: assigned to me / user</li>
-                <li>TODO: search title / body? for some text</li>
-                <li>TODO: Caleb, let's try to make this as simple as possible. Maybe something like github does?</li>
-                <li>
+                </div>
+
+                <div class="filter-item">
                     <md-field>
                         <label>Search by ID:</label>
                         <md-input v-model="searchFormattedId"/>
                     </md-field>
-                </li>
+                </div>
+
+                <div class="filter-item">
+                    TODO: More fields
+                </div>
+            </div>
+
+            <ul>
+                <li>TODO: filter by schedule state / flow state?</li>
+                <li>TODO: assigned to me / user</li>
+                <li>TODO: search title / body? for some text</li>
+                <li>TODO-Caleb: Make this as simple as possible (for now it's just more visually appealing)</li>
                 <li>TODO: project (defaulted to default project)</li>
                 <li>TODO: iteration / release</li>
                 <li>TODO: sort by last updated - descending / ascending </li>

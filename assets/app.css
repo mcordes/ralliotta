@@ -66,6 +66,43 @@ a:hover { border-color: #222; }
 }
 
 
+/* Search filters */
+.search-filters {
+    align-items: center;
+    background: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    display: flex;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.search-filters .filter-item {
+    align-items: center;
+    border-left: 1px solid #CCC;
+    display: flex;
+    float: left;
+    height: 90px;
+    overflow: scroll;
+    padding: 10px 15px;
+}
+
+.search-filters .filter-item .md-checkbox-label { white-space: nowrap; }
+
+.search-filters .filter-item:first-child { border-left: none; }
+
+.search-filters .md-field {
+    margin: 0;
+    max-width: 200px;
+    /* min-height: 20px; */
+    /* padding: 0; */
+}
+.md-field .md-input,
+.md-field .md-textarea {
+    /* height: 32px; */
+}
+/* End search filters */
+
+
 /* Content wrapper */
 .content-wrapper {
     padding: 10px 25px 50px;
