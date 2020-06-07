@@ -24,8 +24,8 @@
                 {{ comment.Text }}
             </div>
             <div class="comment-actions">
-                <md-button class="md-icon-button md-mini" @click="edit">
-                    <md-icon>&#9998;</md-icon>
+                <md-button class="md-icon-button md-mini md-raised icon-btn-small" title="Edit" @click="edit">
+                    <span>&#9998;</span>
                 </md-button>
             </div>
         </div>
@@ -101,52 +101,10 @@
 
 
 <style lang="css" scoped>
-    .comment {
-        background: #FFF;
-        border-radius: 6px;
-        border: 1px solid #CCC;
-        margin-bottom: 10px;
-        max-width: 1000px;
-        padding: 6px 8px;
-        position: relative;
-    }
-
-    .comment:after {
-        background: #CCC;
-        bottom: -11px;
-        content: '';
-        height: 10px;
-        left: 10px;
-        position: absolute;
-        width: 2px;
-    }
-
-    .comment-header {
-        background: #EAEAEA;
-        border-bottom: 1px solid #CCC;
-        border-radius: 5px 5px 0 0;
-        margin: -6px -8px 5px;
-        padding: 2px 8px;
-    }
-
-    .comment-date {
-        border-right: 1px solid #CCC;
-        display: inline-block;
-        font-weight: 600;
-        padding-right: 12px;
-    }
-
-    .comment-author {
-        display: inline-block;
-        padding-left: 10px;
-    }
-
-    .comment-details {}
-
     .comment-actions {
         display: inline-block;
         width: 100%;
     }
 
-    .comment-actions .md-button { float: right; }
+    .comment-actions .icon-btn-small { float: right; }
 </style>

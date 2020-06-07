@@ -1,5 +1,5 @@
 <template>
-    <div class="item-description-wrapper">
+    <div>
         <div v-if="isEdit">
             <md-field>
                 <!-- <md-textarea v-model="value" required/> -->
@@ -13,7 +13,7 @@
             <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </div>
         <div v-else>
-            <div class="item-description-read" v-html="value"></div>
+            <div class="text-read-value" v-html="value"></div>
             <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
         </div>
     </div>
@@ -62,12 +62,4 @@
 
 
 <style lang="css">
-    .item-description-wrapper { width: calc(80% - 20px); }
-    .item-description-read {
-        background: #FFF;
-        border: 1px solid #e4e4e4;
-        border-radius: 6px;
-        padding: 10px 20px;
-    }
-    .fr-box #logo { display: none; }
 </style>

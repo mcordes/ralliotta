@@ -1,19 +1,26 @@
 <template>
     <span>
         <span v-if="isEdit">
-            <md-field>
+            <md-field class="edit-field no-label">
                 <md-input type="text" v-model="value"/>
             </md-field>
 
             <span v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </span>
-            <md-button class="md-primary md-raised" @click="submit">Submit</md-button>
-            <md-button class="md-raised" @click="cancel">Cancel</md-button>
+
+            <md-button style="margin-top: -3px;" class="md-icon-button icon-btn-small md-primary md-raised md-mini" title="Submit" @click="submit">
+                <span>&#10004;</span>
+            </md-button>
+            <md-button style="margin-top: -3px;" class="md-icon-button icon-btn-small md-raised md-mini" title="Cancel" @click="cancel">
+                <span>&#10008;</span>
+            </md-button>
         </span>
         <span v-else>
             <span v-html="value"></span>
-            <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
+            <md-button style="margin-top: -3px;" class="md-icon-button md-mini icon-btn-small" title="Edit" @click="edit">
+                <span>&#9998;</span>
+            </md-button>
         </span>
     </span>
 </template>
@@ -58,4 +65,16 @@
 
 
 <style lang="css">
+    .edit-field.no-label {
+        float: left;
+        margin: 0;
+        max-width: 500px;
+        min-height: auto;
+        padding: 0 0 3px;
+    }
+
+    .edit-field .md-input {
+        height: 22px;
+        margin: 0 10px;
+    }
 </style>

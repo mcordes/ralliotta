@@ -1,7 +1,7 @@
 <template>
     <div>
-        <span v-if="isEdit">
-            <md-field>
+        <span class="item-field-content-wrapper" v-if="isEdit">
+            <md-field class="edit-field md-has-value">
                 <label>{{ fieldName }}</label>
                 <md-select v-model="value" name="movie" id="movie">
                     <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
@@ -11,15 +11,22 @@
             <span v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </span>
-            <md-button class="md-primary md-raised" @click="submit">Submit</md-button>
-            <md-button class="md-raised" @click="cancel">Cancel</md-button>
+
+            <md-button class="md-icon-button icon-btn-small md-primary md-raised md-mini" title="Submit" @click="submit">
+                <span>&#10004;</span>
+            </md-button>
+            <md-button class="md-icon-button icon-btn-small md-raised md-mini" title="Cancel" @click="cancel">
+                <span>&#10008;</span>
+            </md-button>
         </span>
-        <span v-else>
-            <md-field>
+        <span class="item-field-content-wrapper" v-else>
+            <md-field class="md-has-value">
                 <label>{{ fieldName }}</label>
                 <span>{{ label }}</span>
             </md-field>
-            <md-button class="md-primary md-raised" @click="edit">Edit</md-button>
+            <md-button class="md-icon-button md-mini md-raised icon-btn-small" title="Edit" @click="edit">
+                <span>&#9998;</span>
+            </md-button>
         </span>
     </div>
 </template>

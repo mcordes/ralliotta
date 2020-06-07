@@ -87,5 +87,8 @@
 
     .add-comment .md-field { padding-top: 0; }
 
-    .comment-textarea { background: #FFF; }
+    .comment-textarea {
+        background: #FFF;
+        padding: 10px 16px !important;
+    }
 </style>

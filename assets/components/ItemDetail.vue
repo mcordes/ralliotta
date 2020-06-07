@@ -1,42 +1,62 @@
 <template>
     <div class="item-detail">
         <div v-if="isReady">
-            <h2>{{ item.FormattedID }} -
+            <h2>
+                <span class="item-id-header">{{ item.FormattedID }} -</span>
                 <EditableText fieldName="Name" v-bind:value="item.Name" v-bind:itemRef="item._ref"/>
             </h2>
 
-            <div class="item-summary">
+            <div class="item-summary-wrapper">
+                <div class="item-description">
+                    <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>
+                </div>
+
                 <div class="item-fields">
                     <div>
-
                         <!-- Make this editable
                             try to cache users or just do a real time search?
                         -->
-                        Assignee: {{ item.Owner ? item.Owner._refObjectName : '' }}<br>
+                        <div class="item-field">
+                            Assignee: {{ item.Owner ? item.Owner._refObjectName : '' }}
+                        </div>
 
-                        <div>
+                        <div class="item-field">
                             Created: <TimeSinceDate v-bind:date="item.CreationDate"/>
                         </div>
-                        <div>
+                        <div class="item-field">
                             Last Updated: <TimeSinceDate v-bind:date="item.LastUpdateDate"/>
                         </div>
 
                         <!-- TODO-mrc: link to search page with this project selected -->
-                        Project: {{ item.Project._refObjectName }}<br>
+                        <div class="item-field">
+                            Project: {{ item.Project._refObjectName }}
+                        </div>
 
                         <!-- TODO-mrc: editable -->
                         <!-- TODO-mrc: link to search page with this project selected -->
-                        Iteration: {{ item.Iteration._refObjectName }}<br>
+                        <div class="item-field">
+                            Iteration: {{ item.Iteration._refObjectName }}
+                        </div>
 
                         <!-- TODO-mrc: editable -->
                         <!-- TODO-mrc: link to search page with this project selected -->
-                        Release: {{ item.Iteration._refObjectName }}<br>
+                        <div class="item-field">
+                            Release: {{ item.Iteration._refObjectName }}
+                        </div>
 
-                        AcceptedDate: {{ item.AcceptedDate | timeSince }}<br>
-                        BlockedReason: {{ item.BlockedReason }}<br>
-                        PlanEstimate: {{ item.PlanEstimate }}<br>
+                        <div class="item-field">
+                            AcceptedDate: {{ item.AcceptedDate | timeSince }}
+                        </div>
+                        <div class="item-field">
+                            BlockedReason: {{ item.BlockedReason }}
+                        </div>
+                        <div class="item-field">
+                            PlanEstimate: {{ item.PlanEstimate }}
+                        </div>
 
-                        Tasks: {{ item.Tasks.Count }} <br>
+                        <div class="item-field">
+                            Tasks: {{ item.Tasks.Count }}
+                        </div>
                         <!-- TODO-mrc need to do something with tasks on this page too
                         Tasks - Count attrib looks good
                         -->
@@ -48,7 +68,7 @@
                         -->
 
                     </div>
-                    <div>
+                    <div class="item-field">
                         <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
                                         v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
                     </div>
@@ -61,47 +81,51 @@
                     -->
 
                 </div>
-
-                <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>
             </div>
 
             <hr style="margin: 50px 0;">
 
-            <div v-for="activity in activityItems">
+            <div class="activity-wrapper">
+                <div v-for="activity in activityItems">
 
-                <!-- TODO-mrc: I'm no sure if we can support this. It's not exposed on other people's User object. I wonder why.
-                    It is acessible here,
-                    <img :src="activity.userAvatarURL">
-                -->
+                    <!-- TODO-mrc: I'm no sure if we can support this. It's not exposed on other people's User object. I wonder why.
+                        It is acessible here,
+                        <img :src="activity.userAvatarURL">
+                    -->
 
-                <div v-if="activity.type === 'comment'">
-                    <Comment v-bind:activity="activity" v-bind:itemRef="item._ref"/>
-                </div>
-                <div v-if="activity.type === 'revision'">
-                    <Revision v-bind:activity="activity"/>
-                </div>
-                <div v-if="activity.type === 'attachment'">
-                    <AttachmentSummary v-bind:activity="activity"/>
-                </div>
-            </div>
-
-            <div>
-                <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
-            </div>
-
-            <ExpandableSection title="toggle showing all fields">
-                <template v-slot:header>
-                    <h3>All fields</h3>
-                </template>
-                <template v-slot:main>
-                    <div>
-                        <div v-for="field in itemFields" v-bind:field="field">
-                            <div class="field">{{ field }}</div>
-                            <div class="value">{{ item[field] }}</div>
-                        </div>
+                    <div v-if="activity.type === 'comment'">
+                        <Comment v-bind:activity="activity" v-bind:itemRef="item._ref"/>
                     </div>
-                </template>
-            </ExpandableSection>
+                    <div v-if="activity.type === 'revision'">
+                        <Revision v-bind:activity="activity"/>
+                    </div>
+                    <div v-if="activity.type === 'attachment'">
+                        <AttachmentSummary v-bind:activity="activity"/>
+                    </div>
+                </div>
+
+                <div>
+                    <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
+                </div>
+            </div>
+
+            <hr style="margin: 50px 0;">
+
+            <div class="activity-wrapper">
+                <ExpandableSection title="toggle showing all fields">
+                    <template v-slot:header>
+                        <h3>All fields</h3>
+                    </template>
+                    <template v-slot:main>
+                        <div>
+                            <div v-for="field in itemFields" v-bind:field="field">
+                                <div class="field">{{ field }}</div>
+                                <div class="value">{{ item[field] }}</div>
+                            </div>
+                        </div>
+                    </template>
+                </ExpandableSection>
+            </div>
         </div>
     </div>
 </template>
@@ -167,19 +191,6 @@
 
 </script>
 
-<style scoped>
-    .value, .field {display: inline-block; padding: 10px }
-    .item-summary { width: 100%; }
-    .item-fields {
-        background: #FFF;
-        border-radius: 6px;
-        border: 1px solid #e4e4e4;
-        float: right;
-        min-height: 500px; /* temporary for POC of layout */
-        padding: 10px 20px;
-        width: 20%;
-    }
+<style lang="css" scoped>
+    .value, .field { display: inline-block; padding: 10px; }
 </style>
-
-
-
