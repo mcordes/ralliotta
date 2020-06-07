@@ -1,8 +1,6 @@
 <template>
     <div>
         <div class="expandable-section" v-bind:class="{ 'expanded': isExpanded, 'collapsed': !isExpanded }" @click="toggleExpanded" :title="title">
-            <!-- <span v-if="isExpanded"> - </span> -->
-            <!-- <span v-else> + </span> -->
             <span class="toggle-expansion">
                 <span></span>
                 <span></span>
