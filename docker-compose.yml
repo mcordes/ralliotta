@@ -1,5 +1,7 @@
 version: '3'
 services:
+
+  # TODO-mrc: remove db. We're not using it, right? Remove from everywhere else as well.
   db:
     image: mysql:5.7
     ports:
