@@ -17,7 +17,14 @@
                             try to cache users or just do a real time search?
                         -->
                         <div class="item-field">
-                            Assignee: {{ item.Owner ? item.Owner._refObjectName : '' }}
+                            Assignee:
+                            <div v-if="item.Owner != null">
+                                <div>
+                                    <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
+                                </div>
+                                {{ item.Owner._refObjectName }}
+                            </div>
+
                         </div>
 
                         <div class="item-field">
@@ -146,6 +153,7 @@
     import EditableSelect from "./EditableSelect.vue";
     import {SelectOption} from "../types/SelectOption";
     import TimeSinceDate from "./TimeSinceDate.vue";
+    import Avatar from "./Avatar.vue";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -155,7 +163,7 @@
         components: {
             TimeSinceDate,
             EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment, ExpandableSection,
-            AttachmentSummary, EditableSelect},
+            AttachmentSummary, EditableSelect, Avatar},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
