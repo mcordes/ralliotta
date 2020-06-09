@@ -6,7 +6,7 @@
         <td class="md-table-cell">{{ item.Name }}</td>
         <td class="md-table-cell">
             <div v-if="item.Owner">
-                <Avatar v-bind:user="item.Owner"/>
+                <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
             </div>
             {{ ownerName }}
         </td>

@@ -107,7 +107,5 @@ app.get('/avatar/user/:userObjectId/session/:sessionId', (req, res) => {
 
 });
 
-});
-
 
 app.listen(port, () => console.log(`Proxy listening at http://localhost:${port}`))
