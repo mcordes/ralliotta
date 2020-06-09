@@ -8,8 +8,8 @@ while ! nc -z "$DB_HOST" 3306; do
 done
 
 
-# Start authorization proxy we'll use to lookup the session id
-/app/bin/run_authorizer.sh &
+# Start proxy we'll use to lookup the session id and avatar images
+/app/bin/run_proxy.sh &
 
 
 exec nginx -g 'daemon off;'

@@ -4,4 +4,4 @@
 cwd=$(realpath $(dirname $0))
 
 
-node $cwd/authorizer.js
+node $cwd/proxy.js

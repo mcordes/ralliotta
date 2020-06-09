@@ -42,8 +42,7 @@ app.post('/lookup', (req, res) => {
         //console.log(response);
 
         if (error) {
-           // TODO-mrc: set status code
-           res.send('Request failed: ' + error);
+           res.status(500).send('Request failed: ' + error);
            return;
         }
 
@@ -78,4 +77,37 @@ app.post('/lookup', (req, res) => {
 });
 
 
-app.listen(port, () => console.log(`Authorizer listening at http://localhost:${port}`))
+app.get('/avatar/user/:userObjectId/session/:sessionId', (req, res) => {
+    const imageSize = req.get.size || "43";
+    const userObjectId = req.params.userObjectId;
+    const sessionId = req.params.sessionId;
+
+    const url = `https://rally1.rallydev.com/slm/profile/image/${userObjectId}/${size}.sp`;
+
+    request({
+        url: url,
+        method: "GET",
+        auth: {
+            'bearer': sessionId
+        },
+        encoding: null,
+    }, function (error, response, body){
+        if (error) {
+            res.status(500).send('Request failed: ' + error);
+            return;
+        }
+
+        const contentType = response.headers['content-type'];
+        const cacheControl = response.headers['cache-control'];
+
+        res.set("Content-Type", contentType.split(";")[0]);
+        res.set("Cache-Control", cacheControl);
+        res.send(response.body);
+    });
+
+});
+
+});
+
+
+app.listen(port, () => console.log(`Proxy listening at http://localhost:${port}`))
