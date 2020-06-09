@@ -76,11 +76,11 @@ app.post('/lookup', (req, res) => {
 
 
 app.get('/avatar/user/:userObjectId/session/:sessionId', (req, res) => {
-    const imageSize = req.get.size || "43";
     const userObjectId = req.params.userObjectId;
     const sessionId = req.params.sessionId;
-
-    const url = `https://rally1.rallydev.com/slm/profile/image/${userObjectId}/${size}.sp`;
+    const imageSize = req.get.size || "43";
+    
+    const url = `https://rally1.rallydev.com/slm/profile/image/${userObjectId}/${imageSize}.sp`;
 
     request({
         url: url,
