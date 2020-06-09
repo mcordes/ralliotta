@@ -31,6 +31,7 @@ import {DateTime} from "luxon";
 import TimeAgo from 'javascript-time-ago';
 // @ts-ignore
 import en from 'javascript-time-ago/locale/en';
+import Kanban from "./components/Kanban.vue";
 
 
 
@@ -39,6 +40,7 @@ const routes = [
     { path: '/list', component: ItemList },
     { path: '/list/my', component: ItemList, props: {showMyItemsOnly: true}},
     { path: '/detail/:formattedID', component: ItemDetail },
+    { path: '/kanban', component: Kanban },
     { path: '*', component: InvalidRoute }
 ];
 

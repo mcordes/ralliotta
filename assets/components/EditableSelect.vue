@@ -45,7 +45,7 @@
     export default class EditableSelect extends Vue {
         // Reference to the item this field is part of
         @Prop()
-        itemRef!: string;
+        item!: Ref;
 
         @Prop()
         value!: any;
@@ -68,7 +68,7 @@
 
         async submit() {
             this.errorMessage = '';
-            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.itemRef)
+            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref)
             this.isEdit = false;
         }
 

@@ -32,12 +32,13 @@
     import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
+    import {Ref} from "../types/Ref";
 
     @Component
     export default class EditableText extends Vue {
         // Reference to the item this field is part of
         @Prop()
-        itemRef!: string;
+        item!: Ref;
 
         @Prop()
         value!: any;
@@ -49,7 +50,7 @@
 
         async submit() {
             this.errorMessage = '';
-            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.itemRef)
+            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref)
             this.isEdit = false;
         }
 

@@ -43,6 +43,7 @@
     import VueFroala from 'vue-froala-wysiwyg';
     import {ActivityItem} from "../utils/activity-util";
     import TimeSinceDate from "./TimeSinceDate.vue";
+    import {Ref} from "../types/Ref";
 
     @Component({
         components: {TimeSinceDate},
@@ -50,7 +51,7 @@
     export default class CommentInfo extends Vue {
         // Reference to the item we'll attach the comment to
         @Prop()
-        itemRef!: string;
+        item!: Ref;
 
         // Optional - only set when editing an existing comment
         @Prop()
@@ -70,7 +71,7 @@
 
         async submit() {
             this.errorMessage = '';
-            const data = {'Text': this.text, 'Artifact': this.itemRef};
+            const data = {'Text': this.text, 'Artifact': this.item._ref};
 
             let result;
             try {

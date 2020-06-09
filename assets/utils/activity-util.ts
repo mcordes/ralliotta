@@ -13,7 +13,7 @@ export interface ActivityItem {
     data: any;
     date: Date;
     userName: string;
-    userAvatarURL: string;
+    user: Ref;
 }
 
 export async function getActivityForItem(item: Artifact) {
@@ -48,7 +48,7 @@ export function toActivityItem(thing: any, type: ActivityType) {
         data: thing,
         date: thing.CreationDate,
         userName: thing.User._refObjectName,
-        userAvatarURL: getUserAvatarURL(thing.User)
+        user: thing.User
     };
     return result;
 }
@@ -96,17 +96,3 @@ export async function fetchAttachmentContent(attachment: Attachment) {
     return  prefix + result['Content'];
 }
 
-export function getUserAvatarURL(userRef: Ref) {
-    return '';
-
-    // TODO-mrc: this doesn't work. You need to be logged into rally to hit this endpoint. Try again.
-    /*
-    const objectId = refUtils.getId(userRef._ref);
-
-    // The size seems to be pretty adjustable here. Just change the # at the end
-    const imageSize = 50;
-
-    // TODO-mrc: can I pass my session id as header or cookie or something?
-    return `https://rally1.rallydev.com/slm/profile/image/${objectId}/${imageSize}.sp`;
-     */
-}

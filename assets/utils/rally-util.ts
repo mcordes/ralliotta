@@ -4,6 +4,10 @@ import rally from 'rally';
 import {Artifact} from "../types/Artifact";
 import {SelectOption} from "../types/SelectOption";
 import {FlowState} from "../types/FlowState";
+import {Ref} from "../types/Ref";
+import {Project} from "../types/Project";
+import {Iteration} from "../types/Iteration";
+import {Release} from "../types/Release";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -76,6 +80,7 @@ interface ListOptions {
     query?: string;
     startIndex?: number;
     pageSize?: number;
+    order?: string;
 }
 
 export async function fetchListOfItems(type: string, fields: string[], options: ListOptions) {
@@ -96,6 +101,7 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
             //        up: false //true to include parent project results, false otherwise
             //down: true //true to include child project results, false otherwise
         },
+        order: options.order,
     });
 
     validateRallyResponseOrThrow(resp);
@@ -162,15 +168,55 @@ export async function createItem(type: string, data: AddUpdateFieldData) {
 }
 
 // TODO-mrc: cache me
-export async function getFlowStateList() {
-    const response = await fetchListOfItems('flowstate', ['ScheduleStateMapping', 'Name'],{pageSize: 100});
+export async function getFlowStateList(projectRef: Ref) {
+    const query = queryUtils.where('Project', '=', projectRef);
+
+    const response = await fetchListOfItems('flowstate', ['ScheduleStateMapping', 'Name'],{
+        pageSize: 100,
+        query,
+        order: "OrderIndex"
+    });
     const items: FlowState[] = response.items;
     return items;
 }
 
-export async function getFlowStateOptions() {
-    const items = await getFlowStateList();
-    const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r.Name}; });
+export async function getProjectList() {
+    const response = await fetchListOfItems('project', ['Name', 'Description'], {
+        pageSize: 100,
+        order: "Name"
+    });
+    const items: Project[] = response.items;
+    return items;
+}
+
+// TODO-mrc: maybe filter out all but the previous old iterations?
+export async function getIterationList(projectRef: Ref) {
+    const query = queryUtils.where('Project', '=', projectRef);
+    const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
+        pageSize: 100,
+        query,
+        order: "StartDate"
+    });
+    const items: Iteration[] = response.items;
+    return items;
+}
+
+export async function getReleaseList(projectRef: Ref) {
+    const query = queryUtils.where('Project', '=', projectRef);
+
+    // TODO-mrc: ordering?
+    // TODO-mrc: max size?
+    // TODO-mrc: is there a way to just get 'current' projects?
+    const response = await fetchListOfItems('release', ['Name'], {
+        pageSize: 100,
+        query,
+    });
+    const items: Release[] = response.items;
+    return items;
+}
+
+export async function getSelectOptionsFromRefs(items: Ref[]) {
+    const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r._refObjectName}; });
     return results;
 }
 

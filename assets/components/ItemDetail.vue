@@ -3,12 +3,12 @@
         <div v-if="isReady">
             <h2>
                 <span class="item-id-header">{{ item.FormattedID }} -</span>
-                <EditableText fieldName="Name" v-bind:value="item.Name" v-bind:itemRef="item._ref"/>
+                <EditableText fieldName="Name" v-bind:value="item.Name" v-bind:item="item"/>
             </h2>
 
             <div class="item-summary-wrapper">
                 <div class="item-description">
-                    <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:itemRef="item._ref"/>
+                    <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:item="item"/>
                 </div>
 
                 <div class="item-fields">
@@ -36,23 +36,19 @@
 
                         <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
-                            Project: {{ item.Project._refObjectName }}
+                            <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration._ref"
+                                            v-bind:item="item" v-bind:options="iterationOptions"/>
                         </div>
 
                         <!-- TODO-mrc: editable -->
                         <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
-                            Iteration: {{ item.Iteration._refObjectName }}
-                        </div>
-
-                        <!-- TODO-mrc: editable -->
-                        <!-- TODO-mrc: link to search page with this project selected -->
-                        <div class="item-field">
-                            Release: {{ item.Iteration._refObjectName }}
+                            <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release._ref"
+                                            v-bind:item="item" v-bind:options="releaseOptions"/>
                         </div>
 
                         <div class="item-field">
-                            AcceptedDate: {{ item.AcceptedDate | timeSince }}
+                            AcceptedDate: <TimeSinceDate v-bind:date="item.AcceptedDate"/>
                         </div>
                         <div class="item-field">
                             BlockedReason: {{ item.BlockedReason }}
@@ -64,28 +60,16 @@
                         <div class="item-field">
                             Tasks: {{ item.Tasks.Count }}
                         </div>
-                        <!-- TODO-mrc need to do something with tasks on this page too
-                        Tasks - Count attrib looks good
-                        -->
-
-                        <!--
-                        // TODO-mrc: are either of these two interesting?
-                        c_DeploymentStatus
-                        EPIC
-                        -->
-
                     </div>
                     <div class="item-field">
                         <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                        v-bind:itemRef="item._ref" v-bind:options="scheduleStateOptions"/>
+                                        v-bind:item="item" v-bind:options="scheduleStateOptions"/>
                     </div>
 
-                    <!--
                     <div>
                         <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
-                                        v-bind:itemRef="item._ref" v-bind:options="flowStateOptions"/>
+                                        v-bind:item="item" v-bind:options="flowStateOptions"/>
                     </div>
-                    -->
 
                 </div>
             </div>
@@ -95,13 +79,12 @@
             <div class="activity-wrapper">
                 <div v-for="activity in activityItems">
 
-                    <!-- TODO-mrc: I'm no sure if we can support this. It's not exposed on other people's User object. I wonder why.
-                        It is acessible here,
-                        <img :src="activity.userAvatarURL">
-                    -->
+                    <div v-if="activity.user">
+                        <Avatar v-bind:user="activity.user" v-bind:size="30"/>
+                    </div>
 
                     <div v-if="activity.type === 'comment'">
-                        <Comment v-bind:activity="activity" v-bind:itemRef="item._ref"/>
+                        <Comment v-bind:activity="activity" v-bind:item="item"/>
                     </div>
                     <div v-if="activity.type === 'revision'">
                         <Revision v-bind:activity="activity"/>
@@ -112,7 +95,7 @@
                 </div>
 
                 <div>
-                    <AddComment v-bind:itemRef="item._ref" v-bind:activityItems="activityItems"/>
+                    <AddComment v-bind:item="item" v-bind:activityItems="activityItems"/>
                 </div>
             </div>
 
@@ -140,7 +123,12 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {fetchSingleItemByFormattedID3, getFlowStateOptions} from "../utils/rally-util";
+    import {
+        fetchSingleItemByFormattedID3,
+        getFlowStateList, getIterationList,
+        getProjectList, getReleaseList,
+        getSelectOptionsFromRefs
+    } from "../utils/rally-util";
     import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import RevisionInfo from "./RevisionInfo.vue";
@@ -154,6 +142,7 @@
     import {SelectOption} from "../types/SelectOption";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
+    import store from "../store";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -161,9 +150,8 @@
 
     @Component({
         components: {
-            TimeSinceDate,
-            EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment, ExpandableSection,
-            AttachmentSummary, EditableSelect, Avatar},
+            TimeSinceDate, EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment,
+            ExpandableSection, AttachmentSummary, EditableSelect, Avatar},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
@@ -171,7 +159,9 @@
         activityItems: ActivityItem[] = [];
         isReady = false;
         scheduleStateOptions!: SelectOption[];
-        flowStateOptions!: SelectOption[];
+        flowStateOptions: SelectOption[] = [];
+        iterationOptions: SelectOption[] = [];
+        releaseOptions: SelectOption[] = [];
 
 
         async created() {
@@ -182,13 +172,18 @@
                 // TODO-mrc: show 404 page? We didn't find it
                 throw new Error("implement me");
             }
+            this.isReady = true;
 
             this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
 
-            // TODO-mrc: probably just cache these
-            this.flowStateOptions = await getFlowStateOptions();
+            // TODO-mrc: I'm a little worried that changing projects is also going to change the formattedid. Will it?
+            // TODO-mrc: provide a way to change projects
+            const user = store.getUser();
+            const projectRef = user.DefaultProject;
 
-            this.isReady = true;
+            this.flowStateOptions = await getSelectOptionsFromRefs(await getFlowStateList(projectRef));
+            this.iterationOptions = await getSelectOptionsFromRefs(await getIterationList(projectRef));
+            this.releaseOptions = await getSelectOptionsFromRefs(await getReleaseList(projectRef));
 
             this.activityItems = await getActivityForItem(this.item);
 

@@ -25,12 +25,13 @@
     import {createItem, fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {ActivityItem, toActivityItem} from "../utils/activity-util";
+    import {Ref} from "../types/Ref";
 
     @Component
     export default class AddComment extends Vue {
         // Reference to the item we'll attach the comment to
         @Prop()
-        itemRef!: string;
+        item!: Ref;
 
         @Prop()
         activityItems!: ActivityItem[];
@@ -47,7 +48,7 @@
 
         async submit() {
             this.errorMessage = '';
-            const data = {'Text': this.text, 'Artifact': this.itemRef};
+            const data = {'Text': this.text, 'Artifact': this.item._ref};
 
             let result;
             try {
