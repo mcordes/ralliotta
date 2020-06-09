@@ -1,17 +1,5 @@
 version: '3'
 services:
-
-  # TODO-mrc: remove db. We're not using it, right? Remove from everywhere else as well.
-  db:
-    image: mysql:5.7
-    ports:
-      - "33306:3306"
-    volumes:
-      - ./test-sql:/docker-entrypoint-initdb.d
-    environment:
-      - MYSQL_DATABASE=rally2
-      - MYSQL_ROOT_PASSWORD=root
-
   server:
     build:
       context: .
@@ -22,11 +10,6 @@ services:
     volumes:
       - ./assets:/app/assets
       - ./templates:/app/templates
-    links:
-      - db
     environment:  
-      - DB_HOST=db
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
       - LOCAL=1
 

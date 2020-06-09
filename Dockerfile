@@ -2,7 +2,7 @@ FROM alpine:3.9 as bootstrapper
 
 
 RUN apk add --no-cache nodejs npm musl-dev gcc build-base && \
-    apk add --no-cache mariadb-dev util-linux libffi-dev
+    apk add --no-cache util-linux libffi-dev
 
 # just copy enough so we can bootstrap
 COPY package.json /app/
@@ -30,7 +30,7 @@ COPY . /app
 
 # Now start all over again with a fresh image and copy from bootstrapper
 FROM alpine:3.9
-RUN apk add --no-cache nginx nodejs npm mariadb-dev 
+RUN apk add --no-cache nginx nodejs npm
 
 
 COPY --from=bootstrapper --chown=nginx:nginx /app /app
