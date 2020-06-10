@@ -99,7 +99,11 @@
             <div class="activity-wrapper">
                 <ExpandableSection title="toggle showing all fields">
                     <template v-slot:header>
-                        <h3>All fields</h3>
+                        <div class="revision-header">
+                            <div class="revision-date">
+                                <h3>All fields</h3>
+                            </div>
+                        </div>
                     </template>
                     <template v-slot:main>
                         <div>

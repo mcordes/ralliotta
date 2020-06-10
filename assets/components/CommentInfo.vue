@@ -17,8 +17,8 @@
                     <TimeSinceDate v-bind:date="comment.CreationDate"/>
                 </div>
                 <div class="comment-author">
-                    <div class="avatar-wrapper" v-if="comment.user">
-                        <Avatar v-bind:user="comment.User" v-bind:size="30"/>
+                    <div class="avatar-wrapper" v-if="activity.user">
+                        <Avatar v-bind:user="activity.user" v-bind:size="30"/>
                     </div>
                     {{ activity.userName }} said:
                 </div>

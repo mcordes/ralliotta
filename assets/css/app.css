@@ -1,0 +1,195 @@
+/*
+    General application styles go here,
+    for those that shouldn't be scoped
+*/
+
+@import url('./search-filters.css');
+@import url('./item-detail-history.css');
+@import url('./expandable-section.css');
+
+button.md-focused {
+    -webkit-box-shadow: inset 0 0 0 1px rgba(45, 125, 189, 0.9) !important;
+    -moz-box-shadow: inset 0 0 0 1px rgba(45, 125, 189, 0.9) !important;
+    box-shadow: inset 0 0 0 1px rgba(45, 125, 189, 0.9) !important;
+    outline: none;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+}
+
+a,
+a:hover {
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+}
+
+a { border-bottom: 1px solid #CCC; }
+a:hover { border-color: #222; }
+
+
+/* Toolbar / nav items */
+.md-toolbar {
+    background-color: #FFF;;
+    border-bottom: 1px solid #EEE;
+}
+
+.md-toolbar-row { position: relative; }
+.md-toolbar-row .md-toolbar-section-start {
+    display: flex;
+    height: 100%;
+    position: absolute;
+}
+
+.md-toolbar-section-start nav {
+    display: flex;
+    height: 100%;
+}
+
+.md-toolbar-section-start nav a {
+    border: none;
+    display: flex;
+    margin: 0;
+    padding: 0 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.md-toolbar-section-start nav a:hover { background-color: #EEE; }
+
+.user-img {
+    margin: 0 10px;
+    max-width: 30px;
+}
+
+
+/* Content wrapper */
+.content-wrapper {
+    padding: 10px 25px 50px;
+}
+
+
+.avatar-wrapper {
+    border-radius: 50%;
+    float: left;
+    height: 20px;
+    line-height: 0;
+    margin-right: 5px;
+    overflow: hidden;
+    width: 20px;
+}
+
+
+/* table styles */
+.items-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.md-table-row td { transition: all 0.1s ease; }
+.md-table-row:hover td {
+    background-color: #F3F3F3;
+}
+
+.md-table-row th {
+    border-bottom: 1px solid #b1b1b1;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.md-table-row td { border-bottom: 1px solid #ECECEC; }
+
+.md-table-head,
+.md-table-cell { padding-left: 5px; }
+
+.md-table-head:last-child,
+.md-table-cell:last-child { padding-right: 5px; }
+
+
+.icon-btn-small {
+    height: 25px;
+    margin: 0 6px;
+    min-width: 25px;
+    width: 25px;
+}
+
+.icon-btn {
+    height: 35px;
+    margin: 0 6px;
+    min-width: 35px;
+    width: 35px;
+}
+
+.icon-btn span { font-size: 1.1rem; }
+
+.item-summary-wrapper {
+    display: inline-block;
+    width: 100%;
+}
+
+.item-description {
+    float: left;
+    width: calc(100% - 320px);
+}
+
+.item-id-header {
+    float: left;
+    margin-right: 8px;
+}
+
+.text-read-value {
+    background: #FFF;
+    border: 1px solid #e4e4e4;
+    border-radius: 6px;
+    padding: 10px 20px;
+    word-break: break-word;
+}
+
+.fr-box #logo { display: none; }
+
+.item-fields {
+    background: #FFF;
+    border-radius: 6px;
+    border: 1px solid #e4e4e4;
+    float: right;
+    padding: 10px 20px;
+    width: 300px;
+}
+
+.item-fields .item-field {
+    width: 100%;
+}
+
+.item-fields .item-field .md-field {
+    float: left;
+    margin-bottom: 10px;
+    width: calc(100% - 50px);
+}
+
+.item-field-content-wrapper {
+    align-items: center;
+    display: flex;
+}
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+    .item-description { width: calc(100% - 220px); }
+
+    .item-fields { width: 200px; }
+}
+
+@media screen and (max-width: 500px) {
+    .item-description { width: 100%; }
+
+    .item-fields {
+        margin-top: 50px;
+        width: 100%;
+    }
+}
