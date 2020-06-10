@@ -7,8 +7,7 @@ const app = express();
 const port = 8088;
 const rallyURL = "https://rally1.rallydev.com/slm/webservice/v2.0/security/authorize";
 
-// TODO-mrc: needed?
-//app.use(express.json());
+app.use(express.json());
 //app.use(express.urlencoded());
 app.use(cors())
 
