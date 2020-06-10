@@ -12,13 +12,7 @@ V0:
   * Iteration
   * Milestone?
   * ScheduleState / FlowState? 
-* Add relevant fields to detail page (description, title, project, iteration, story points, flow state / status)
-* Add attachments to detail page
-* login by api key rather than username / password?
-
-
-
-
+* login by api key in addition to username / password?
 
 
 
