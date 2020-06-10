@@ -65,7 +65,7 @@
   "scripts": {
     "postinstall": "npx modernizr -c ./conf/modernizr-conf.json -d ./node_modules/modernizr",
     "watch": "npx parcel watch templates/index_template.html --public-url / --out-file index.html --cache-dir /tmp/rally2-cache",
-    "build": "npx parcel build templates/index_template.html --public-url / --out-file index.html --no-cache",
+    "build": "npx parcel build templates/index_template.html --public-url / --out-file index.html --no-cache --no-source-maps",
     "test": "npx tsc --noEmit",
     "lint": "eslint 'assets/**/*.ts'",
     "clean": "rm -rf ./dist"
