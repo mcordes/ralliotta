@@ -12,7 +12,7 @@
         </td>
         <td class="md-table-cell">
             <div v-if="item.CreatedBy">
-                <Avatar v-bind:user="item.CreatedBy"/>
+                <Avatar v-bind:user="item.CreatedBy" v-bind:size="30"/>
             </div>
             {{ reporterName }}
         </td>
