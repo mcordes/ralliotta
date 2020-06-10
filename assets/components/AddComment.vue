@@ -82,8 +82,9 @@
 
 <style lang="css" scoped>
     .add-comment {
-        margin-bottom: 10px;
+        margin: 40px 0 10px 0;
         max-width: 1000px;
+        position: relative;
     }
 
     .add-comment .md-field { padding-top: 0; }

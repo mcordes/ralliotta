@@ -126,6 +126,7 @@ a:hover { border-color: #222; }
     border-radius: 50%;
     float: left;
     height: 20px;
+    line-height: 0;
     margin-right: 5px;
     overflow: hidden;
     width: 20px;
@@ -177,31 +178,32 @@ a:hover { border-color: #222; }
     border-radius: 6px;
     border: 1px solid #CCC;
     color: #222;
-    margin: 30px 0;
+    margin: 40px 0;
     max-width: 1000px;
-    padding: 6px 8px;
     position: relative;
     transition: all 0.1s ease;
 }
 
 .attachment:before,
 .comment:before,
+.add-comment:before,
 .attachment:after,
 .comment:after,
 .expandable-section + div:after {
     background: #CCC;
-    bottom: -31px;
+    bottom: -41px;
     content: '';
-    height: 30px;
+    height: 40px;
     left: 20px;
     position: absolute;
     width: 2px;
 }
 
 .attachment:before,
+.add-comment:before,
 .comment:before {
     bottom: 0;
-    top: -31px;
+    top: -41px;
 }
 
 .attachment:hover .attachment-header {
@@ -212,12 +214,8 @@ a:hover { border-color: #222; }
 .attachment-header,
 .comment-header {
     border-radius: 5px 5px 0 0;
-    margin: -6px -8px;
-    padding: 2px 0;
     transition: all 0.1s ease;
 }
-
-.revision-header { padding: 0; }
 
 .attachment-header,
 .comment-header {
@@ -231,14 +229,14 @@ a:hover { border-color: #222; }
     border-right: 1px solid #CCC;
     display: inline-block;
     font-weight: 600;
-    padding: 0 12px 0 8px;
+    padding: 6px 12px 6px 8px;
     width: 120px;
 }
 
 .revision-date {
     background-color: #F1F1F1;
     border-right-color: #D0D0D0;
-    padding: 2px 12px 2px 8px;
+    padding: 4px 12px 4px 8px;
 }
 
 .revision-author,
@@ -247,13 +245,13 @@ a:hover { border-color: #222; }
     display: inline-block;
     float: right;
     overflow: hidden;
-    padding: 0 8px 0 0;
+    padding: 6px 8px 6px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: calc(100% - 130px);
 }
 
-.revision-author { padding: 2px 8px 2px 0; }
+.revision-author { padding: 4px 8px 4px 0; }
 
 .attachment-details,
 .comment-details {
@@ -272,7 +270,6 @@ a:hover { border-color: #222; }
     color: #555;
     margin-top: -1px;
     max-width: 1000px;
-    padding: 6px 8px;
     position: relative;
 }
 

@@ -78,7 +78,7 @@
 <style lang="css">
     .login-modal-wrapper .md-dialog-container {
         border-radius: 20px;
-        overflow: scroll;
+        overflow: auto;
         padding: 15px;
     }
 

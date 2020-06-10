@@ -17,6 +17,9 @@
                     <TimeSinceDate v-bind:date="comment.CreationDate"/>
                 </div>
                 <div class="comment-author">
+                    <div class="avatar-wrapper" v-if="comment.user">
+                        <Avatar v-bind:user="comment.User" v-bind:size="30"/>
+                    </div>
                     {{ activity.userName }} said:
                 </div>
             </div>
@@ -44,9 +47,10 @@
     import {ActivityItem} from "../utils/activity-util";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import {Ref} from "../types/Ref";
+    import Avatar from "./Avatar.vue";
 
     @Component({
-        components: {TimeSinceDate},
+        components: {TimeSinceDate, Avatar},
     })
     export default class CommentInfo extends Vue {
         // Reference to the item we'll attach the comment to

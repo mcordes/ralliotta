@@ -78,11 +78,6 @@
 
             <div class="activity-wrapper">
                 <div v-for="activity in activityItems">
-
-                    <div class="avatar-wrapper" v-if="activity.user">
-                        <Avatar v-bind:user="activity.user" v-bind:size="30"/>
-                    </div>
-
                     <div v-if="activity.type === 'comment'">
                         <Comment v-bind:activity="activity" v-bind:item="item"/>
                     </div>
