@@ -3,7 +3,7 @@
         <span class="item-field-content-wrapper" v-if="isEdit">
             <md-field class="edit-field md-has-value">
                 <label>{{ fieldName }}</label>
-                <md-select v-model="value" name="movie" id="movie">
+                <md-select v-model="value">
                     <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
                 </md-select>
             </md-field>
