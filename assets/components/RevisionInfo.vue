@@ -6,6 +6,7 @@
                     <TimeSinceDate v-bind:date="revision.CreationDate"/>
                 </div>
                 <div class="revision-author">
+                    <!-- avatar here? -->
                     {{ label }}
                 </div>
             </div>

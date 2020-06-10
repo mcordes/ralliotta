@@ -5,13 +5,13 @@
         </td>
         <td class="md-table-cell">{{ item.Name }}</td>
         <td class="md-table-cell">
-            <div v-if="item.Owner">
+            <div class="avatar-wrapper" v-if="item.Owner">
                 <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
             </div>
             {{ ownerName }}
         </td>
         <td class="md-table-cell">
-            <div v-if="item.CreatedBy">
+            <div class="avatar-wrapper" v-if="item.CreatedBy">
                 <Avatar v-bind:user="item.CreatedBy" v-bind:size="30"/>
             </div>
             {{ reporterName }}

@@ -74,6 +74,7 @@ a:hover { border-color: #222; }
     border-radius: 10px;
     display: flex;
     margin-bottom: 20px;
+    overflow: auto;
     width: 100%;
 }
 .search-filters .filter-item {
@@ -81,24 +82,36 @@ a:hover { border-color: #222; }
     border-left: 1px solid #CCC;
     display: flex;
     float: left;
-    height: 90px;
-    overflow: scroll;
-    padding: 10px 15px;
+    height: 65px;
+    padding: 5px 15px;
 }
 
 .search-filters .filter-item .md-checkbox-label { white-space: nowrap; }
 
 .search-filters .filter-item:first-child { border-left: none; }
 
+.search-filters .md-checkbox {
+    margin: 6px 6px 6px 0;
+}
+
 .search-filters .md-field {
     margin: 0;
     max-width: 200px;
-    /* min-height: 20px; */
-    /* padding: 0; */
 }
-.md-field .md-input,
-.md-field .md-textarea {
-    /* height: 32px; */
+.search-filters .md-field .md-input,
+.search-filters .md-field .md-textarea {
+    margin: 4px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+/* CAUTION! This is a direct override of the default label styles */
+.search-filters .md-field label {
+    pointer-events: auto;
+    top: 0;
+    opacity: 1;
+    font-size: 12px;
 }
 /* End search filters */
 
@@ -106,6 +119,16 @@ a:hover { border-color: #222; }
 /* Content wrapper */
 .content-wrapper {
     padding: 10px 25px 50px;
+}
+
+
+.avatar-wrapper {
+    border-radius: 50%;
+    float: left;
+    height: 20px;
+    margin-right: 5px;
+    overflow: hidden;
+    width: 20px;
 }
 
 

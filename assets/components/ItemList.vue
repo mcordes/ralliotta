@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <ul>
+            <ul style="display:none;">
                 <li>TODO: filter by schedule state / flow state?</li>
                 <li>TODO: assigned to me / user</li>
                 <li>TODO: search title / body? for some text</li>

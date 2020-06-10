@@ -19,7 +19,7 @@
                         <div class="item-field">
                             Assignee:
                             <div v-if="item.Owner != null">
-                                <div>
+                                <div class="avatar-wrapper">
                                     <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
                                 </div>
                                 {{ item.Owner._refObjectName }}
@@ -60,17 +60,17 @@
                         <div class="item-field">
                             Tasks: {{ item.Tasks.Count }}
                         </div>
-                    </div>
-                    <div class="item-field">
-                        <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                        v-bind:item="item" v-bind:options="scheduleStateOptions"/>
-                    </div>
 
-                    <div>
-                        <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
-                                        v-bind:item="item" v-bind:options="flowStateOptions"/>
-                    </div>
+                        <div class="item-field">
+                            <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
+                                            v-bind:item="item" v-bind:options="scheduleStateOptions"/>
+                        </div>
 
+                        <div class="item-field">
+                            <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
+                                            v-bind:item="item" v-bind:options="flowStateOptions"/>
+                        </div>
+                    </div> <!-- end `item-fields` wrapper -->
                 </div>
             </div>
 
@@ -79,9 +79,13 @@
             <div class="activity-wrapper">
                 <div v-for="activity in activityItems">
 
-                    <div v-if="activity.user">
+                    <!--
+                        Not ready for prime time - Matt, do we need this?
+                        Or, could we put this in each revision, comment, attatchment?
+                    <div class="avatar-wrapper" v-if="activity.user">
                         <Avatar v-bind:user="activity.user" v-bind:size="30"/>
                     </div>
+                    -->
 
                     <div v-if="activity.type === 'comment'">
                         <Comment v-bind:activity="activity" v-bind:item="item"/>
