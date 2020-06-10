@@ -37,14 +37,14 @@
                         <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration._ref"
-                                            v-bind:item="item" v-bind:options="iterationOptions"/>
+                                            v-bind:item="item" v-bind:options="iterationOptions" v-if="iterationOptions.length > 0"/>
                         </div>
 
                         <!-- TODO-mrc: editable -->
                         <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release._ref"
-                                            v-bind:item="item" v-bind:options="releaseOptions"/>
+                                            v-bind:item="item" v-bind:options="releaseOptions" v-if="releaseOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
@@ -63,12 +63,12 @@
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                            v-bind:item="item" v-bind:options="scheduleStateOptions"/>
+                                            v-bind:item="item" v-bind:options="scheduleStateOptions" v-if="scheduleStateOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
-                                            v-bind:item="item" v-bind:options="flowStateOptions"/>
+                                            v-bind:item="item" v-bind:options="flowStateOptions" v-if="flowStateOptions.length > 0"/>
                         </div>
                     </div> <!-- end `item-fields` wrapper -->
                 </div>
@@ -162,7 +162,7 @@
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
         isReady = false;
-        scheduleStateOptions!: SelectOption[];
+        scheduleStateOptions: SelectOption[] = [];
         flowStateOptions: SelectOption[] = [];
         iterationOptions: SelectOption[] = [];
         releaseOptions: SelectOption[] = [];
@@ -180,8 +180,6 @@
 
             this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
 
-            // TODO-mrc: I'm a little worried that changing projects is also going to change the formattedid. Will it?
-            // TODO-mrc: provide a way to change projects
             const user = store.getUser();
             const projectRef = user.DefaultProject;
 

@@ -206,7 +206,7 @@ export async function getReleaseList(projectRef: Ref) {
 
     // TODO-mrc: ordering?
     // TODO-mrc: max size?
-    // TODO-mrc: is there a way to just get 'current' projects?
+    // TODO-mrc: is there a way to just get 'current' releases?
     const response = await fetchListOfItems('release', ['Name'], {
         pageSize: 100,
         query,

@@ -3,7 +3,7 @@
         <span class="item-field-content-wrapper" v-if="isEdit">
             <md-field class="edit-field md-has-value">
                 <label>{{ fieldName }}</label>
-                <md-select v-model="value">
+                <md-select v-model="syncedValue">
                     <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
                 </md-select>
             </md-field>
@@ -34,7 +34,7 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Prop} from 'vue-property-decorator';
+    import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
     import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {Ref} from "../types/Ref";
@@ -47,8 +47,8 @@
         @Prop()
         item!: Ref;
 
-        @Prop()
-        value!: any;
+        @PropSync('value', { type: String })
+        syncedValue!: string;
 
         @Prop()
         options!: SelectOption[];
@@ -60,7 +60,7 @@
         label = '';
 
         created() {
-            const option = this.options.find(o => o.value === this.value);
+            const option = this.options.find(o => o.value === this.syncedValue);
             if (option) {
                 this.label = option.label ? option.label : option.value;
             }
@@ -68,7 +68,7 @@
 
         async submit() {
             this.errorMessage = '';
-            this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref)
+            await updateSingleItemAndShowToast(this.fieldName, this.syncedValue, this.item._ref)
             this.isEdit = false;
         }
 
