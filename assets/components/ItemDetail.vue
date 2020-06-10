@@ -79,13 +79,9 @@
             <div class="activity-wrapper">
                 <div v-for="activity in activityItems">
 
-                    <!--
-                        Not ready for prime time - Matt, do we need this?
-                        Or, could we put this in each revision, comment, attatchment?
                     <div class="avatar-wrapper" v-if="activity.user">
                         <Avatar v-bind:user="activity.user" v-bind:size="30"/>
                     </div>
-                    -->
 
                     <div v-if="activity.type === 'comment'">
                         <Comment v-bind:activity="activity" v-bind:item="item"/>
