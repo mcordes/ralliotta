@@ -159,9 +159,9 @@
         activityItems: ActivityItem[] = [];
         isReady = false;
         scheduleStateOptions!: SelectOption[];
-        flowStateOptions: SelectOption[] = [];
-        iterationOptions: SelectOption[] = [];
-        releaseOptions: SelectOption[] = [];
+        flowStateOptions!: SelectOption[];
+        iterationOptions!: SelectOption[];
+        releaseOptions!: SelectOption[];
 
 
         async created() {
@@ -176,8 +176,6 @@
 
             this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
 
-            // TODO-mrc: I'm a little worried that changing projects is also going to change the formattedid. Will it?
-            // TODO-mrc: provide a way to change projects
             const user = store.getUser();
             const projectRef = user.DefaultProject;
 
