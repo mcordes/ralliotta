@@ -14,14 +14,7 @@ V0:
   * ScheduleState / FlowState? 
 * Add relevant fields to detail page (description, title, project, iteration, story points, flow state / status)
 * Add attachments to detail page
-* provide a way to change schedulestate / flowstate
-* Better formatting of description
-* rich text editor for description (and other fields?)
-* show history inline like github does? Basically the comments and revision are the stream of the ticket. No need to show comment revisions and maybe a few others too
 * login by api key rather than username / password?
-* show avatar images for other users
-   - cache and be smart
-   - when / how do we refresh? minutes? hours?
 
 
 
@@ -32,12 +25,8 @@ V0:
 
 Future:
 
-* Show other user's avatar images next to their names on the list and detail pages
-
 * detail page is a modal and exiting from it returns you to the list page? [MattC]
 
-* organize fields better 
-    ? do we want fully defined models or just bags of fields? 
 * caching
     - domain data
     - inital user lookup
@@ -56,9 +45,6 @@ Future:
 * Take user back to login page when session token expires (probably just need to set store.clearUser())
     ? maybe go the lazy way and just watch for 401s. If we get one take them to the login page?
 
-1. show all fields (mostly hidden by default)
-2. get project schema information ??  [might not need this]
-5. move to the top of the page when navigating
 6. SSO - https://stackoverflow.com/questions/21055043/how-to-sso-using-rally-restapi-dll/22102310#22102310
 
   
