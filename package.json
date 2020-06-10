@@ -67,6 +67,7 @@
     "watch": "npx parcel watch templates/index_template.html --public-url / --out-file index.html --cache-dir /tmp/rally2-cache",
     "build": "npx parcel build templates/index_template.html --public-url / --out-file index.html --no-cache",
     "test": "npx tsc --noEmit",
-    "lint": "eslint 'assets/**/*.ts'"
+    "lint": "eslint 'assets/**/*.ts'",
+    "clean": "rm -rf ./dist"
   }
 }

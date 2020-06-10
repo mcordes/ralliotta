@@ -1,0 +1,4 @@
+{
+    "avatarURL": "http://localhost:8088/avatar",
+    "userLookupURL": "http://localhost:8088/lookup",
+}
