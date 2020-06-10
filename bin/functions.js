@@ -59,9 +59,9 @@ exports.lookup = (req, res) => {
 
 
 exports.avatarImage = (req, res) => {
-    const userObjectId = req.get.oid;
-    const sessionId = req.get.sid;
-    const imageSize = req.get.size || "43";
+    const userObjectId = req.query.oid;
+    const sessionId = req.query.sid;
+    const imageSize = req.query.size || "43";
     
     const url = `https://rally1.rallydev.com/slm/profile/image/${userObjectId}/${imageSize}.sp`;
 

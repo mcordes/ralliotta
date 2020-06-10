@@ -33,7 +33,7 @@
 
             // TODO-mrc: proxy domain
             const size = this.size || 43;
-            this.imageURL = `http://localhost:8088/avatar/user/${userObjectId}/session/${sessionId}?size=${size}`;
+            this.imageURL = `http://localhost:8088/avatar?oid=${userObjectId}&sid=${sessionId}&size=${size}`;
         }
     }
 

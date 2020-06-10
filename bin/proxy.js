@@ -7,15 +7,18 @@ const app = express();
 const port = 8088;
 const rallyURL = "https://rally1.rallydev.com/slm/webservice/v2.0/security/authorize";
 
+// TODO-mrc: needed?
+//app.use(express.json());
+//app.use(express.urlencoded());
 app.use(cors())
 
 
 app.post('/lookup', (req, res) => {
-    functions.lookup(req, res);
+    fns.lookup(req, res);
 });
 
-app.get('/avatar/user/:userObjectId/session/:sessionId', (req, res) => {
-    functions.avatarImage(req, res);
+app.get('/avatar', (req, res) => {
+    fns.avatarImage(req, res);
 });
 
 
