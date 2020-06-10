@@ -13,6 +13,9 @@
     import {Ref} from "../types/Ref";
     import store from "../store";
 
+    // @ts-ignore
+    import config from "../config.json";
+
     @Component
     export default class Avatar extends Vue {
         @Prop()
@@ -30,10 +33,8 @@
 
             const userObjectId = refUtils.getId(this.user._ref);
             const sessionId = store.getCredentials().sessionId;
-
-            // TODO-mrc: proxy domain
             const size = this.size || 43;
-            this.imageURL = `http://localhost:8088/avatar?oid=${userObjectId}&sid=${sessionId}&size=${size}`;
+            this.imageURL = `${config.avatarURL}?oid=${userObjectId}&sid=${sessionId}&size=${size}`;
         }
     }
 

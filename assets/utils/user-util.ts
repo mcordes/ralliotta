@@ -3,6 +3,10 @@ import store from "../store";
 import {Project} from "../types/Project";
 import {User} from "../types/User";
 
+// @ts-ignore
+import config from "../config.json";
+
+
 export async function fetchCurrentUser() {
     // NOTE: Looking for users without a query string returns a single user - the logged in user
     const resp = await getRallyAPI(store.getCredentials()).query({
@@ -29,7 +33,7 @@ export async function fetchCurrentUser() {
 
 export async function login(username: string, password: string) {
     // TODO-mrc: url for authorization proxy.
-    const response = await fetch("http://localhost:8088/lookup",
+    const response = await fetch(config.userLookupURL,
         {
             method: "POST",
             headers: {

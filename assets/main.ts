@@ -33,8 +33,6 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Kanban from "./components/Kanban.vue";
 
-
-
 const routes = [
     { path: '/', component: Home },
     { path: '/list', component: ItemList },

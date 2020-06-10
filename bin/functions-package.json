@@ -1,0 +1,7 @@
+{
+    "name": "rally-alt-gc-functions",
+    "private": true,
+    "dependencies": {
+        "request": "^2.88.2"
+    }
+}
