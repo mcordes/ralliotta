@@ -1,6 +1,12 @@
 
 ## TODO next:
 
+1. verify select boxes save on details page
+   ? why do they show the old value after?
+2. make search by id case insensitive and use contains rather than exact equal
+3. 
+
+
 
 V0:
 
