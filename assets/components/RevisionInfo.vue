@@ -6,7 +6,9 @@
                     <TimeSinceDate v-bind:date="revision.CreationDate"/>
                 </div>
                 <div class="revision-author">
-                    <!-- avatar here? -->
+                    <div class="avatar-wrapper" v-if="activity.user">
+                        <Avatar v-bind:user="revision.User" v-bind:size="30"/>
+                    </div>
                     {{ label }}
                 </div>
             </div>
@@ -27,8 +29,9 @@
     import {ActivityItem} from "../utils/activity-util";
     import {Revision} from "../types/Revision";
     import TimeSinceDate from "./TimeSinceDate.vue";
+    import Avatar from "./Avatar.vue";
     @Component({
-        components: {ExpandableSection, TimeSinceDate}
+        components: {ExpandableSection, TimeSinceDate, Avatar}
     })
     export default class RevisionInfo extends Vue {
         @Prop()

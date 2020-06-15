@@ -5,6 +5,9 @@
                 <TimeSinceDate v-bind:date="attachment.CreationDate"/>
             </div>
             <div class="attachment-author">
+                <div class="avatar-wrapper" v-if="attachment.User">
+                    <Avatar v-bind:user="attachment.User" v-bind:size="30"/>
+                </div>
                 {{ activity.userName }} added an attachment
             </div>
         </div>
@@ -30,8 +33,9 @@
     import {Attachment} from "../types/Attachment";
     import AttachmentViewModal from "./AttachmentViewModal.vue";
     import TimeSinceDate from "./TimeSinceDate.vue";
+    import Avatar from "./Avatar.vue";
     @Component({
-        components: {AttachmentViewModal, TimeSinceDate}
+        components: {AttachmentViewModal, TimeSinceDate, Avatar}
     })
     export default class AttachmentSummary extends Vue {
         @Prop()

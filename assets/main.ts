@@ -24,7 +24,7 @@ import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-default.css";
 
 // include common css file
-import './app.css';
+import './css/app.css';
 import {DateTime} from "luxon";
 
 // @ts-ignore

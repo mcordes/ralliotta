@@ -1,0 +1,105 @@
+/* History / revision / attachment / comment items */
+/* first and last item in activity wrapper shouldn't have a preceding history line */
+.activity-wrapper > div:first-child > div:first-child > div:first-child { margin-top: 0; }
+.activity-wrapper > div:first-child > div:first-child > div:first-child:before,
+.activity-wrapper > div:first-child > div.add-comment:before {
+    width: 0;
+    height: 0;
+}
+
+.activity-wrapper > div:last-child > div + div:after {
+    width: 0;
+    height: 0;
+}
+
+.attachment,
+.comment {
+    background: #FFF;
+    border-radius: 6px;
+    border: 1px solid #CCC;
+    color: #222;
+    margin: 40px 0;
+    max-width: 1000px;
+    position: relative;
+    transition: all 0.1s ease;
+}
+
+.attachment:before,
+.comment:before,
+.add-comment:before,
+.attachment:after,
+.comment:after,
+.expandable-section + div:after {
+    background: #CCC;
+    bottom: -41px;
+    content: '';
+    height: 40px;
+    left: 20px;
+    position: absolute;
+    width: 2px;
+}
+
+.attachment:before,
+.add-comment:before,
+.comment:before {
+    bottom: 0;
+    top: -41px;
+}
+
+.add-comment:before {
+    top: -40px;
+    left: 21px;
+}
+
+.attachment:hover .attachment-header {
+    background: #E8E8E8;
+}
+
+.revision-header,
+.attachment-header,
+.comment-header {
+    border-radius: 5px 5px 0 0;
+    transition: all 0.1s ease;
+}
+
+.attachment-header,
+.comment-header {
+    background: #EAEAEA;
+    border-bottom: 1px solid #CCC;
+}
+
+.revision-date,
+.attachment-date,
+.comment-date {
+    border-right: 1px solid #CCC;
+    display: inline-block;
+    font-weight: 600;
+    padding: 6px 12px 6px 8px;
+    width: 120px;
+}
+
+.revision-date {
+    background-color: #F1F1F1;
+    border-right-color: #D0D0D0;
+    padding: 4px 12px 4px 8px;
+}
+
+.revision-author,
+.attachment-author,
+.comment-author {
+    display: inline-block;
+    float: right;
+    overflow: hidden;
+    padding: 6px 8px 6px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 130px);
+}
+
+.revision-author { padding: 4px 8px 4px 0; }
+
+.attachment-details,
+.comment-details {
+    padding: 14px 6px 8px;
+}
+/* end history items */

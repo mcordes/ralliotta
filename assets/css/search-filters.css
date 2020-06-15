@@ -1,0 +1,48 @@
+/* Search filters */
+.search-filters {
+    align-items: center;
+    background: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    display: flex;
+    margin-bottom: 20px;
+    overflow: auto;
+    width: 100%;
+}
+.search-filters .filter-item {
+    align-items: center;
+    border-left: 1px solid #CCC;
+    display: flex;
+    float: left;
+    height: 65px;
+    padding: 5px 15px;
+}
+
+.search-filters .filter-item .md-checkbox-label { white-space: nowrap; }
+
+.search-filters .filter-item:first-child { border-left: none; }
+
+.search-filters .md-checkbox {
+    margin: 6px 6px 6px 0;
+}
+
+.search-filters .md-field {
+    margin: 0;
+    max-width: 200px;
+}
+.search-filters .md-field .md-input,
+.search-filters .md-field .md-textarea {
+    margin: 4px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+/* CAUTION! This is a direct override of the default label styles */
+.search-filters .md-field label {
+    pointer-events: auto;
+    top: 0;
+    opacity: 1;
+    font-size: 12px;
+}
+/* End search filters */
