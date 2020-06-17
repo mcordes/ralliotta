@@ -33,6 +33,9 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Kanban from "./components/Kanban.vue";
 
+// @ts-ignore
+import config from "./config.json";
+
 const routes = [
     { path: '/', component: Home },
     { path: '/list', component: ItemList },
@@ -43,7 +46,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: config.routerMode,
     routes
 });
 
