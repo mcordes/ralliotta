@@ -19,13 +19,14 @@
        - Description
        - Release (optional) - could just show future released?
        - Epic / Parent (these two fields have some weird magic together. Adam says you set parent, but somehow that also sets Epic?)
-       Optional fields: story points - maybe?
 
 
-- BUG : handle items will null iteration on details page (and null any other field there too)
+- BUG : handle items with null iteration on details page (and null any other field there too)
 
 - Need better searchable combo box for (all?) drop downs on detail page
     - must be mobile friendly too
+
+- comments - wysiwyg editor and display (like Description field on detail page) 
 
 - verify select boxes save on details page
    ? why do they show the old value after?
