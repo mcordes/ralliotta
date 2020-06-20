@@ -29,7 +29,7 @@
 
 - verify select boxes save on details page
    ? why do they show the old value after?
-- make search by id case insensitive and use contains rather than exact equal
+
 
 - Add search filters to ItemList page 
   - Project
@@ -45,6 +45,8 @@
     - It seems to just be the more recent comments for the entire project
     - Maybe also provide a way to filter to artifacts owned by my user
 
+
+- ~~make search by id case insensitive and use contains rather than exact equal~~
 
 
 

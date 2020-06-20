@@ -108,13 +108,11 @@ Vue.filter("timeSince", function (value: string | Date | DateTime) {
 // Error handler
 
 Vue.config.errorHandler = function (err, vm, info) {
-    // TODO-mrc: it would be better if this didn't change the URL. Fix me.
+    // Show the 404 page if we've catch a NotFoundError
     if (err instanceof NotFoundError) {
-        vm.$router.push("/404")
+        // TODO-mrc: does it need to change the URL?
+        vm.$router.push("/404");
     }
 
-    console.log("Unexected error in error handler: " + err + "; info: " + info);
-
-    // TODO-mrc: if it's some other error should I raise it?
-    // TODO-mrc: or log it?
+    throw err;
 }
