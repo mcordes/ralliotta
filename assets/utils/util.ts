@@ -1,4 +1,5 @@
 import {Vue} from "vue-property-decorator";
+import {DateTime} from "luxon";
 
 
 export function showSuccessToast(msg: string) {
@@ -17,4 +18,15 @@ export function showErrorToast(options?: ErrorToastType) {
 
     // @ts-ignore
     Vue.$toast.open({ type: "error", message: msg });
+}
+
+
+export function toDateTime(value: string | Date | DateTime ): DateTime {
+    if (value instanceof DateTime) {
+        return value;
+    }
+    if (value instanceof Date) {
+        return DateTime.fromJSDate(value);
+    }
+    return DateTime.fromISO("" + value);
 }

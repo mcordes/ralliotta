@@ -6,7 +6,7 @@ import {SelectOption} from "../types/SelectOption";
 import {FlowState} from "../types/FlowState";
 import {Ref} from "../types/Ref";
 import {Project} from "../types/Project";
-import {Iteration} from "../types/Iteration";
+import {Iteration, ITERATION_SEARCH_FIELDS} from "../types/Iteration";
 import {Release} from "../types/Release";
 import {DateTime} from "luxon";
 
@@ -263,14 +263,24 @@ export async function getCurrentIteration(projectRef: Ref) {
     query = query.and('StartDate', '<=', dateStr);
     query = query.and('EndDate', '>=', dateStr);
 
-    const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
+    const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
         order: "StartDate",
+        pageSize: 1,
         query,
     });
     const items: Iteration[] = response.items;
+    return items[0];
+}
 
-    // TODO-mrc: what happens if there is no default iteration? can that happen?
-    if (items.length > 0) {
-        return items[0];
-    }
+export async function getPreviousIteration(projectRef: Ref, iteration: Iteration) {
+    let query = queryUtils.where('Project', '=', iteration.Project);
+    query = query.and('EndDate', '<=', iteration.StartDate);
+
+    const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
+        order: "StartDate desc",
+        pageSize: 1,
+        query,
+    });
+    const items: Iteration[] = response.items;
+    return items[0];
 }

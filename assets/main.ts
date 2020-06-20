@@ -36,6 +36,7 @@ import MyItems from "./components/MyItems.vue";
 
 // @ts-ignore
 import config from "./config.json";
+import {toDateTime} from "./utils/util";
 
 const routes = [
     { path: '/', component: Home },
@@ -74,28 +75,28 @@ new Vue({
 
 // filters
 
-Vue.filter("formatDate", function (value: string) {
+Vue.filter("formatDate", function (value: string | Date | DateTime) {
     if (!value) {
         return "";
     }
-    return DateTime.fromISO(value).toFormat("MM/dd/yyyy");
+    return toDateTime(value).toFormat("MM/dd/yyyy");
 });
 
 
-Vue.filter("formatDateTime", function (value: string) {
+Vue.filter("formatDateTime", function (value: string | Date | DateTime) {
     if (!value) {
         return "";
     }
-    return DateTime.fromISO(value).toFormat("MM/dd/yyyy HH:mm");
+    return toDateTime(value).toFormat("MM/dd/yyyy HH:mm");
 });
 
 
-Vue.filter("timeSince", function (value: string) {
+Vue.filter("timeSince", function (value: string | Date | DateTime) {
     if (!value) {
         return "";
     }
 
-    const date = DateTime.fromISO(value).toJSDate();
+    const date = toDateTime(value).toJSDate();
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
     return timeAgo.format(date);

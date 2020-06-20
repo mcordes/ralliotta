@@ -2,24 +2,21 @@
     <div>
         Kanban
 
-        <div>
-            <h2>Current iteration</h2>
+        <div v-if="currentIteration">
+            <h2>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }}</h2>
+            <IterationItemListBySwimlane v-bind:iteration="currentIteration"/>
+        </div>
 
-            <div v-for="flowState in groupedArtifacts" v-bind:flowState="flowState">
-                Swimlane: {{ flowState.Group.Name }}
-                <ul>
-                    <li v-for="item in flowState.Items" v-bind:item="item">
-                        <router-link :to="'/detail/' + item.FormattedID">{{ item.FormattedID }}</router-link> <br>
-                        {{ item.Name }}
-                        <div class="avatar-wrapper" v-if="item.Owner">
-                            <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
-                        </div>
-                        {{ item.Owner ? item.Owner._refObjectName : "" }}
-
-                    </li>
-                </ul>
-                <br>
-            </div>
+        <!-- TODO-mrc: maybe don't retrieve the data for this until it's shown? And refresh when shown/hidden? -->
+        <div v-if="previousIteration">
+            <ExpandableSection title="Show previous sprint">
+                <template v-slot:header>
+                    <h2>Previous sprint</h2>
+                </template>
+                <template v-slot:main>
+                    <IterationItemListBySwimlane v-bind:iteration="previousIteration"/>
+                </template>
+            </ExpandableSection>
         </div>
 
         <div>
@@ -31,27 +28,27 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {getArtifactsGroupedByFlowState, getCurrentIteration} from "../utils/rally-util";
+    import {getCurrentIteration, getPreviousIteration} from "../utils/rally-util";
     import store from "../store";
     import ItemList from "./ItemList.vue";
-    import {Artifact} from "../types/Artifact";
-    import Avatar from "./Avatar.vue";
+    import IterationItemListBySwimlane from "./IterationItemListBySwimlane.vue";
+    import {Iteration} from "../types/Iteration";
+    import ExpandableSection from "./ExpandableSection.vue";
 
     @Component({
-        components: {ItemList, Avatar}
+        components: {ItemList, IterationItemListBySwimlane, ExpandableSection}
     })
     export default class Kanban extends Vue {
-        groupedArtifacts: {Group: any, Items: Artifact[]}[] = [];
+        currentIteration: any = {};  // TODO-mrc Iteration | undefined;
+        previousIteration: any = {}; // TODO-mrc: teration | undefined;
 
         async created() {
             const user = store.getUser();
+
+            // TODO-mrc: TODO: add project drop down to this page instead
             const projectRef = user.DefaultProject;
-            const iteration = await getCurrentIteration(projectRef);
-            if (!iteration) {
-                throw new Error("Cant find current iteration");
-                // TODO-mrc: what shall we do here?
-            }
-            this.groupedArtifacts = await getArtifactsGroupedByFlowState(projectRef, iteration);
+            this.currentIteration = await getCurrentIteration(projectRef);
+            this.previousIteration = await getPreviousIteration(projectRef, this.currentIteration);
         }
     }
 
