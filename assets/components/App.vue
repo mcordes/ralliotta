@@ -12,6 +12,7 @@
                             <router-link to="/">Home</router-link>
                             <router-link to="/list">List items</router-link>
                             <router-link to="/list/my">My items</router-link>
+                            <router-link to="/kanban">Kanban</router-link>
                         </nav>
                     </div>
                     <div class="md-toolbar-section-end">

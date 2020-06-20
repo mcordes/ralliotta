@@ -2,11 +2,12 @@
     <div>
         <div class="item-list">
             <h2>
-                <span v-if="showMyItemsOnly">My items</span>
-                <span v-else>List page</span>
+                {{ heading ? heading : "List page" }}
             </h2>
 
+            <!--
             <h3>Search filters</h3>
+            TODO-mrc: optionally collapsed or just not included for backlog? -->
 
             <div class="search-filters">
                 <div class="filter-item">
@@ -59,12 +60,13 @@
 
 
 <script lang="ts">
-    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+    import {Component, Prop, PropSync, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {fetchListOfItems, queryUtils} from "../utils/rally-util";
+    import {fetchListOfItems, ListOptions, queryUtils} from "../utils/rally-util";
     import {showErrorToast} from "../utils/util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
+    import {DateTime} from "luxon";
 
 
     @Component({
@@ -83,6 +85,12 @@
         // For now it's just a way to have a single view for the list page and the assigned to me page.
         @Prop()
         showMyItemsOnly!: boolean;
+
+        @PropSync("backlog")
+        backlogOnly!: boolean;
+
+        @Prop()
+        heading!: string;
 
         @Watch("$route")
         async onRouteChange(to: any, from: any) {
@@ -131,6 +139,11 @@
             if (this.showOpenItemsOnly) {
                 // TODO-mrc: include Completed too? Probably make what defines an open ticket configurable
                 query = query.and('ScheduleState', '!=', 'Accepted');
+            }
+
+            if (this.backlogOnly) {
+                // TODO-mrc: does this make sense?
+                query = queryUtils.where('Iteration', '=', null);
             }
 
             if (this.searchFormattedId) {

@@ -55,7 +55,6 @@ export default {
         return !!(c.username && c.sessionId && c.securityToken);
     },
 
-    // TODO: use UserType if possible; fix me
     setUser(user: User) {
         this.state._user = user;
     },

@@ -1,13 +1,14 @@
 import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
-import {Artifact} from "../types/Artifact";
+import {Artifact, ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
 import {SelectOption} from "../types/SelectOption";
 import {FlowState} from "../types/FlowState";
 import {Ref} from "../types/Ref";
 import {Project} from "../types/Project";
 import {Iteration} from "../types/Iteration";
 import {Release} from "../types/Release";
+import {DateTime} from "luxon";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -76,11 +77,12 @@ export interface SearchResults {
     totalRecords: number;
 }
 
-interface ListOptions {
+export interface ListOptions {
     query?: string;
     startIndex?: number;
     pageSize?: number;
     order?: string;
+    kwargs?: {[key: string]: any}
 }
 
 export async function fetchListOfItems(type: string, fields: string[], options: ListOptions) {
@@ -102,12 +104,18 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
             //down: true //true to include child project results, false otherwise
         },
         order: options.order,
+        requestOptions: {
+            qs: options.kwargs || {}
+        }
     });
 
     validateRallyResponseOrThrow(resp);
 
+    // NOTE: Groups is used by the grouping queries and results in the normal wrapping element
+    const items = resp.Groups || resp.Results;
+
     const results: SearchResults = {
-        items: resp.Results,
+        items: items,
         hasMoreResults: resp.TotalResultCount > resp.Results.length,
         totalRecords: resp.TotalResultCount,
     }
@@ -220,3 +228,49 @@ export async function getSelectOptionsFromRefs(items: Ref[]) {
     return results;
 }
 
+export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationRef: Ref) {
+    // TODO-mrc: require a specific iteration also
+    const query = queryUtils.where('Project', '=', projectRef);
+    let itemQuery = queryUtils.where('Iteration', '=', iterationRef);
+
+    const response = await fetchListOfItems('artifact/groupby/flowstate', ['Name', 'Items'], {
+        pageSize: 10,
+        query,
+        kwargs: {
+            compact: false,
+            itempagesize: 5,
+            itemstart: 1,
+            includeitems: true,
+            itemfetch: ARTIFACT_SEARCH_FIELDS.join(","),
+            itemquery: itemQuery,
+            itemorder: "FormattedID",
+            // NOTE: using 'artifact' or 'task' doesn't work here. Maybe tasks don't have flow state?
+            itemtypes: "defect,hierarchicalRequirement"
+        },
+        order: "OrderIndex ASC"
+    });
+
+    return response.items;
+}
+
+
+// TODO-mrc: this is returning wa too much data
+export async function getCurrentIteration(projectRef: Ref) {
+    const now = DateTime.utc();
+    const dateStr = now.toISO();
+
+    let query = queryUtils.where('Project', '=', projectRef);
+    query = query.and('StartDate', '<=', dateStr);
+    query = query.and('EndDate', '>=', dateStr);
+
+    const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
+        order: "StartDate",
+        query,
+    });
+    const items: Iteration[] = response.items;
+
+    // TODO-mrc: what happens if there is no default iteration? can that happen?
+    if (items.length > 0) {
+        return items[0];
+    }
+}

@@ -32,6 +32,7 @@ import TimeAgo from 'javascript-time-ago';
 // @ts-ignore
 import en from 'javascript-time-ago/locale/en';
 import Kanban from "./components/Kanban.vue";
+import MyItems from "./components/MyItems.vue";
 
 // @ts-ignore
 import config from "./config.json";
@@ -39,7 +40,7 @@ import config from "./config.json";
 const routes = [
     { path: '/', component: Home },
     { path: '/list', component: ItemList },
-    { path: '/list/my', component: ItemList, props: {showMyItemsOnly: true}},
+    { path: '/list/my', component: MyItems},
     { path: '/detail/:formattedID', component: ItemDetail },
     { path: '/kanban', component: Kanban },
     { path: '*', component: InvalidRoute }

@@ -5,6 +5,13 @@
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous spring collapsed)
 
+- Add project drop down to list page / my items
+    - default to my default project on the list page and no / all projects on my items?
+
+- List page - sort by a few fields? user, created, last updated. Anything else?
+
+- BUG : handle items will null iteration on details page (and null any other field there too)
+
 - Need better searchable combo box for (all?) drop downs on detail page
     - must be mobile friendly too
 
@@ -29,7 +36,7 @@
 
 
 
-Future:
+## Future:
 
 - login by api key in addition to username / password?
 - detail page is a modal and exiting from it returns you to the list page? [MattC]
