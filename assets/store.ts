@@ -1,7 +1,5 @@
 import {User} from "./types/User";
 
-const foo: any = null; // TODO-mrc: UserType | null = null;
-
 const USERNAME_STORAGE_KEY = "username";
 const SESSION_ID_STORAGE_KEY = "sessionId";
 const SECURITY_TOKEN_STORAGE_KEY = "securityToken";
@@ -16,26 +14,32 @@ export interface Credentials {
     securityToken: string;
 }
 
-function toString(s: string | null) {
-    return s ? s : "";
+interface State {
+    _user: User | null;
+    _username: string;
+    _sessionId: string;
+    _securityToken: string;
 }
 
+const _state: State = {
+    _user: null,
+    _username: `${username}`,
+    _sessionId: `${sessionId}`,
+    _securityToken: `${securityToken}`,
+};
+
+
 export default {
-    state: {
-        _user: foo,
-        _username: toString(username),
-        _sessionId: toString(sessionId),
-        _securityToken: toString(securityToken),
-    },
+    state: _state,
 
     isLoggedIn() {
         return this.state._user != null;
     },
 
     setCredentials(username: string, password: string, sessionId: string, securityToken: string) {
-        this.state._username = toString(username);
-        this.state._sessionId = toString(sessionId);
-        this.state._securityToken = toString(securityToken);
+        this.state._username = `${username}`;
+        this.state._sessionId = `${sessionId}`;
+        this.state._securityToken = `${securityToken}`;
 
         localStorage.setItem(USERNAME_STORAGE_KEY, username);
         localStorage.setItem(SESSION_ID_STORAGE_KEY, sessionId);
@@ -60,7 +64,7 @@ export default {
     },
 
     getUser(): User {
-        return this.state._user;
+        return this.state._user!;
     },
 
     clearUser() {

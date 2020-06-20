@@ -51,8 +51,7 @@
 
         logout() {
             this.sharedState.clearUser();
-            // TODO: navigate back to home page?
-            // TODO: add 'are you sure' modal at some point.
+            this.$router.push("/");
         }
 
         async created() {

@@ -9,6 +9,7 @@ import {Project} from "../types/Project";
 import {Iteration, ITERATION_SEARCH_FIELDS} from "../types/Iteration";
 import {Release} from "../types/Release";
 import {DateTime} from "luxon";
+import {NotFoundError} from "../exceptions";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -60,10 +61,8 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     items = items.filter(item => (item.FormattedID === formattedID));
     const item: Artifact = items.length > 0 ? items[0] : null;
 
-    // TODO-mrc:
     if (!item) {
-        // TODO-mrc: can I throw an exeption for a 404?
-        throw new Error("implement me");
+        throw new NotFoundError(`Unable to find item with id: '${formattedID}'`);
     }
 
     // NOTE: do a second fetch to get back all the fields now that we know the item type
@@ -151,8 +150,6 @@ export async function updateItem(ref: string, data: AddUpdateFieldData) {
     });
 
     validateRallyResponseOrThrow(resp);
-
-    // TODO-mrc: correct?
     return resp.Object;
 }
 
@@ -196,7 +193,6 @@ export async function getProjectList() {
     return items;
 }
 
-// TODO-mrc: maybe filter out all but the previous old iterations?
 export async function getIterationList(projectRef: Ref) {
     const query = queryUtils.where('Project', '=', projectRef);
     const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
@@ -228,7 +224,6 @@ export async function getSelectOptionsFromRefs(items: Ref[]) {
 }
 
 export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationRef: Ref) {
-    // TODO-mrc: require a specific iteration also
     const query = queryUtils.where('Project', '=', projectRef);
     let itemQuery = queryUtils.where('Iteration', '=', iterationRef);
 

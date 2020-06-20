@@ -15,8 +15,7 @@ interface ErrorToastType {
 export function showErrorToast(options?: ErrorToastType) {
     const msg = options?.msg || "An error occurred";
     console.log(`Error: ${msg}: ${options?.e}`);
-
-    // TODO-mrc: log stack trace here too?
+    console.trace();
 
     // @ts-ignore
     Vue.$toast.open({ type: "error", message: msg });
