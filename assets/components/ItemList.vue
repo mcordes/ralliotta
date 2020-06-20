@@ -134,7 +134,7 @@
             }
 
             if (this.searchFormattedId) {
-                query = query.and('FormattedID', '=', this.searchFormattedId);
+                query = query.and('FormattedID', 'contains', this.searchFormattedId);
             }
 
             // clear all results if we're showing the first page worth of data

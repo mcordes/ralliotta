@@ -32,7 +32,6 @@ export async function fetchCurrentUser() {
 
 
 export async function login(username: string, password: string) {
-    // TODO-mrc: url for authorization proxy.
     const response = await fetch(config.userLookupURL,
         {
             method: "POST",

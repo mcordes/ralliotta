@@ -24,9 +24,6 @@ RUN npm install && \
 WORKDIR /
 COPY . /app
 
-# TODO-mrc: ?
-#    rm -rf /app/node_modules
-
 
 # Now start all over again with a fresh image and copy from bootstrapper
 FROM alpine:3.9

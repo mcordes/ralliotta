@@ -34,14 +34,11 @@
                             Last Updated: <TimeSinceDate v-bind:date="item.LastUpdateDate"/>
                         </div>
 
-                        <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration._ref"
                                             v-bind:item="item" v-bind:options="iterationOptions" v-if="iterationOptions.length > 0"/>
                         </div>
 
-                        <!-- TODO-mrc: editable -->
-                        <!-- TODO-mrc: link to search page with this project selected -->
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release._ref"
                                             v-bind:item="item" v-bind:options="releaseOptions" v-if="releaseOptions.length > 0"/>

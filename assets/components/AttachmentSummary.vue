@@ -13,7 +13,6 @@
         </div>
         <div class="attachment-details">
             <!-- TODO-mrc: What if it's a PDF or something? Check the content type -->
-            <!-- TODO-mrc:shrink to preview -->
             <div v-if="attachmentContent">
                 <img :src="attachmentContent" @click="toggleViewFullImage()" title="Click to view larger image">
             </div>
