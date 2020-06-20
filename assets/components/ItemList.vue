@@ -5,25 +5,30 @@
                 {{ heading ? heading : "List page" }}
             </h2>
 
-            <!--
-            <h3>Search filters</h3>
-            TODO-mrc: optionally collapsed or just not included for backlog? -->
+            <div>
+                <ExpandableSection v-bind:expanded="expandSearchFilters">
+                    <template slot="header">
+                        <h3>Search filters</h3>
+                    </template>
+                    <template slot="main">
+                        <div class="search-filters">
+                            <div class="filter-item">
+                                <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
+                            </div>
 
-            <div class="search-filters">
-                <div class="filter-item">
-                    <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
-                </div>
+                            <div class="filter-item">
+                                <md-field>
+                                    <label>Search by ID:</label>
+                                    <md-input v-model="searchFormattedId"/>
+                                </md-field>
+                            </div>
 
-                <div class="filter-item">
-                    <md-field>
-                        <label>Search by ID:</label>
-                        <md-input v-model="searchFormattedId"/>
-                    </md-field>
-                </div>
-
-                <div class="filter-item">
-                    TODO: More fields
-                </div>
+                            <div class="filter-item">
+                                TODO: More fields
+                            </div>
+                        </div>
+                    </template>
+                </ExpandableSection>
             </div>
 
             <ul style="display:none;">
@@ -67,10 +72,11 @@
     import {showErrorToast} from "../utils/util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
     import {DateTime} from "luxon";
+    import ExpandableSection from "./ExpandableSection.vue";
 
 
     @Component({
-        components: {ItemSummary},
+        components: {ExpandableSection, ItemSummary},
     })
     export default class ItemList extends Vue {
         items: any[] = [];
@@ -80,9 +86,8 @@
         isLoading = false;
         showOpenItemsOnly = true;
         searchFormattedId = '';
+        expandSearchFilters = true;
 
-        // TODO-mrc: I think this will become more generic as we add more search stuff.
-        // For now it's just a way to have a single view for the list page and the assigned to me page.
         @Prop()
         showMyItemsOnly!: boolean;
 
@@ -99,37 +104,36 @@
             await this.fetchResults();
         }
 
-        // TODO-mrc: combine these (and the many more to come somehow?)
         @Watch("showOpenItemsOnly")
         async onShowOpenItemsOnlyChanged() {
-            // TODO-mrc: maybe watch and interupt already in progress searches?
             await this.fetchResults();
         }
 
         @Watch("searchFormattedId")
         async onSearchFormattedIdChanged() {
-            // TODO-mrc: maybe watch and interupt already in progress searches?
             await this.fetchResults();
         }
 
         async created() {
+            this.expandSearchFilters = !this.backlogOnly;
             await this.fetchResults();
         }
 
-        // TODO-mrc: prevent this from being called more than once at a time
-        // TODO-mrc: we could disable the submit button, anything else or is that enough?
         async showMore() {
-            // TODO-mrc: try / catch blocks for things like this?
             this.isLoading = true;
             const startIndex = this.items.length;
-            await this.fetchResults(startIndex);
+            try {
+                await this.fetchResults(startIndex);
+            }
+            catch (e) {
+                showErrorToast({e});
+            }
             this.isLoading = false;
         }
 
         protected async fetchResults(startIndex = 1, pageSize = 20) {
             const user = this.sharedState.getUser();
             const projectRef = user.DefaultProject;
-            // TODO-mrc: make this configurable - I envision a bunch of form fields at first
             let query = queryUtils.where('Project', '=', projectRef);
 
             if (this.showMyItemsOnly) {
@@ -142,7 +146,6 @@
             }
 
             if (this.backlogOnly) {
-                // TODO-mrc: does this make sense?
                 query = queryUtils.where('Iteration', '=', null);
             }
 
