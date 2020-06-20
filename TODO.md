@@ -1,7 +1,7 @@
 
 ## TODO next:
 
-- change assignee on detail page (and assign to no one)
+- change assignee on detail page to a user or no one
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous spring collapsed)
 
@@ -9,6 +9,18 @@
     - default to my default project on the list page and no / all projects on my items?
 
 - List page - sort by a few fields? user, created, last updated. Anything else?
+
+- Add / remove (?) attachment on the detail page 
+
+- Add new user story / defect 
+    - adam says just the following fields:
+       - Name (aka Title)
+       - Attachments
+       - Description
+       - Release (optional) - could just show future released?
+       - Epic / Parent (these two fields have some weird magic together. Adam says you set parent, but somehow that also sets Epic?)
+       Optional fields: story points - maybe?
+
 
 - BUG : handle items will null iteration on details page (and null any other field there too)
 
