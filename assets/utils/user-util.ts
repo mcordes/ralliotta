@@ -21,7 +21,6 @@ export async function fetchCurrentUser() {
     // NOTE: The result isn't wrapped with a top level element like the others
     const user: User = resp;
 
-    // TODO-mrc: error handling
     await Promise.all([
         fetchDefaultProject(user),
         fetchUserProfileImage(user),

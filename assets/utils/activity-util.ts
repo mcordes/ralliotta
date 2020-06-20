@@ -20,7 +20,6 @@ export async function getActivityForItem(item: Artifact) {
     const revisionHistoryRef = item.RevisionHistory;
     const activity: ActivityItem[] = [];
 
-    // TODO-mrc error handling
     const [comments, revisions, attachments] = await Promise.all([
         fetchComments(item._ref),
         fetchRevisionHistory(revisionHistoryRef),

@@ -139,6 +139,7 @@
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
     import store from "../store";
+    import {showErrorToast} from "../utils/util";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -179,10 +180,14 @@
             this.iterationOptions = await getSelectOptionsFromRefs(await getIterationList(projectRef));
             this.releaseOptions = await getSelectOptionsFromRefs(await getReleaseList(projectRef));
 
-            this.activityItems = await getActivityForItem(this.item);
+            try{
+                this.activityItems = await getActivityForItem(this.item);
+            }
+            catch (e) {
+                showErrorToast({e});
+            }
 
             this.itemFields = Object.keys(this.item);
-
         }
     }
 

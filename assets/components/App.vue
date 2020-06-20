@@ -41,6 +41,7 @@
     import store from "../store";
     import LoginModal from "./LoginModal.vue";
     import {fetchCurrentUser} from "../utils/user-util";
+    import {showErrorToast} from "../utils/util";
 
     @Component({
         components: {LoginModal}
@@ -63,6 +64,7 @@
                     store.setUser(user);
                 }
                 catch(e) {
+                    showErrorToast({e});
                     console.log("Unable to retrieve current user: " + e  + ": " + e.message);
                 }
             }

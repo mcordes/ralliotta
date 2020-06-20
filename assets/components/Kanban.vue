@@ -34,23 +34,34 @@
     import store from "../store";
     import ItemList from "./ItemList.vue";
     import IterationItemListBySwimlane from "./IterationItemListBySwimlane.vue";
-    import {Iteration} from "../types/Iteration";
     import ExpandableSection from "./ExpandableSection.vue";
+    import {DateTime} from "luxon";
+    import {showErrorToast} from "../utils/util";
 
     @Component({
         components: {ItemList, IterationItemListBySwimlane, ExpandableSection}
     })
     export default class Kanban extends Vue {
         currentIteration: any = {};  // TODO-mrc Iteration | undefined;
-        previousIteration: any = {}; // TODO-mrc: teration | undefined;
+        previousIteration: any = {}; // TODO-mrc: Iteration | undefined;
 
         async created() {
             const user = store.getUser();
 
             // TODO-mrc: TODO: add project drop down to this page instead
             const projectRef = user.DefaultProject;
-            this.currentIteration = await getCurrentIteration(projectRef);
-            this.previousIteration = await getPreviousIteration(projectRef, this.currentIteration);
+
+            const now = DateTime.utc();
+
+            try {
+                [this.currentIteration, this.previousIteration] = await Promise.all([
+                    getCurrentIteration(projectRef, now),
+                    getPreviousIteration(projectRef, now)
+                ])
+            }
+            catch (e) {
+                showErrorToast({e});
+            }
         }
     }
 

@@ -123,7 +123,6 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
 }
 
 export interface AddUpdateFieldData {
-    // TODO-mrc: others?
     [key: string]: string | boolean | number
 }
 
@@ -253,12 +252,8 @@ export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationR
     return response.items;
 }
 
-
-// TODO-mrc: this is returning wa too much data
-export async function getCurrentIteration(projectRef: Ref) {
-    const now = DateTime.utc();
+export async function getCurrentIteration(projectRef: Ref, now: DateTime) {
     const dateStr = now.toISO();
-
     let query = queryUtils.where('Project', '=', projectRef);
     query = query.and('StartDate', '<=', dateStr);
     query = query.and('EndDate', '>=', dateStr);
@@ -272,9 +267,11 @@ export async function getCurrentIteration(projectRef: Ref) {
     return items[0];
 }
 
-export async function getPreviousIteration(projectRef: Ref, iteration: Iteration) {
-    let query = queryUtils.where('Project', '=', iteration.Project);
-    query = query.and('EndDate', '<=', iteration.StartDate);
+export async function getPreviousIteration(projectRef: Ref, now: DateTime) {
+    const dateStr = now.toISO();
+    let query = queryUtils.where('Project', '=', projectRef);
+    query = query.and('StartDate', '<=', dateStr);
+    query = query.and('EndDate', '>=', dateStr);
 
     const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
         order: "StartDate desc",
