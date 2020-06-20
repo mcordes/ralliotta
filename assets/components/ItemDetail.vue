@@ -140,6 +140,7 @@
     import Avatar from "./Avatar.vue";
     import store from "../store";
     import {showErrorToast} from "../utils/util";
+    import {NotFoundError} from "../exceptions";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID3(formattedID);
@@ -166,8 +167,7 @@
 
             this.item = await fetchItem(formattedID);
             if (!this.item) {
-                // TODO-mrc: show 404 page? We didn't find it
-                throw new Error("implement me");
+                throw new NotFoundError(`Unable to find item with id: ${formattedID}`);
             }
             this.isReady = true;
 

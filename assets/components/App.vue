@@ -10,8 +10,8 @@
                     <div class="md-toolbar-section-start">
                         <nav>
                             <router-link to="/">Home</router-link>
-                            <router-link to="/list">List items</router-link>
-                            <router-link to="/list/my">My items</router-link>
+                            <router-link to="/list">Search</router-link>
+                            <router-link to="/list/my">My work</router-link>
                             <router-link to="/kanban">Kanban</router-link>
                         </nav>
                     </div>

@@ -56,7 +56,7 @@ export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
     let items = results.items;
 
     // NOTE: formattedIDS are in this format: 'US12345' or 'TR67890'
-    // NOTE: the search by FormattedID only compare the #s and ignores the prefixed so we may get extra results
+    // NOTE: the search by FormattedID only compares the digits and ignores the prefix so we may get extra results
     // NOTE: we just need to find the one that matches our FormattedID and return it
     items = items.filter(item => (item.FormattedID === formattedID));
     const item: Artifact = items.length > 0 ? items[0] : null;

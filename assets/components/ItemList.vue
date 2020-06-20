@@ -2,13 +2,13 @@
     <div>
         <div class="item-list">
             <h2>
-                {{ heading ? heading : "List page" }}
+                {{ heading ? heading : "Search" }}
             </h2>
 
             <div>
-                <ExpandableSection v-bind:expanded="expandSearchFilters">
+                <ExpandableSection v-bind:isExpanded="expandSearchFilters">
                     <template slot="header">
-                        <h3>Search filters</h3>
+                        [Search filters]
                     </template>
                     <template slot="main">
                         <div class="search-filters">
