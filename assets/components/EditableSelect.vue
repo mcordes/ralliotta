@@ -3,7 +3,7 @@
         <span class="item-field-content-wrapper" v-if="isEdit">
             <md-field class="edit-field md-has-value">
                 <label>{{ fieldName }}</label>
-                <md-select v-model="syncedValue">
+                <md-select v-model.sync="value">
                     <md-option v-for="option in options" v-bind:value="option.value">{{ option.label ?  option.label : option.value }}</md-option>
                 </md-select>
             </md-field>
@@ -22,7 +22,7 @@
         <span class="item-field-content-wrapper" v-else>
             <md-field class="md-has-value">
                 <label>{{ fieldName }}</label>
-                <span>{{ label }}</span>
+                <span>{{ selectedOptionLabel }}</span>
             </md-field>
             <md-button class="md-icon-button md-mini md-raised icon-btn-small" title="Edit" @click="edit">
                 <span>&#9998;</span>
@@ -35,8 +35,6 @@
 
 <script lang="ts">
     import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
-    import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
-    import {showErrorToast, showSuccessToast} from "../utils/util";
     import {Ref} from "../types/Ref";
     import {SelectOption} from "../types/SelectOption";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
@@ -47,8 +45,9 @@
         @Prop()
         item!: Ref;
 
-        @PropSync('value', { type: String })
-        syncedValue!: string;
+        //@PropSync('value', { type: String })
+        @Prop()
+        value!: string;
 
         @Prop()
         options!: SelectOption[];
@@ -57,18 +56,24 @@
         fieldName!: string;
         errorMessage = '';
         isEdit = false;
-        label = '';
+        selectedOptionLabel = '';
+
+        updateSelectedOptionLabel() {
+            const selectedOption = this.options.find(o => o.value === this.value);
+            if (selectedOption) {
+                this.selectedOptionLabel = selectedOption.label ? selectedOption.label : selectedOption.value;
+            }
+        }
 
         created() {
-            const option = this.options.find(o => o.value === this.syncedValue);
-            if (option) {
-                this.label = option.label ? option.label : option.value;
-            }
+            this.updateSelectedOptionLabel();
         }
 
         async submit() {
             this.errorMessage = '';
-            await updateSingleItemAndShowToast(this.fieldName, this.syncedValue, this.item._ref)
+            debugger;
+            await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref);
+            this.updateSelectedOptionLabel();
             this.isEdit = false;
         }
 
