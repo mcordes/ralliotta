@@ -25,9 +25,3 @@ most cases restarting the application or running `docker-compose down` are unnec
 
 First try `docker-compose down` and then `docker-compose build && docker-compose up`.
 
-
-# Connecting to the docker created mysql db
-
-mysql -u root -p -h 127.0.0.1 -P 33306
-
-
