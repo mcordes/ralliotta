@@ -76,7 +76,7 @@
             this.updateSelectedOptionLabel();
 
             if (!this.noBlankOption) {
-                const label = this.blankOptionLabel ?? "-- No value --";
+                const label = this.blankOptionLabel ? this.blankOptionLabel : "-- No value --";
                 this.options.unshift({label, value: ""})
             }
         }

@@ -1,7 +1,6 @@
 
 ## TODO next:
 
-- change assignee on detail page to a user or no one
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous spring collapsed)
 
@@ -25,10 +24,6 @@
 
 - comments - wysiwyg editor and display (like Description field on detail page) 
 
-- verify select boxes save on details page
-   ? why do they show the old value after?
-
-
 - Add search filters to ItemList page 
   - Project
   - Owner (assignee)
@@ -40,12 +35,14 @@
 
 - Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. 
 
+
+- ~~change assignee on detail page to a user or no one~~
+- ~~verify select boxes save on details page~~
+  ~~? why do they show the old value after?~~
 - ~~Add 'My notifications' to the home page.~~
     - ~~It seems to just be the more recent comments for the entire project~~
     - ~~Maybe also provide a way to filter to artifacts owned by my user~~
-
 - ~~make search by id case insensitive and use contains rather than exact equal~~
-
 - ~~BUG : handle items with null iteration on details page (and null any other field there too)~~
 
 

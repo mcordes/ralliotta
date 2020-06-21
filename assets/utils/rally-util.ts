@@ -10,6 +10,8 @@ import {Iteration, ITERATION_SEARCH_FIELDS} from "../types/Iteration";
 import {Release} from "../types/Release";
 import {DateTime} from "luxon";
 import {NotFoundError} from "../exceptions";
+import {TeamMember} from "../types/TeamMember";
+import {User} from "../types/User";
 
 export const queryUtils = rally.util.query;
 export const refUtils = rally.util.ref;
@@ -275,4 +277,30 @@ export async function getPreviousIteration(projectRef: Ref, now: DateTime) {
     });
     const items: Iteration[] = response.items;
     return items[0];
+}
+
+export async function getProjectTeamMembers(projectRef: Ref, user: User) {
+    // https://rally1.rallydev.com/slm/webservice/v2.0/project/XXX/TeamMembers
+    const projectId = refUtils.getId(projectRef);
+    const typeStr = `project/${projectId}/TeamMembers`;
+
+    const response = await fetchListOfItems(typeStr, ['Name'], {
+        pageSize: 100,
+        order: "DisplayName"
+    });
+    const items: TeamMember[] = response.items;
+
+    // Note: the current user isn't in the results above. Add us in now.
+    const theUser: TeamMember = {
+        DisplayName: user.FirstName + " " + user.LastName,
+        EmailAddress: user.EmailAddress,
+        UserName: user.UserName,
+        _refObjectName: user._refObjectName,
+        _ref: user._ref,
+        _type: user._type
+    }
+
+    items.unshift(theUser);
+
+    return items;
 }

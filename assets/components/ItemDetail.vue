@@ -13,18 +13,21 @@
 
                 <div class="item-fields">
                     <div>
-                        <!-- Make this editable
-                            try to cache users or just do a real time search?
-                        -->
                         <div class="item-field">
-                            Assignee:
+                            <!-- Assignee: -->
+
+                            <!-- TODO-mrc: how will we change this when the select below changes? do we need to add .sync?
+                                Maybe also hide then when changing assignee?
+                            -->
                             <div v-if="item.Owner != null">
                                 <div class="avatar-wrapper">
                                     <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
                                 </div>
-                                {{ item.Owner._refObjectName }}
-                            </div>
 
+                                <EditableSelect v-bind:fieldName="'Owner'" v-bind:value="item.Owner ? item.Owner._ref : ''"
+                                                v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
+
+                            </div>
                         </div>
 
                         <div class="item-field">
@@ -123,7 +126,7 @@
     import {Component, Vue} from 'vue-property-decorator';
     import {
         fetchSingleItemByFormattedID,
-        getFlowStateList, getIterationList,
+        getFlowStateList, getIterationList, getProjectTeamMembers,
         getReleaseList,
         getSelectOptionsFromRefs
     } from "../utils/rally-util";
@@ -143,6 +146,7 @@
     import store from "../store";
     import {showErrorToast} from "../utils/util";
     import {NotFoundError} from "../exceptions";
+    import {TeamMember} from "../types/TeamMember";
 
     async function fetchItem(formattedID: string) {
         return await fetchSingleItemByFormattedID(formattedID);
@@ -162,7 +166,7 @@
         flowStateOptions: SelectOption[] = [];
         iterationOptions: SelectOption[] = [];
         releaseOptions: SelectOption[] = [];
-
+        assigneeOptions: SelectOption[] = [];
 
         async created() {
             const formattedID = this.$route.params['formattedID'];
@@ -184,11 +188,12 @@
 
             // TODO-mrc: maybe set the properties as part of the callback so they get set when returned rather then when all return
             try{
-                [this.flowStateOptions, this.iterationOptions, this.releaseOptions, this.activityItems] = await Promise.all([
+                [this.flowStateOptions, this.iterationOptions, this.releaseOptions, this.assigneeOptions, this.activityItems] = await Promise.all([
                     getSelectOptionsFromRefs(await getFlowStateList(projectRef)),
-                    await getSelectOptionsFromRefs(await getIterationList(projectRef)),
-                    await getSelectOptionsFromRefs(await getReleaseList(projectRef)),
-                    await getActivityForItem(this.item)
+                    getSelectOptionsFromRefs(await getIterationList(projectRef)),
+                    getSelectOptionsFromRefs(await getReleaseList(projectRef)),
+                    getSelectOptionsFromRefs(await getProjectTeamMembers(projectRef, user)),
+                    getActivityForItem(this.item),
                 ]);
             }
             catch (e) {
