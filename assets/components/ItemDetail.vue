@@ -35,12 +35,12 @@
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration._ref"
+                            <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration ? item.Iteration._ref : ''"
                                             v-bind:item="item" v-bind:options="iterationOptions" v-if="iterationOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release._ref"
+                            <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release ? item.Release._ref: ''"
                                             v-bind:item="item" v-bind:options="releaseOptions" v-if="releaseOptions.length > 0"/>
                         </div>
 
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState._ref"
+                            <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState ? item.FlowState._ref: ''"
                                             v-bind:item="item" v-bind:options="flowStateOptions" v-if="flowStateOptions.length > 0"/>
                         </div>
                     </div> <!-- end `item-fields` wrapper -->
@@ -120,9 +120,9 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import {
-        fetchSingleItemByFormattedID3,
+        fetchSingleItemByFormattedID,
         getFlowStateList, getIterationList,
-        getProjectList, getReleaseList,
+        getReleaseList,
         getSelectOptionsFromRefs
     } from "../utils/rally-util";
     import CommentInfo from "./CommentInfo.vue";
@@ -143,7 +143,7 @@
     import {NotFoundError} from "../exceptions";
 
     async function fetchItem(formattedID: string) {
-        return await fetchSingleItemByFormattedID3(formattedID);
+        return await fetchSingleItemByFormattedID(formattedID);
     }
 
     @Component({
@@ -169,6 +169,10 @@
             if (!this.item) {
                 throw new NotFoundError(`Unable to find item with id: ${formattedID}`);
             }
+
+            // TODO-mrc: why is this needed? Can't I just check to see if item is null or not above?
+            // It didn't work when I tried. The jist here is I want to show the item right away and wait on the
+            // other async calls
             this.isReady = true;
 
             this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
@@ -176,12 +180,14 @@
             const user = store.getUser();
             const projectRef = user.DefaultProject;
 
-            this.flowStateOptions = await getSelectOptionsFromRefs(await getFlowStateList(projectRef));
-            this.iterationOptions = await getSelectOptionsFromRefs(await getIterationList(projectRef));
-            this.releaseOptions = await getSelectOptionsFromRefs(await getReleaseList(projectRef));
-
+            // TODO-mrc: maybe set the properties as part of the callback so they get set when returned rather then when all return
             try{
-                this.activityItems = await getActivityForItem(this.item);
+                [this.flowStateOptions, this.iterationOptions, this.releaseOptions, this.activityItems] = await Promise.all([
+                    getSelectOptionsFromRefs(await getFlowStateList(projectRef)),
+                    await getSelectOptionsFromRefs(await getIterationList(projectRef)),
+                    await getSelectOptionsFromRefs(await getReleaseList(projectRef)),
+                    await getActivityForItem(this.item)
+                ]);
             }
             catch (e) {
                 showErrorToast({e});

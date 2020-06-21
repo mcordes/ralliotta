@@ -47,7 +47,7 @@ export async function fetchSingleItemByRef(ref: string) {
     return resp.Object;
 }
 
-export const fetchSingleItemByFormattedID3 = async (formattedID: string) => {
+export const fetchSingleItemByFormattedID = async (formattedID: string) => {
     console.assert(formattedID != null);
 
     const query = queryUtils.where('FormattedID', '=', formattedID);
