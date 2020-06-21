@@ -38,6 +38,8 @@
   - Milestone?
   - ScheduleState / FlowState? 
 
+- Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. 
+
 - ~~Add 'My notifications' to the home page.~~
     - ~~It seems to just be the more recent comments for the entire project~~
     - ~~Maybe also provide a way to filter to artifacts owned by my user~~
@@ -48,6 +50,9 @@
 
 
 ## Future:
+
+
+- Have current iteration / release preselected when on detail page when selecting a value from the drop down and there is no existing value. Also maybe hide old iterations / releases or sort them differently or in a different color? 
 
 - login by api key in addition to username / password?
 - detail page is a modal and exiting from it returns you to the list page? [MattC]

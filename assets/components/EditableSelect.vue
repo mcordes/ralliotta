@@ -54,6 +54,13 @@
 
         @Prop()
         fieldName!: string;
+
+        @Prop()
+        noBlankOption!: boolean;
+
+        @Prop()
+        blankOptionLabel!: string;
+
         errorMessage = '';
         isEdit = false;
         selectedOptionLabel = '';
@@ -67,11 +74,15 @@
 
         created() {
             this.updateSelectedOptionLabel();
+
+            if (!this.noBlankOption) {
+                const label = this.blankOptionLabel ?? "-- No value --";
+                this.options.unshift({label, value: ""})
+            }
         }
 
         async submit() {
             this.errorMessage = '';
-            debugger;
             await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref);
             this.updateSelectedOptionLabel();
             this.isEdit = false;

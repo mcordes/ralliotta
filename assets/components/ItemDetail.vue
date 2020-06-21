@@ -60,12 +60,14 @@
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
-                                            v-bind:item="item" v-bind:options="scheduleStateOptions" v-if="scheduleStateOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:options="scheduleStateOptions" v-bind:noBlankOption="true"
+                                            v-if="scheduleStateOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState ? item.FlowState._ref: ''"
-                                            v-bind:item="item" v-bind:options="flowStateOptions" v-if="flowStateOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:options="flowStateOptions" v-bind:noBlankOption="true"
+                                            v-if="flowStateOptions.length > 0"/>
                         </div>
                     </div> <!-- end `item-fields` wrapper -->
                 </div>
