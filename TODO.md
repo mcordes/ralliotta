@@ -41,11 +41,9 @@
   - Milestone?
   - ScheduleState / FlowState? 
 
-- Add 'My notifications' to the home page.
-    - collapsible (and start collapsed?)
-    - It seems to just be the more recent comments for the entire project
-    - Maybe also provide a way to filter to artifacts owned by my user
-
+- ~~Add 'My notifications' to the home page.~~
+    - ~~It seems to just be the more recent comments for the entire project~~
+    - ~~Maybe also provide a way to filter to artifacts owned by my user~~
 
 - ~~make search by id case insensitive and use contains rather than exact equal~~
 

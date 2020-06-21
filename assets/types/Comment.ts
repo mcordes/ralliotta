@@ -1,4 +1,5 @@
 import {Ref} from "./Ref";
+import {Artifact} from "./Artifact";
 
 export interface Comment extends Ref {
     Name: string;
@@ -6,6 +7,7 @@ export interface Comment extends Ref {
     Text: string;
     User: Ref;
     CreationDate: Date;
+    Artifact: Ref;
 }
 
-export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate'];
+export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate', 'Artifact'];
