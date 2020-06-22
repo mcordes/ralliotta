@@ -1,5 +1,4 @@
 import {Ref} from "./Ref";
-import {Project} from "./Project";
 
 
 // TODO-mrc: is this endpoint really just returning user objects? do we need this?

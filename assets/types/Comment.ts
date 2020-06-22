@@ -1,5 +1,4 @@
 import {Ref} from "./Ref";
-import {Artifact} from "./Artifact";
 
 export interface Comment extends Ref {
     Name: string;

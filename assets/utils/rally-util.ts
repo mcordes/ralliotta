@@ -227,7 +227,7 @@ export async function getSelectOptionsFromRefs(items: Ref[]) {
 
 export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationRef: Ref) {
     const query = queryUtils.where('Project', '=', projectRef);
-    let itemQuery = queryUtils.where('Iteration', '=', iterationRef);
+    const itemQuery = queryUtils.where('Iteration', '=', iterationRef);
 
     const response = await fetchListOfItems('artifact/groupby/flowstate', ['Name', 'Items'], {
         pageSize: 10,
