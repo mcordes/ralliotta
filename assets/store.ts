@@ -1,4 +1,5 @@
 import {User} from "./types/User";
+import {toStringOrBlank} from "./utils/util";
 
 const USERNAME_STORAGE_KEY = "username";
 const SESSION_ID_STORAGE_KEY = "sessionId";
@@ -23,23 +24,22 @@ interface State {
 
 const _state: State = {
     _user: null,
-    _username: `${username}`,
-    _sessionId: `${sessionId}`,
-    _securityToken: `${securityToken}`,
+    _username: toStringOrBlank(username),
+    _sessionId: toStringOrBlank(sessionId),
+    _securityToken: toStringOrBlank(securityToken),
 };
 
 
 export default {
     state: _state,
-
     isLoggedIn() {
         return this.state._user != null;
     },
 
     setCredentials(username: string, password: string, sessionId: string, securityToken: string) {
-        this.state._username = `${username}`;
-        this.state._sessionId = `${sessionId}`;
-        this.state._securityToken = `${securityToken}`;
+        this.state._username = toStringOrBlank(username);
+        this.state._sessionId = toStringOrBlank(sessionId);
+        this.state._securityToken = toStringOrBlank(securityToken);
 
         localStorage.setItem(USERNAME_STORAGE_KEY, username);
         localStorage.setItem(SESSION_ID_STORAGE_KEY, sessionId);

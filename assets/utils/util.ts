@@ -31,3 +31,10 @@ export function toDateTime(value: string | Date | DateTime ): DateTime {
     }
     return DateTime.fromISO("" + value);
 }
+
+export function toStringOrBlank(value: any) {
+    if (!value) {
+        return "";
+    }
+    return value.toString();
+}
