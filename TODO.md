@@ -1,7 +1,9 @@
 
 ## TODO next:
 
+
 - fix this warning - Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "isExpanded" 
+    - This is the same as: Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. 
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
@@ -33,8 +35,6 @@
   - Iteration
   - Milestone?
   - ScheduleState / FlowState? 
-
-- Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. 
 
 
 - ~~change assignee on detail page to a user or no one~~
