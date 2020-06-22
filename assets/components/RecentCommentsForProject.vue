@@ -78,12 +78,7 @@
 
         protected async fetchResults(startIndex = 1, pageSize = 5) {
             const user = this.sharedState.getUser();
-
-
-            // TODO-mrc: no project attribute on a comment
-            // maybe this is when we'd use the scope attribute in the rally api?
-            //const projectRef = user.DefaultProject;
-            //let query = queryUtils.where('Project', '=', projectRef);
+            const projectRef = user.DefaultProject;
 
             // clear all results if we're showing the first page worth of data
             if (startIndex === 1) {
@@ -94,10 +89,10 @@
 
             try {
                 const results = await fetchListOfItems('conversationPost', COMMENT_SEARCH_FIELDS, {
-//                    query,
                     startIndex,
                     pageSize,
-                    order: "CreationDate desc"
+                    order: "CreationDate desc",
+                    projectScope: projectRef,
                 });
                 this.comments.push(...results.items);
                 this.hasMoreRecords = results.hasMoreResults;

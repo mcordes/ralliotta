@@ -84,11 +84,25 @@ export interface ListOptions {
     pageSize?: number;
     order?: string;
     kwargs?: {[key: string]: any}
+    projectScope?: Project | Ref;
+}
+
+interface Scope {
+    project?: string;
+
+    // NOTE: the up/down has to do with the way Rally does project hierarchy searches. Hopefully we can ignore
+    // this in most cases.
+    up?: boolean;
+    down?: boolean;
 }
 
 export async function fetchListOfItems(type: string, fields: string[], options: ListOptions) {
     console.assert(type != null);
     console.assert(fields != null);
+    const scope: Scope = {};
+    if (options.projectScope) {
+        scope.project = options.projectScope._ref;
+    }
 
     const resp = await getRallyAPI(store.getCredentials()).query({
         type: type,
@@ -99,11 +113,7 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
         //    order: 'Rank', // TODO-mrc
         fetch: fields,
         query: options.query,
-        scope: {
-            //        project: '/project/2345' //specify to query a specific project
-            //        up: false //true to include parent project results, false otherwise
-            //down: true //true to include child project results, false otherwise
-        },
+        scope: scope,
         order: options.order,
         requestOptions: {
             qs: options.kwargs || {}
