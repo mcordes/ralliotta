@@ -3,7 +3,7 @@
 
 - fix this warning - Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "isExpanded" 
 
-- Finish Kanban (backlog, previous sprint and current sprint for now? with previous spring collapsed)
+- Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
 - Add project drop down to list page / my items
     - default to my default project on the list page and no / all projects on my items?
