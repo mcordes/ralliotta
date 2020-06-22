@@ -16,6 +16,7 @@
 
 - Add new user story / defect 
     - adam says just the following fields:
+       - project drop down defaulted to user's current project?
        - Name (aka Title)
        - Attachments
        - Description
