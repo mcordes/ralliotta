@@ -11,3 +11,5 @@ Rally
 * Schema for cashstar project - https://rally1.rallydev.com/slm/schema/v2.0/project/353652948212/b539c70b2e971ff9e203e094e0b21ee1
 * https://github.com/RallyTools/rally-node/wiki/User-Guide
 
+* https://knowledge.broadcom.com/external/article/131214/rally-wsapi-how-to-groupby-your-wsapi-i.html      <-- this is good read more of this site. It's useful info that's not in their documentation
+
