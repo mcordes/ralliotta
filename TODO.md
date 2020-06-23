@@ -1,10 +1,6 @@
 
 ## TODO next:
 
-
-- fix this warning - Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "isExpanded" 
-    - This is the same as: Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. 
-
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
 - Add project drop down to list page / my items
@@ -46,6 +42,15 @@
     - ~~Maybe also provide a way to filter to artifacts owned by my user~~
 - ~~make search by id case insensitive and use contains rather than exact equal~~
 - ~~BUG : handle items with null iteration on details page (and null any other field there too)~~
+
+- ~fix this warning - Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "isExpanded" ~
+    - ~This is the same as: Fix @Prop vs @Propsync warnings. There's one one on the expandable thingey. Click it and see. Also EditableSelect has a few warnings. ~
+   - ~Eureka! I found it. The rules seem to be:~
+   - ~1. use Prop (not PropSync - until we figure out it's secrets) (e.g. showXX)~
+   - ~2. Then in the view have a separate data property (e.g. isShowXX) set from the Prop value in created()~
+   - ~3. Then just use the data attribute and never touch the Prop again~
+~
+
 
 
 ## Future:

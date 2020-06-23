@@ -16,7 +16,7 @@
 
 
 <script lang="ts">
-    import {Component, Prop, PropSync, Vue} from 'vue-property-decorator';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
 
     @Component
     export default class ExpandableSection extends Vue {
@@ -24,7 +24,13 @@
         title!: string;
 
         @Prop()
+        expanded!: boolean;
+
         isExpanded = false;
+
+        created() {
+            this.isExpanded = this.expanded || false;
+        }
 
         toggleExpanded() {
             this.isExpanded = !this.isExpanded;

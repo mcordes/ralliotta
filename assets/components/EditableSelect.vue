@@ -34,10 +34,11 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
+    import {Component, Vue, Prop} from 'vue-property-decorator';
     import {Ref} from "../types/Ref";
     import {SelectOption} from "../types/SelectOption";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
+    import {toStringOrBlank} from "../utils/util";
 
     @Component
     export default class EditableSelect extends Vue {
@@ -45,9 +46,8 @@
         @Prop()
         item!: Ref;
 
-        //@PropSync('value', { type: String })
         @Prop()
-        value!: string;
+        initialValue!: string | Ref | null;
 
         @Prop()
         options!: SelectOption[];
@@ -64,6 +64,7 @@
         errorMessage = '';
         isEdit = false;
         selectedOptionLabel = '';
+        value = "";
 
         updateSelectedOptionLabel() {
             const selectedOption = this.options.find(o => o.value === this.value);
@@ -73,6 +74,7 @@
         }
 
         created() {
+            this.value = this.isRef(this.initialValue) ? (this.initialValue as Ref)._ref : toStringOrBlank(this.initialValue);
             this.updateSelectedOptionLabel();
 
             if (!this.noBlankOption) {
@@ -94,6 +96,11 @@
 
         cancel() {
             this.isEdit = false;
+        }
+
+        // TODO-mrc: is there a better way to test that an object matches an interface?
+        isRef(obj: any) {
+            return obj && typeof(obj) == 'object' && '_ref' in obj;
         }
     };
 </script>

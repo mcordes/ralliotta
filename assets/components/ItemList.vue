@@ -6,7 +6,7 @@
             </h2>
 
             <div>
-                <ExpandableSection v-bind:isExpanded="expandSearchFilters">
+                <ExpandableSection v-bind:expanded="expandSearchFilters">
                     <template slot="header">
                         [Search filters]
                     </template>
@@ -65,7 +65,7 @@
 
 
 <script lang="ts">
-    import {Component, Prop, PropSync, Vue, Watch} from "vue-property-decorator";
+    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
     import {fetchListOfItems, ListOptions, queryUtils} from "../utils/rally-util";
@@ -91,7 +91,7 @@
         @Prop()
         showMyItemsOnly!: boolean;
 
-        @PropSync("backlog")
+        @Prop()
         backlogOnly!: boolean;
 
         @Prop()

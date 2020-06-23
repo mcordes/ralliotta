@@ -3,12 +3,12 @@
         <div v-if="isReady">
             <h2>
                 <span class="item-id-header">{{ item.FormattedID }} -</span>
-                <EditableText fieldName="Name" v-bind:value="item.Name" v-bind:item="item"/>
+                <EditableText fieldName="Name" v-bind:initialValue="item.Name" v-bind:item="item"/>
             </h2>
 
             <div class="item-summary-wrapper">
                 <div class="item-description">
-                    <EditableTextArea v-bind:value="item.Description" v-bind:fieldName="'Description'" v-bind:item="item"/>
+                    <EditableTextArea v-bind:initialValue="item.Description" v-bind:fieldName="'Description'" v-bind:item="item"/>
                 </div>
 
                 <div class="item-fields">
@@ -24,7 +24,7 @@
                                     <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
                                 </div>
 
-                                <EditableSelect v-bind:fieldName="'Owner'" v-bind:value="item.Owner ? item.Owner._ref : ''"
+                                <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
                                                 v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
 
                             </div>
@@ -38,12 +38,12 @@
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'Iteration'" v-bind:value="item.Iteration ? item.Iteration._ref : ''"
+                            <EditableSelect v-bind:fieldName="'Iteration'" v-bind:initialValue="item.Iteration"
                                             v-bind:item="item" v-bind:options="iterationOptions" v-if="iterationOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'Release'" v-bind:value="item.Release ? item.Release._ref: ''"
+                            <EditableSelect v-bind:fieldName="'Release'" v-bind:initialValue="item.Release"
                                             v-bind:item="item" v-bind:options="releaseOptions" v-if="releaseOptions.length > 0"/>
                         </div>
 
@@ -62,13 +62,13 @@
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:value="item.ScheduleState"
+                            <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:initialValue="item.ScheduleState"
                                             v-bind:item="item" v-bind:options="scheduleStateOptions" v-bind:noBlankOption="true"
                                             v-if="scheduleStateOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'FlowState'" v-bind:value="item.FlowState ? item.FlowState._ref: ''"
+                            <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
                                             v-bind:item="item" v-bind:options="flowStateOptions" v-bind:noBlankOption="true"
                                             v-if="flowStateOptions.length > 0"/>
                         </div>

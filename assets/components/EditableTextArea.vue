@@ -1,8 +1,9 @@
 <template>
     <div>
         <div v-if="isEdit">
+
+            <!-- TODO-mrc: what's with config here, this isn't set and causes some warnings -->
             <md-field>
-                <!-- <md-textarea v-model="value" required/> -->
                 <froala :tag="'textarea'" :config="config" v-model="value" required></froala>
             </md-field>
 
@@ -25,7 +26,7 @@
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import store from "../store";
     import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
-    import {showErrorToast, showSuccessToast} from "../utils/util";
+    import {showErrorToast, showSuccessToast, toStringOrBlank} from "../utils/util";
     // @ts-ignore
     import VueFroala from 'vue-froala-wysiwyg';
     import {updateSingleItemAndShowToast} from "../utils/component-util";
@@ -38,12 +39,18 @@
         item!: Ref;
 
         @Prop()
-        value!: any;
+        initialValue!: any;
 
         @Prop()
         fieldName!: string;
+
         errorMessage = '';
         isEdit = false;
+        value = '';
+
+        created() {
+            this.value = toStringOrBlank(this.initialValue);
+        }
 
         async submit() {
             this.errorMessage = '';
