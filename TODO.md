@@ -55,6 +55,8 @@
 - ~Add project drop down to list page / my items~
     - ~default to my default project on the list page and no / all projects on my items?~
 
+- ~Take user back to login page when session token expires (probably just need to set store.clearUser())~
+    ? ~Amaybe go the lazy way and just watch for 401s. If we get one take them to the login page?~
 
 
 ## Future:
@@ -79,9 +81,6 @@
 - implement @username lookups and notifications in comments and description
    - maybe add users as watchers of the item (if possible)
 - Monitor when session token will expire and warn user before hand
-- Take user back to login page when session token expires (probably just need to set store.clearUser())
-    ? maybe go the lazy way and just watch for 401s. If we get one take them to the login page?
-
 - SSO - https://stackoverflow.com/questions/21055043/how-to-sso-using-rally-restapi-dll/22102310#22102310
 
   
