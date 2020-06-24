@@ -13,3 +13,5 @@ Rally
 
 * https://knowledge.broadcom.com/external/article/131214/rally-wsapi-how-to-groupby-your-wsapi-i.html      <-- this is good read more of this site. It's useful info that's not in their documentation
 
+* https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/agile-development-and-management/rally-platform-ca-agile-central/rally/customizing-top/use-apps/use-grid-app-queries/grid-queries.html
+

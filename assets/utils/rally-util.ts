@@ -230,6 +230,9 @@ export async function getReleaseList(projectRef: Ref) {
     return items;
 }
 
+// TODO-mrc: this definitely shouldn't be here. How about a ui-util or something like that?
+// TODO-mrc: maybe add typed selectoption fns there too?
+// TODO-mrc: this shouldn't be async fix me.
 export async function getSelectOptionsFromRefs(items: Ref[]) {
     const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r._refObjectName}; });
     return results;

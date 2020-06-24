@@ -24,7 +24,14 @@
                             </div>
 
                             <div class="filter-item">
-                                TODO: More fields
+                                <md-field>
+                                    <label>Project</label>
+                                    <md-select v-model="searchProject">
+                                        <md-option v-for="option in projectSelectOptions" v-bind:value="option.value">
+                                            {{ option.label }}
+                                        </md-option>
+                                    </md-select>
+                                </md-field>
                             </div>
                         </div>
                     </template>
@@ -68,11 +75,18 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {fetchListOfItems, ListOptions, queryUtils} from "../utils/rally-util";
+    import {
+        fetchListOfItems,
+        getProjectList,
+        getSelectOptionsFromRefs,
+        ListOptions,
+        queryUtils
+    } from "../utils/rally-util";
     import {showErrorToast} from "../utils/util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
     import {DateTime} from "luxon";
     import ExpandableSection from "./ExpandableSection.vue";
+    import {SelectOption} from "../types/SelectOption";
 
 
     @Component({
@@ -87,6 +101,8 @@
         showOpenItemsOnly = true;
         searchFormattedId = '';
         expandSearchFilters = true;
+        searchProject = '';
+        projectSelectOptions: SelectOption[] = [];
 
         @Prop()
         showMyItemsOnly!: boolean;
@@ -104,6 +120,7 @@
             await this.fetchResults();
         }
 
+        // TODO-mrc: is there a better way to watch these? combine them?
         @Watch("showOpenItemsOnly")
         async onShowOpenItemsOnlyChanged() {
             await this.fetchResults();
@@ -114,9 +131,23 @@
             await this.fetchResults();
         }
 
+        @Watch("searchProject")
+        async onSearchProject() {
+            await this.fetchResults();
+        }
+
+
         async created() {
             this.expandSearchFilters = !this.backlogOnly;
+
+            // TODO-mrc: default to all projects on the my work page?
+            // Default project list to the user's default project
+            const user = this.sharedState.getUser();
+            const projectRef = user.DefaultProject;
+            this.searchProject = projectRef._ref;
+
             await this.fetchResults();
+            this.projectSelectOptions = await getSelectOptionsFromRefs(await getProjectList());
         }
 
         async showMore() {
@@ -133,8 +164,7 @@
 
         protected async fetchResults(startIndex = 1, pageSize = 20) {
             const user = this.sharedState.getUser();
-            const projectRef = user.DefaultProject;
-            let query = queryUtils.where('Project', '=', projectRef);
+            let query = queryUtils.where('Project', '=', this.searchProject);
 
             if (this.showMyItemsOnly) {
                 query = query.and('Owner', '=', user._ref);
@@ -148,7 +178,7 @@
             if (this.backlogOnly) {
                 // TODO-mrc: this doesn't work. Fix me.
                 // TODO-mrc: I also tried "null", and "". What's next?
-                query = queryUtils.where('Iteration', '=', 'null');
+                // query = queryUtils.where('Iteration', '=', 'null');
             }
 
             if (this.searchFormattedId) {
