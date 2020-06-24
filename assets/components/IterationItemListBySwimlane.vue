@@ -37,6 +37,8 @@
         iteration!: Iteration;
 
         async created() {
+            console.assert(this.iteration != null);
+
             const user = store.getUser();
             const projectRef = user.DefaultProject;
             console.assert(!!this.iteration);

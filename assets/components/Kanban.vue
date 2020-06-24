@@ -2,23 +2,25 @@
     <div>
         Kanban
 
-        <div v-if="currentIteration">
-            <h2>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h2>
-            <IterationItemListBySwimlane v-bind:iteration="currentIteration"/>
-        </div>
+        <div v-if="isReady">
+            <div v-if="currentIteration">
+                <h2>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h2>
+                <IterationItemListBySwimlane v-bind:iteration="currentIteration"/>
+            </div>
 
-        <!-- TODO-mrc: maybe don't retrieve the data for this until it's shown? And refresh when shown/hidden? -->
-        <div v-if="previousIteration">
-            <ExpandableSection title="Show previous iteration">
-                <template v-slot:header>
-                    <h2>Previous iteration
-                        {{ previousIteration.StartDate | formatDate }} - {{ previousIteration.EndDate | formatDate }} ({{ previousIteration.Name }})
-                    </h2>
-                </template>
-                <template v-slot:main>
-                    <IterationItemListBySwimlane v-bind:iteration="previousIteration"/>
-                </template>
-            </ExpandableSection>
+            <!-- TODO-mrc: maybe don't retrieve the data for this until it's shown? And refresh when shown/hidden? -->
+            <div v-if="previousIteration">
+                <ExpandableSection title="Show previous iteration">
+                    <template v-slot:header>
+                        <h2>Previous iteration
+                            {{ previousIteration.StartDate | formatDate }} - {{ previousIteration.EndDate | formatDate }} ({{ previousIteration.Name }})
+                        </h2>
+                    </template>
+                    <template v-slot:main>
+                        <IterationItemListBySwimlane v-bind:iteration="previousIteration"/>
+                    </template>
+                </ExpandableSection>
+            </div>
         </div>
 
         <div>
@@ -44,6 +46,7 @@
     export default class Kanban extends Vue {
         currentIteration: any = {};  // TODO-mrc Iteration | undefined;
         previousIteration: any = {}; // TODO-mrc: Iteration | undefined;
+        isReady = false;
 
         async created() {
             const user = store.getUser();
@@ -58,6 +61,7 @@
                     getCurrentIteration(projectRef, now),
                     getPreviousIteration(projectRef, now)
                 ])
+                this.isReady = true;
             }
             catch (e) {
                 showErrorToast({e});

@@ -248,7 +248,7 @@ export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationR
             itemstart: 1,
             includeitems: true,
             itemfetch: ARTIFACT_SEARCH_FIELDS.join(","),
-            itemquery: itemQuery,
+            itemquery: itemQuery.toQueryString(),
             itemorder: "FormattedID",
             // NOTE: using 'artifact' or 'task' doesn't work here. Maybe tasks don't have flow state?
             itemtypes: "defect,hierarchicalRequirement"

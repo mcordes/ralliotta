@@ -15,10 +15,13 @@ interface ErrorToastType {
 export function showErrorToast(options?: ErrorToastType) {
     const msg = options?.msg || "An error occurred";
     console.log(`Error: ${msg}: ${options?.e}`);
-    console.trace();
 
     // @ts-ignore
     Vue.$toast.open({ type: "error", message: msg });
+
+    if (options?.e) {
+        throw options.e;
+    }
 }
 
 

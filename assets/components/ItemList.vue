@@ -146,7 +146,8 @@
             }
 
             if (this.backlogOnly) {
-                query = queryUtils.where('Iteration', '=', null);
+                // TODO-mrc: null?
+                query = queryUtils.where('Iteration', '=', '');
             }
 
             if (this.searchFormattedId) {
@@ -167,7 +168,7 @@
                 this.totalRecords = results.totalRecords;
             }
             catch(e) {
-                showErrorToast();
+                showErrorToast({e});
             }
         }
     };
