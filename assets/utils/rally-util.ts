@@ -244,7 +244,7 @@ export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationR
         query,
         kwargs: {
             compact: false,
-            itempagesize: 5,
+            itempagesize: 50,
             itemstart: 1,
             includeitems: true,
             itemfetch: ARTIFACT_SEARCH_FIELDS.join(","),
