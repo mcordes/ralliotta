@@ -41,3 +41,8 @@ export function toStringOrBlank(value: any) {
     }
     return value.toString();
 }
+
+export function isRef(obj: any) {
+    // Return true if obj looks (vaguely) like a Ref type
+    return obj && obj._ref;
+}

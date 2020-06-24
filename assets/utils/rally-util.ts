@@ -205,7 +205,7 @@ export async function getProjectList() {
     return items;
 }
 
-export async function getIterationList(projectRef: Ref) {
+export async function getIterationList(projectRef: Ref | string) {
     const query = queryUtils.where('Project', '=', projectRef);
     const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
         pageSize: 100,
@@ -216,7 +216,7 @@ export async function getIterationList(projectRef: Ref) {
     return items;
 }
 
-export async function getReleaseList(projectRef: Ref) {
+export async function getReleaseList(projectRef: Ref | string) {
     const query = queryUtils.where('Project', '=', projectRef);
 
     // TODO-mrc: ordering?
@@ -292,7 +292,7 @@ export async function getPreviousIteration(projectRef: Ref, now: DateTime) {
     return items[0];
 }
 
-export async function getProjectTeamMembers(projectRef: Ref, user: User) {
+export async function getProjectTeamMembers(projectRef: Ref | string, user: User) {
     // https://rally1.rallydev.com/slm/webservice/v2.0/project/XXX/TeamMembers
     const projectId = refUtils.getId(projectRef);
     const typeStr = `project/${projectId}/TeamMembers`;

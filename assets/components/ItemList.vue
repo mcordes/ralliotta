@@ -25,28 +25,68 @@
 
                             <div class="filter-item">
                                 <md-field>
+                                    <label>Text search</label>
+                                    <md-input v-model="searchText"/>
+                                </md-field>
+                            </div>
+
+                            <div class="filter-item">
+                                <!-- TODO-mrc: make reusable SelectInput component for this. The only trick
+                                   is how to get v-model to work in the component and still bubble the changes
+                                   up to us. PropSync? This looks promising:
+                                   https://stackoverflow.com/questions/47311936/v-model-and-child-components
+                                   -->
+                                <md-field>
                                     <label>Project</label>
                                     <md-select v-model="searchProject">
+                                        <md-option value="">-- No value --</md-option>
                                         <md-option v-for="option in projectSelectOptions" v-bind:value="option.value">
                                             {{ option.label }}
                                         </md-option>
                                     </md-select>
                                 </md-field>
                             </div>
+
+                            <div class="filter-item">
+                                <md-field>
+                                    <label>Assignee</label>
+                                    <md-select v-model="searchAssignee">
+                                        <md-option value="">-- No value --</md-option>
+                                        <md-option v-for="option in assigneeSelectOptions" v-bind:value="option.value">
+                                            {{ option.label }}
+                                        </md-option>
+                                    </md-select>
+                                </md-field>
+                            </div>
+
+                            <div class="filter-item">
+                                <md-field>
+                                    <label>Release</label>
+                                    <md-select v-model="searchRelease">
+                                        <md-option value="">-- No value --</md-option>
+                                        <md-option v-for="option in releaseSelectOptions" v-bind:value="option.value">
+                                            {{ option.label }}
+                                        </md-option>
+                                    </md-select>
+                                </md-field>
+                            </div>
+
+                            <div class="filter-item">
+                                <md-field>
+                                    <label>Iteration</label>
+                                    <md-select v-model="searchIteration">
+                                        <md-option value="">-- No value --</md-option>
+                                        <md-option v-for="option in iterationSelectOptions" v-bind:value="option.value">
+                                            {{ option.label }}
+                                        </md-option>
+                                    </md-select>
+                                </md-field>
+                            </div>
+
                         </div>
                     </template>
                 </ExpandableSection>
             </div>
-
-            <ul style="display:none;">
-                <li>TODO: filter by schedule state / flow state?</li>
-                <li>TODO: assigned to me / user</li>
-                <li>TODO: search title / body? for some text</li>
-                <li>TODO-Caleb: Make this as simple as possible (for now it's just more visually appealing)</li>
-                <li>TODO: project (defaulted to default project)</li>
-                <li>TODO: iteration / release</li>
-                <li>TODO: sort by last updated - descending / ascending </li>
-            </ul>
 
             <table class="items-table">
                 <tr class="md-table-row">
@@ -76,18 +116,16 @@
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
     import {
-        fetchListOfItems,
-        getProjectList,
+        fetchListOfItems, getIterationList,
+        getProjectList, getProjectTeamMembers, getReleaseList,
         getSelectOptionsFromRefs,
         ListOptions,
         queryUtils
     } from "../utils/rally-util";
     import {showErrorToast} from "../utils/util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
-    import {DateTime} from "luxon";
     import ExpandableSection from "./ExpandableSection.vue";
     import {SelectOption} from "../types/SelectOption";
-
 
     @Component({
         components: {ExpandableSection, ItemSummary},
@@ -101,8 +139,15 @@
         showOpenItemsOnly = true;
         searchFormattedId = '';
         expandSearchFilters = true;
+        searchText = '';
         searchProject = '';
+        searchAssignee = '';
+        searchRelease = '';
+        searchIteration = '';
         projectSelectOptions: SelectOption[] = [];
+        assigneeSelectOptions: SelectOption[] = [];
+        releaseSelectOptions: SelectOption[] = [];
+        iterationSelectOptions: SelectOption[] = [];
 
         @Prop()
         showMyItemsOnly!: boolean;
@@ -120,7 +165,7 @@
             await this.fetchResults();
         }
 
-        // TODO-mrc: is there a better way to watch these? combine them?
+        // TODO-mrc: is there a better way to watch these? combined maybe?
         @Watch("showOpenItemsOnly")
         async onShowOpenItemsOnlyChanged() {
             await this.fetchResults();
@@ -133,9 +178,29 @@
 
         @Watch("searchProject")
         async onSearchProject() {
+            await this.updateProjectSelectOptions();
             await this.fetchResults();
         }
 
+        @Watch("searchAssignee")
+        async onSearchAssignee() {
+            await this.fetchResults();
+        }
+
+        @Watch("searchRelease")
+        async onSearchRelease() {
+            await this.fetchResults();
+        }
+
+        @Watch("searchIteration")
+        async onSearchIteration() {
+            await this.fetchResults();
+        }
+
+        @Watch("searchText")
+        async onSearchTextChanged() {
+            await this.fetchResults();
+        }
 
         async created() {
             this.expandSearchFilters = !this.backlogOnly;
@@ -148,6 +213,14 @@
 
             await this.fetchResults();
             this.projectSelectOptions = await getSelectOptionsFromRefs(await getProjectList());
+            await this.updateProjectSelectOptions();
+        }
+
+        async updateProjectSelectOptions() {
+            const user = this.sharedState.getUser();
+            this.assigneeSelectOptions = await getSelectOptionsFromRefs(await getProjectTeamMembers(this.searchProject, user));
+            this.releaseSelectOptions = await getSelectOptionsFromRefs(await getReleaseList(this.searchProject));
+            this.iterationSelectOptions = await getSelectOptionsFromRefs(await getIterationList(this.searchProject));
         }
 
         async showMore() {
@@ -185,6 +258,27 @@
                 query = query.and('FormattedID', 'contains', this.searchFormattedId);
             }
 
+            if (this.searchText) {
+                // TOOD-mrc: paranthesis are sure to be wrong here
+                // TODO-mrc: the plan is to match text in either of these
+                query = query.and('Name', 'contains', this.searchText);
+
+                // TODO-mrc:
+                // query = query.or('Description', 'contains', this.searchText);
+            }
+
+            if (this.searchRelease) {
+                query = query.and('Release', '=', this.searchRelease);
+            }
+
+            if (this.searchIteration) {
+                query = query.and('Iteration', '=', this.searchIteration);
+            }
+
+            if (this.searchAssignee) {
+                query = query.and('Owner', '=', this.searchAssignee);
+            }
+
             // clear all results if we're showing the first page worth of data
             if (startIndex === 1) {
                 this.items = [];
@@ -193,7 +287,15 @@
             }
 
             try {
-                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {query, startIndex, pageSize});
+                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {
+                    query,
+                    startIndex,
+                    pageSize,
+                    kwargs: {
+                        // TODO-mrc: document me (and use this elsewhere?)
+                        types: "hierarchicalRequirement,defect"
+                    }
+                });
                 this.items.push(...results.items);
                 this.hasMoreRecords = results.hasMoreResults;
                 this.totalRecords = results.totalRecords;

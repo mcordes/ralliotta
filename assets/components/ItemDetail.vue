@@ -186,6 +186,7 @@
             const user = store.getUser();
             const projectRef = user.DefaultProject;
 
+            // TODO-mrc: there's a similar block in ItemList. Clean that up.
             // TODO-mrc: maybe set the properties as part of the callback so they get set when returned rather then when all return
             try{
                 [this.flowStateOptions, this.iterationOptions, this.releaseOptions, this.assigneeOptions, this.activityItems] = await Promise.all([
