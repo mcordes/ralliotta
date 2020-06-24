@@ -25,6 +25,8 @@
 
 - Fix search by iteration on item list page
 
+- Text search fields on list page should only lookup on change not on every key press (or maybe after a certain # of letters or time?
+
 
 - ~~change assignee on detail page to a user or no one~~
 - ~~verify select boxes save on details page~~

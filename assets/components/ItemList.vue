@@ -209,11 +209,15 @@
             // Default project list to the user's default project
             const user = this.sharedState.getUser();
             const projectRef = user.DefaultProject;
+
+            // TODO-mrc: this triggers the onSearchProject watch. weird.
             this.searchProject = projectRef._ref;
 
-            await this.fetchResults();
+            // Fetch is already run in the onSearchProject watch. Fix me
+            // await this.fetchResults();
+            // await this.updateProjectSelectOptions();
+
             this.projectSelectOptions = await getSelectOptionsFromRefs(await getProjectList());
-            await this.updateProjectSelectOptions();
         }
 
         async updateProjectSelectOptions() {
