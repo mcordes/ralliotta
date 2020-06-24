@@ -23,16 +23,7 @@
 
 - comments - wysiwyg editor and display (like Description field on detail page) 
 
-- Add project drop down to list page / my items
-    - default to my default project on the list page and no / all projects on my items?
-
-- Add search filters to ItemList page 
-  - Project
-  - Owner (assignee)
-  - Name / Description
-  - Release
-  - Iteration
-  - ScheduleState / FlowState? 
+- Fix search by iteration on item list page
 
 
 - ~~change assignee on detail page to a user or no one~~
@@ -50,7 +41,17 @@
    - ~1. use Prop (not PropSync - until we figure out it's secrets) (e.g. showXX)~
    - ~2. Then in the view have a separate data property (e.g. isShowXX) set from the Prop value in created()~
    - ~3. Then just use the data attribute and never touch the Prop again~
-~
+
+- ~Add search filters to ItemList page ~
+  - ~Project~
+  - ~Owner (assignee)~
+  - ~Name / Description~
+  - ~Release~
+  - ~Iteration~
+  - ~ScheduleState / FlowState? ~
+
+- ~Add project drop down to list page / my items~
+    - ~default to my default project on the list page and no / all projects on my items?~
 
 
 
