@@ -146,8 +146,9 @@
             }
 
             if (this.backlogOnly) {
-                // TODO-mrc: null?
-                query = queryUtils.where('Iteration', '=', '');
+                // TODO-mrc: this doesn't work. Fix me.
+                // TODO-mrc: I also tried "null", and "". What's next?
+                query = queryUtils.where('Iteration', '=', 'null');
             }
 
             if (this.searchFormattedId) {

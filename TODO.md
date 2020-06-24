@@ -3,8 +3,7 @@
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
-- Add project drop down to list page / my items
-    - default to my default project on the list page and no / all projects on my items?
+- Fix backlog query - should just show items with a null iteration. 
 
 - List page - sort by a few fields? user, created, last updated. Anything else?
 
@@ -24,13 +23,15 @@
 
 - comments - wysiwyg editor and display (like Description field on detail page) 
 
+- Add project drop down to list page / my items
+    - default to my default project on the list page and no / all projects on my items?
+
 - Add search filters to ItemList page 
   - Project
   - Owner (assignee)
   - Name / Description
   - Release
   - Iteration
-  - Milestone?
   - ScheduleState / FlowState? 
 
 
