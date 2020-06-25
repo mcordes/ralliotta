@@ -1,28 +1,28 @@
 <template>
     <div>
-        <div v-for="comment in comments">
+        <div class="activity-wrapper">
+            <div class="comment" v-for="comment in comments">
 
-            <!-- TODO-mrc: this won't work, comment.Artifact.FormattedID isn't filled in. new endpoint for ref?
-            <router-link :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
-            -->
+                <!-- TODO-mrc: this won't work, comment.Artifact.FormattedID isn't filled in. new endpoint for ref?
+                <router-link :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
+                -->
 
-            <div class="comment-header">
-                <div class="comment-date">
-                    <TimeSinceDate v-bind:date="comment.CreationDate"/>
-                </div>
-                <div class="comment-author">
-                    <div class="avatar-wrapper">
-                        <Avatar v-bind:user="comment.User" v-bind:size="30"/>
+                <div class="comment-header">
+                    <div class="comment-date">
+                        <TimeSinceDate v-bind:date="comment.CreationDate"/>
                     </div>
-                    {{ comment.User._refObjectName }} said:
+                    <div class="comment-author">
+                        <div class="avatar-wrapper">
+                            <Avatar v-bind:user="comment.User" v-bind:size="30"/>
+                        </div>
+                        {{ comment.User._refObjectName }} said:
+                    </div>
                 </div>
-            </div>
-            <div class="comment-details">
-                {{ comment.Text }}
+                <div class="comment-details" v-html="comment.Text"></div>
             </div>
         </div>
 
-        <div v-if="hasMoreRecords" style="text-align: center;">
+        <div v-if="hasMoreRecords" class="show-more-wrapper">
             <md-button class="md-primary md-raised" @click="showMore" :disabled="isLoading">Show more</md-button>
         </div>
     </div>
@@ -107,5 +107,35 @@
 </script>
 
 
-<style scoped>
+<style lang="css" scoped>
+    .activity-wrapper div:last-child:after {
+        width: 0;
+        height: 0;
+    }
+
+    .comment {
+        margin: 20px 0;
+    }
+
+    .comment:before,
+    .comment:after {
+        bottom: -21px;
+        height: 20px;
+    }
+
+    .attachment:before,
+    .add-comment:before,
+    .comment:before {
+        top: -21px;
+    }
+
+    .show-more-wrapper {
+        text-align: center;
+        max-width: 1000px;
+    }
+</style>
+
+<style lang="css">
+    .comment-details p:first-child { margin-top: 0; }
+    .comment-details p:last-child { margin-bottom: 0; }
 </style>

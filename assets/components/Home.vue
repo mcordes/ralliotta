@@ -6,13 +6,11 @@
             extraordinary day! May your Rally woes be (slightly) reduced!
         </p>
 
-        <br>
-        <br>
-        <br>
-
-        <h3>Recent comments for project {{ projectName }}</h3>
-        <div>
-            <RecentCommentsForProject/>
+        <div class="recent-activity">
+            <h3>Recent comments for project {{ projectName }}</h3>
+            <div>
+                <RecentCommentsForProject/>
+            </div>
         </div>
 
     </div>
@@ -39,8 +37,13 @@
 
 </script>
 
-<style scoped>
+<style lang="css" scoped>
+    .recent-activity {
+        margin-top: 60px;
+    }
 </style>
 
-
-
+<style lang="css">
+    .recent-activity .comment-details p:first-child { margin-top: 0; }
+    .recent-activity .comment-details p:last-child { margin-bottom: 0; }
+</style>

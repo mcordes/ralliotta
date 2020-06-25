@@ -14,19 +14,9 @@
                 <div class="item-fields">
                     <div>
                         <div class="item-field">
-                            <!-- Assignee: -->
-
-                            <!-- TODO-mrc: how will we change this when the select below changes? do we need to add .sync?
-                                Maybe also hide then when changing assignee?
-                            -->
                             <div v-if="item.Owner != null">
-                                <div class="avatar-wrapper">
-                                    <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
-                                </div>
-
                                 <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
                                                 v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
-
                             </div>
                         </div>
 
@@ -142,7 +132,6 @@
     import EditableSelect from "./EditableSelect.vue";
     import {SelectOption} from "../types/SelectOption";
     import TimeSinceDate from "./TimeSinceDate.vue";
-    import Avatar from "./Avatar.vue";
     import store from "../store";
     import {showErrorToast} from "../utils/util";
     import {NotFoundError} from "../exceptions";
@@ -155,7 +144,7 @@
     @Component({
         components: {
             TimeSinceDate, EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment,
-            ExpandableSection, AttachmentSummary, EditableSelect, Avatar},
+            ExpandableSection, AttachmentSummary, EditableSelect},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;

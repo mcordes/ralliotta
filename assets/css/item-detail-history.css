@@ -1,6 +1,9 @@
 /* History / revision / attachment / comment items */
 /* first and last item in activity wrapper shouldn't have a preceding history line */
+.activity-wrapper > div:first-child,
 .activity-wrapper > div:first-child > div:first-child > div:first-child { margin-top: 0; }
+
+.activity-wrapper > div:first-child:before,
 .activity-wrapper > div:first-child > div:first-child > div:first-child:before,
 .activity-wrapper > div:first-child > div.add-comment:before {
     width: 0;
@@ -100,7 +103,8 @@
 
 .attachment-details,
 .comment-details {
-    padding: 14px 6px 8px;
+    padding: 14px 6px;
+    word-break: break-word;
 }
 /* end history items */
 
