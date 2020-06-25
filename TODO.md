@@ -16,7 +16,11 @@
        - Attachments
        - Description
        - Release (optional) - could just show future released?
-       - Epic / Parent (these two fields have some weird magic together. Adam says you set parent, but somehow that also sets Epic?)
+       - Epic / Parent - popup  with epic search (epic is a type of userstory?)
+       - Maybe double click on item in backlog moves it to current iteration (with confirmation message) and reverse by clicking on item in current sprint?
+       - Success dialog modal with 
+           - link to created item in new window
+           - buttons - create another / take me to it
 
 - Need better searchable combo box for (all?) drop downs on detail page
     - must be mobile friendly too
