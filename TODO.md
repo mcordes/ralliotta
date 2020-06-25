@@ -3,6 +3,8 @@
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
+- The previous iteration on the kanban page is wrong (it's showing the current iteration also)
+
 - Fix backlog query - should just show items with a null iteration. 
 
 - List page - sort by a few fields? user, created, last updated. Anything else?
