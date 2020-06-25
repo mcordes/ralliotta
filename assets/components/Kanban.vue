@@ -1,10 +1,9 @@
 <template>
     <div>
-        Kanban
-
+        <h2>Kanban</h2>
         <div v-if="isReady">
             <div v-if="currentIteration">
-                <h2>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h2>
+                <h3>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h3>
                 <IterationItemListBySwimlane v-bind:iteration="currentIteration"/>
             </div>
 
@@ -12,9 +11,9 @@
             <div v-if="previousIteration">
                 <ExpandableSection title="Show previous iteration">
                     <template v-slot:header>
-                        <h2>Previous iteration
+                        <h3>Previous iteration
                             {{ previousIteration.StartDate | formatDate }} - {{ previousIteration.EndDate | formatDate }} ({{ previousIteration.Name }})
-                        </h2>
+                        </h3>
                     </template>
                     <template v-slot:main>
                         <IterationItemListBySwimlane v-bind:iteration="previousIteration"/>
@@ -71,8 +70,5 @@
 
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 </style>
-
-
-

@@ -10,7 +10,7 @@
         </div>
 
         <div v-if="isEdit">
-            <md-button class="md-raised" @click="submit">Save</md-button>
+            <md-button class="md-primary md-raised" @click="submit">Save</md-button>
             <md-button class="md-raised" @click="cancel">Cancel</md-button>
         </div>
 

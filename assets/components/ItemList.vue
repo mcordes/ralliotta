@@ -8,7 +8,7 @@
             <div>
                 <ExpandableSection v-bind:expanded="expandSearchFilters">
                     <template slot="header">
-                        [Search filters]
+                        Search filters
                     </template>
                     <template slot="main">
                         <div class="search-filters">

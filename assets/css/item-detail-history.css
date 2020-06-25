@@ -29,7 +29,7 @@
 .add-comment:before,
 .attachment:after,
 .comment:after,
-.expandable-section + div:after {
+.activity-wrapper .expandable-section + div:after {
     background: #CCC;
     bottom: -41px;
     content: '';
@@ -103,3 +103,81 @@
     padding: 14px 6px 8px;
 }
 /* end history items */
+
+
+/* Expandable activity toggle */
+.activity-wrapper .expandable-section .toggle-expansion {
+    border: none;
+    height: 10px;
+    left: -15px;
+    margin-top: -5px;
+    opacity: 0.15;
+    position: absolute;
+    top: 50%;
+    transition: 0.15s all ease;
+    transform: rotate(0deg);
+    width: 10px;
+}
+
+.activity-wrapper .expandable-section:hover .toggle-expansion,
+.activity-wrapper .expandable-section.expanded .toggle-expansion { opacity: 1; }
+
+.activity-wrapper .expandable-section .toggle-expansion > span:first-child,
+.activity-wrapper .expandable-section .toggle-expansion > span:last-child {
+    background: #656565;
+    display: block;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    width: 1px;
+}
+
+.activity-wrapper .expandable-section .toggle-expansion > span:last-child {
+    transform: rotate(90deg);
+}
+
+.activity-wrapper .expandable-section.expanded .toggle-expansion {
+    transform: rotate(45deg);
+}
+/* End Expandable activity toggle */
+
+
+/* Expandable activity content */
+.activity-wrapper .expandable-section {
+    cursor: pointer;
+}
+
+.activity-wrapper .expandable-section {
+    border: 1px solid #E2E2E2;
+    color: #555;
+    margin-top: -1px;
+    max-width: 1000px;
+    padding: 0;
+    position: relative;
+}
+
+.activity-wrapper .expandable-section:hover,
+.activity-wrapper .expandable-section.expanded {
+    background: #FFF;
+    border-color: #A9A9A9;
+    border-top-width: 1px;
+    color: #222;
+    z-index: 1;
+}
+
+.activity-wrapper .expandable-section + div {
+    background: #FFF;
+    border: 1px solid #E2E2E2;
+    border-top: none;
+    margin: 0 auto 0 10px;
+    max-width: 980px;
+    padding: 8px 6px;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 0 0 5px 5px;
+}
+
+.activity-wrapper .expandable-section + div:after {
+    left: 10px;
+}
+/* End expandable activity content */

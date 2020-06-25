@@ -1,72 +1,43 @@
+/* Expandable toggle */
+.expandable-section .toggle-expansion {
+    border: 1px solid #333;
+    border-left: none;
+    border-top: none;
+    height: 8px;
+    left: -12px;
+    margin-top: -4px;
+    position: absolute;
+    top: 50%;
+    transform: rotate(-45deg);
+    transition: 0.15s all ease;
+    width: 8px;
+}
+
+.expandable-section .toggle-expansion > span { display: none; }
+
+.expandable-section.expanded .toggle-expansion {
+    margin-top: -6px;
+    transform: rotate(45deg);
+}
+/* End Expandable toggle */
+
+
 /* Expandable content */
 .expandable-section {
     cursor: pointer;
 }
 
 .expandable-section {
-    border: 1px solid #E2E2E2;
     color: #555;
     margin-top: -1px;
-    max-width: 1000px;
+    padding: 2px 5px;
     position: relative;
 }
 
 .expandable-section:hover,
-.expandable-section.expanded {
-    background: #FFF;
-    border-color: #A9A9A9;
-    border-top-width: 1px;
-    color: #222;
-    z-index: 1;
-}
+.expandable-section.expanded { color: #222 }
 
-.expandable-section + div {
-    background: #FFF;
-    border: 1px solid #E2E2E2;
-    border-top: none;
-    margin: 0 auto 0 10px;
-    max-width: 980px;
-    padding: 8px 6px;
-    position: relative;
-    margin-bottom: 20px;
-    border-radius: 0 0 5px 5px;
-}
+.expandable-section + div { padding: 5px 0 0; }
 
-.expandable-section + div:after {
-    left: 10px;
-}
+.expandable-section + div:after { left: 10px; }
 /* End expandable content */
-
-
-/* Expandable toggle */
-.expandable-section .toggle-expansion {
-    height: 10px;
-    left: -15px;
-    margin-top: -5px;
-    opacity: 0.15;
-    position: absolute;
-    top: 50%;
-    transition: 0.15s all ease;
-    width: 10px;
-}
-
-.expandable-section:hover .toggle-expansion,
-.expandable-section.expanded .toggle-expansion { opacity: 1; }
-
-.expandable-section .toggle-expansion > span:first-child,
-.expandable-section .toggle-expansion > span:last-child {
-    background: #656565;
-    height: 100%;
-    left: 50%;
-    position: absolute;
-    width: 1px;
-}
-
-.expandable-section .toggle-expansion > span:last-child {
-    transform: rotate(90deg);
-}
-
-.expandable-section.expanded .toggle-expansion {
-    transform: rotate(45deg);
-}
-/* End Expandable toggle */
