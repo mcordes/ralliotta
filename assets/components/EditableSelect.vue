@@ -22,7 +22,8 @@
         <span class="item-field-content-wrapper" v-else>
             <md-field class="md-has-value">
                 <label>{{ fieldName }}</label>
-                <span>{{ selectedOptionLabel }}</span>
+                <span v-if="selectedOptionLabel">{{ selectedOptionLabel }}</span>
+                <span v-else>&ndash; No Selection &ndash;</span>
             </md-field>
             <md-button class="md-icon-button md-mini md-raised icon-btn-small" title="Edit" @click="edit">
                 <span>&#9998;</span>

@@ -14,10 +14,8 @@
                 <div class="item-fields">
                     <div>
                         <div class="item-field">
-                            <div v-if="item.Owner != null">
-                                <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
-                                                v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
-                            </div>
+                            <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
+                                            v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
                         </div>
 
                         <div class="item-field">
