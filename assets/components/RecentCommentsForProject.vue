@@ -12,6 +12,9 @@
                         <TimeSinceDate v-bind:date="comment.CreationDate"/>
                     </div>
                     <div class="comment-author">
+                        <div class="ticket-id">
+                            <router-link v-bind:title="comment.Artifact.Name" class="item-id" :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
+                        </div>
                         <div class="avatar-wrapper">
                             <Avatar v-bind:user="comment.User" v-bind:size="30"/>
                         </div>
@@ -121,6 +124,11 @@
     .comment:after {
         bottom: -21px;
         height: 20px;
+    }
+
+    .comment .ticket-id {
+        float: left;
+        margin-right: 10px;
     }
 
     .attachment:before,

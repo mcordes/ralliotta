@@ -9,4 +9,4 @@ export interface Comment extends Ref {
     Artifact: Ref;
 }
 
-export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate', 'Artifact'];
+export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate', 'Artifact', 'FormattedID'];
