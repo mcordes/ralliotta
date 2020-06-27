@@ -28,7 +28,6 @@
 
 - comments - wysiwyg editor and display (like Description field on detail page) 
 
-- Fix search by iteration on item list page
 
 - Text search fields on list page should only lookup on change not on every key press (or maybe after a certain # of letters or time?
 
@@ -63,6 +62,7 @@
 - ~Take user back to login page when session token expires (probably just need to set store.clearUser())~
     ? ~Amaybe go the lazy way and just watch for 401s. If we get one take them to the login page?~
 - ~The previous iteration on the kanban page is wrong (it's showing the current iteration also)~
+- ~Fix search by iteration on item list page~
 
 
 ## Future:

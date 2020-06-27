@@ -2,6 +2,7 @@
     <div>
         <div v-if="isEdit">
 
+            <!-- TODO-mrc: use this-             <TextAreaInput v-model="value"/> -->
             <!-- TODO-mrc: what's with config here, this isn't set and causes some warnings -->
             <md-field>
                 <froala :tag="'textarea'" :config="config" v-model="value" required></froala>
@@ -24,15 +25,14 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import store from "../store";
-    import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
-    import {showErrorToast, showSuccessToast, toStringOrBlank} from "../utils/util";
-    // @ts-ignore
-    import VueFroala from 'vue-froala-wysiwyg';
+    import {toStringOrBlank} from "../utils/util";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
     import {Ref} from "../types/Ref";
+    import TextAreaInput from "./TextAreaInput.vue";
 
-    @Component
+    @Component({
+        components: {TextAreaInput}
+    })
     export default class Comment extends Vue {
         // Reference to the item this field is part of
         @Prop()

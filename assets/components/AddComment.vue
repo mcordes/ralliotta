@@ -1,9 +1,7 @@
 <template>
     <div class="add-comment">
-        <md-field>
-            <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"
-                         placeholder="Your comment..."/>
-        </md-field>
+        <TextAreaInput v-model="value" v-bind:maxlength="32768" v-bind:cssClass="'comment-textarea'"
+                       placeholder="Your comment..."/>
 
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}
@@ -26,8 +24,11 @@
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {ActivityItem, toActivityItem} from "../utils/activity-util";
     import {Ref} from "../types/Ref";
+    import TextAreaInput from "./TextAreaInput.vue";
 
-    @Component
+    @Component({
+        components: {TextAreaInput}
+    })
     export default class AddComment extends Vue {
         // Reference to the item we'll attach the comment to
         @Prop()

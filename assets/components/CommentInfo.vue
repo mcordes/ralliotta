@@ -1,9 +1,7 @@
 <template>
     <div class="comment">
         <div v-if="isEdit">
-            <md-field>
-                <md-textarea v-model="text" required maxlength="32768"/>
-            </md-field>
+            <TextAreaInput v-model="text" v-bind:maxlength="32768"/>
 
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
@@ -42,15 +40,14 @@
     import {fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {Comment} from "../types/Comment";
-    // @ts-ignore
-    import VueFroala from 'vue-froala-wysiwyg';
     import {ActivityItem} from "../utils/activity-util";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import {Ref} from "../types/Ref";
     import Avatar from "./Avatar.vue";
+    import TextAreaInput from "./TextAreaInput.vue";
 
     @Component({
-        components: {TimeSinceDate, Avatar},
+        components: {TimeSinceDate, Avatar, TextAreaInput},
     })
     export default class CommentInfo extends Vue {
         // Reference to the item we'll attach the comment to
