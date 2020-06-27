@@ -3,7 +3,6 @@
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
-- The previous iteration on the kanban page is wrong (it's showing the current iteration also)
 
 - Fix backlog query - should just show items with a null iteration. 
 
@@ -63,6 +62,7 @@
 
 - ~Take user back to login page when session token expires (probably just need to set store.clearUser())~
     ? ~Amaybe go the lazy way and just watch for 401s. If we get one take them to the login page?~
+- ~The previous iteration on the kanban page is wrong (it's showing the current iteration also)~
 
 
 ## Future:

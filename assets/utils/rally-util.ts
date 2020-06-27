@@ -280,8 +280,7 @@ export async function getCurrentIteration(projectRef: Ref, now: DateTime) {
 export async function getPreviousIteration(projectRef: Ref, now: DateTime) {
     const dateStr = now.toISO();
     let query = queryUtils.where('Project', '=', projectRef);
-    query = query.and('StartDate', '<=', dateStr);
-    query = query.and('EndDate', '>=', dateStr);
+    query = query.and('EndDate', '<=', dateStr);
 
     const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
         order: "StartDate desc",
