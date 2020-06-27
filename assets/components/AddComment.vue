@@ -1,7 +1,18 @@
 <template>
     <div class="add-comment">
-        <TextAreaInput v-model="value" v-bind:maxlength="32768" v-bind:cssClass="'comment-textarea'"
+
+        <!-- TODO-mrc: fix me
+        <TextAreaInput v-model="text" v-bind:maxlength="32768" v-bind:cssClass="'comment-textarea'"
                        placeholder="Your comment..."/>
+        -->
+
+        <!-- TODO-mrc: with the above the buttons never appear b/c it's either not changing the 'text'
+        property or more likely not reporting it back to us. It seems like PropSync again. Fix me!
+        -->
+        <md-field>
+            <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"
+                placeholder="Your comment..."/>
+        </md-field>
 
         <div v-if="errorMessage" class="errorMessage">
             {{ errorMessage }}

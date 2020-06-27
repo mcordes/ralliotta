@@ -3,6 +3,10 @@
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
+- updating a comment works, but doesn't refresh the comment on the page
+
+- TextAreaInput - fix me - I don't seem to understand PropSync and how to have components talk to eachother using it. It's not propagating the changes back to parent views. Should it? Am I using it incorrectly or does my understanding of what it does not match reality?
+
 
 - Fix backlog query - should just show items with a null iteration. 
 

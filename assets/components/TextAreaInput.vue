@@ -1,9 +1,7 @@
 <template>
     <div>
         <md-field>
-            <froala :tag="'textarea'" :config="config" v-model="modelValue" required></froala>
-
-
+            <froala :tag="'textarea'" :config="config" v-model="modelValue" required :class="cssClass"></froala>
         </md-field>
     </div>
 </template>

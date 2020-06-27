@@ -1,7 +1,15 @@
 <template>
     <div class="comment">
         <div v-if="isEdit">
+
+            <!-- TODO-mrc: fix me
             <TextAreaInput v-model="text" v-bind:maxlength="32768"/>
+            -->
+
+            <md-field>
+                <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"
+                             placeholder="Your comment..."/>
+            </md-field>
 
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
