@@ -111,11 +111,10 @@ Vue.filter("timeSince", function (value: string | Date | DateTime) {
 Vue.config.errorHandler = function (err, vm, info) {
     // Show the 404 page if we've catch a NotFoundError
     if (err instanceof NotFoundError) {
-        // TODO-mrc: does it need to change the URL?
         vm.$router.push("/404");
     }
 
-    // Check for a 401 response from rally (by looking for the weird message request (using by rally's lib)
+    // Check for a 401 response from rally (by looking for the weird message request (used by rally's lib)
     // returns when it gets a 401. If we see it assume the token is no good and logout.
     if (err.message === "Error: no auth mechanism defined") {
         store.clearUser();
