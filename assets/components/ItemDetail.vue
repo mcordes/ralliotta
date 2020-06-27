@@ -49,11 +49,13 @@
                             Tasks: {{ item.Tasks.Count }}
                         </div>
 
+                        <!-- TODO-mrc: schedule state is changed when you change the flow state. Seems redundant, let's think about removing it
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:initialValue="item.ScheduleState"
                                             v-bind:item="item" v-bind:options="scheduleStateOptions" v-bind:noBlankOption="true"
                                             v-if="scheduleStateOptions.length > 0"/>
                         </div>
+                        -->
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
