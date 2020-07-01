@@ -5,6 +5,8 @@
 
 - updating a comment works, but doesn't refresh the comment on the page
 
+- adding a new comment didn't create a new empty box to add a future comment in
+
 - TextAreaInput - fix me - I don't seem to understand PropSync and how to have components talk to eachother using it. It's not propagating the changes back to parent views. Should it? Am I using it incorrectly or does my understanding of what it does not match reality?
 
 
@@ -71,6 +73,7 @@
 
 ## Future:
 
+- catch js errors in the app and report them back to us?
 
 - Have current iteration / release preselected when on detail page when selecting a value from the drop down and there is no existing value. Also maybe hide old iterations / releases or sort them differently or in a different color? 
 
