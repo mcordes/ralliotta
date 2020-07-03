@@ -12,7 +12,6 @@
 
 - Fix backlog query - should just show items with a null iteration. 
 
-- List page - sort by a few fields? user, created, last updated. Anything else?
 
 - Add / remove (?) attachment on the detail page 
 
@@ -69,6 +68,7 @@
     ? ~Amaybe go the lazy way and just watch for 401s. If we get one take them to the login page?~
 - ~The previous iteration on the kanban page is wrong (it's showing the current iteration also)~
 - ~Fix search by iteration on item list page~
+- ~~List page - sort by a few fields? user, created, last updated. Anything else?~~
 
 
 ## Future:
