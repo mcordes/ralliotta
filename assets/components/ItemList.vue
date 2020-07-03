@@ -92,11 +92,17 @@
                 <tr class="md-table-row">
                     <th class="md-table-head">ID</th>
                     <th class="md-table-head">Title</th>
-                    <th class="md-table-head">Assignee</th>
+                    <th class="md-table-head">
+                        <Sortable v-bind:field="'Owner'" v-model="sortOrder">Assignee</Sortable>
+                    </th>
                     <th class="md-table-head">Reporter</th>
                     <th class="md-table-head">Status</th>
-                    <th class="md-table-head">Created</th>
-                    <th class="md-table-head">Last Updated</th>
+                    <th class="md-table-head">
+                        <Sortable v-bind:field="'CreationDate'" v-model="sortOrder">Created</Sortable>
+                    </th>
+                    <th class="md-table-head">
+                        <Sortable v-bind:field="'LastUpdateDate'" v-model="sortOrder">Last Updated</Sortable>
+                    </th>
                 </tr>
 
                 <ItemSummary v-for="item in items" v-bind:item="item"></ItemSummary>
@@ -115,11 +121,11 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
+    import Sortable from "./Sortable.vue";
     import {
         fetchListOfItems, getIterationList,
         getProjectList, getProjectTeamMembers, getReleaseList,
         getSelectOptionsFromRefs,
-        ListOptions,
         queryUtils
     } from "../utils/rally-util";
     import {showErrorToast} from "../utils/util";
@@ -128,7 +134,7 @@
     import {SelectOption} from "../types/SelectOption";
 
     @Component({
-        components: {ExpandableSection, ItemSummary},
+        components: {ExpandableSection, ItemSummary, Sortable},
     })
     export default class ItemList extends Vue {
         items: any[] = [];
@@ -139,6 +145,7 @@
         showOpenItemsOnly = true;
         searchFormattedId = '';
         expandSearchFilters = true;
+        sortOrder = 'LastUpdateDate DESC';
         searchText = '';
         searchProject = '';
         searchAssignee = '';
@@ -173,6 +180,12 @@
 
         @Watch("searchFormattedId")
         async onSearchFormattedIdChanged() {
+            await this.fetchResults();
+        }
+
+        @Watch("sortOrder")
+        async onSortOrderChanged() {
+            console.log("Sort order changed!");
             await this.fetchResults();
         }
 
@@ -295,6 +308,7 @@
                     query,
                     startIndex,
                     pageSize,
+                    order: this.sortOrder,
                     kwargs: {
                         // TODO-mrc: document me (and use this elsewhere?)
                         types: "hierarchicalRequirement,defect"
