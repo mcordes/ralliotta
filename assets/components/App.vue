@@ -71,6 +71,7 @@
                         showErrorToast({e});
                         console.log("Unable to retrieve current user: " + e  + ": " + e.message);
                     }
+                    throw e;
                 }
             }
         }
