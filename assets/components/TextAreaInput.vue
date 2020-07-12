@@ -1,7 +1,10 @@
 <template>
     <div>
         <md-field>
-            <froala :tag="'textarea'" :config="config" v-model="modelValue" required :class="cssClass"></froala>
+             <froala :tag="'textarea'" :config="config"
+                    v-bind:value="syncedValue"
+                    v-on:input="$emit('input', $event)"
+                    required :class="cssClass"></froala>
         </md-field>
     </div>
 </template>
@@ -15,12 +18,11 @@
 
     @Component
     export default class TextAreaInput extends Vue {
-        @PropSync("value")
-        modelValue!: string;
+        @PropSync("value", {required: true, type: String })
+        syncedValue!: string;
 
-        // TODO-mrc: include all 3 of these in the html above, but what options does froala have?
         @Prop()
-        maxlength = null;
+        maxlength!: number;
 
         @Prop()
         cssClass!: string;
@@ -28,11 +30,14 @@
         @Prop()
         placeholder!: string;
 
-        config = {}
+        config = {
+        }
 
         created() {
             this.config = {
                 placeholderText: this.placeholder || '',
+                charCounterCount: true,
+                maxlength: this.maxlength
             }
         }
     };

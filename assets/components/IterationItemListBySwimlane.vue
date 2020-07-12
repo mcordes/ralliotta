@@ -19,12 +19,13 @@
 
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
     import {getArtifactsGroupedByFlowState} from "../utils/rally-util";
     import store from "../store";
     import {Artifact} from "../types/Artifact";
     import Avatar from "./Avatar.vue";
     import {Iteration} from "../types/Iteration";
+    import {Ref} from "../types/Ref";
 
     @Component({
         components: {Avatar}
@@ -35,13 +36,22 @@
         @Prop()
         iteration!: Iteration;
 
+        @Prop({required: true})
+        project!: Ref | string;
+
+        @Watch("project")
+        onProjectChanged() {
+            this.load();
+        }
+
         async created() {
             console.assert(this.iteration != null);
-
-            const user = store.getUser();
-            const projectRef = user.DefaultProject;
             console.assert(!!this.iteration);
-            this.groupedArtifacts = await getArtifactsGroupedByFlowState(projectRef, this.iteration);
+            await this.load();
+        }
+
+        async load() {
+            this.groupedArtifacts = await getArtifactsGroupedByFlowState(this.project, this.iteration);
         }
     }
 
@@ -56,8 +66,9 @@
 
     .swimlane {
         background-color: #FFF;
-        border: 1px solid #ECECEC;
+        border: 1px solid #E2E2E2;
         border-radius: 5px;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
         flex: 1;
         margin-right: 15px;
         padding: 0 15px 15px;
@@ -69,7 +80,8 @@
     }
 
     .swimlane:hover {
-        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
+        border-color: #D6D6D6;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
     }
 
     .swimlane ul {
@@ -98,7 +110,8 @@
     }
 
     .item:hover {
-        background-color: #f9fcff;
+        background-color: #E6F1FD;
+        border-color: #A5B7D0;
     }
 
     .item-id {

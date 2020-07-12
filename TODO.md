@@ -1,42 +1,41 @@
 
 ## TODO next:
 
+- ? can we do partial matches when searching by formatted id? do we want to?
+
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
 - updating a comment works, but doesn't refresh the comment on the page
-
-- adding a new comment didn't create a new empty box to add a future comment in
-
-- TextAreaInput - fix me - I don't seem to understand PropSync and how to have components talk to eachother using it. It's not propagating the changes back to parent views. Should it? Am I using it incorrectly or does my understanding of what it does not match reality?
-
-
 - Fix backlog query - should just show items with a null iteration. 
 
-
 - Add / remove (?) attachment on the detail page 
+- add attachments on new item page? (or just send them to the detail page?)
 
-- Add new user story / defect 
-    - adam says just the following fields:
-       - project drop down defaulted to user's current project?
-       - Name (aka Title)
-       - Attachments
-       - Description
-       - Release (optional) - could just show future released?
-       - Epic / Parent - popup  with epic search (epic is a type of userstory?)
-       - Maybe double click on item in backlog moves it to current iteration (with confirmation message) and reverse by clicking on item in current sprint?
-       - Success dialog modal with 
-           - link to created item in new window
-           - buttons - create another / take me to it
-
-- Need better searchable combo box for (all?) drop downs on detail page
-    - must be mobile friendly too
-
-- comments - wysiwyg editor and display (like Description field on detail page) 
+- Text search fields on list page should only lookup on change not on every key press (or maybe after a certain # of letters or time? or just throttle / dequeue them?
 
 
-- Text search fields on list page should only lookup on change not on every key press (or maybe after a certain # of letters or time?
 
 
+- ~~Cancelling a select box selection resets the r/o version, but not the editable version (it still shows the value I selcted before cancelling)~~
+- ~~Detail page doesn't refresh when formatted id is changed in URL~~
+- ~~adding a new comment didn't create a new empty box to add a future comment in~~
+- ~~Need better searchable combo box for (all?) drop downs on detail page~~
+    - ~~must be mobile friendly too~~
+- ~~Add new user story / defect ~~
+    - ~~adam says just the following fields:~~
+       - ~~project drop down defaulted to user's current project?~~
+       - ~~Name (aka Title)~~
+       - ~~Attachments~~
+       - ~~Description~~
+       - ~~Release (optional) - could just show future released?~~
+       - ~~Epic / Parent - popup  with epic search (epic is a type of userstory?)~~
+       - ~~Maybe double click on item in backlog moves it to current iteration (with confirmation message) and reverse by clicking on item in current sprint?~~
+       - ~~Success dialog modal with ~~
+           - ~~link to created item in new window~~
+           - ~~buttons - create another / take me to it~~
+~~
+- ~~TextAreaInput - fix me - I don't seem to understand PropSync and how to have components talk to eachother using it. It's not propagating the changes back to parent views. Should it? Am I using it incorrectly or does my understanding of what it does not match reality?~~
+- ~comments - wysiwyg editor and display (like Description field on detail page)~
 - ~~change assignee on detail page to a user or no one~~
 - ~~verify select boxes save on details page~~
   ~~? why do they show the old value after?~~
@@ -71,7 +70,15 @@
 - ~~List page - sort by a few fields? user, created, last updated. Anything else?~~
 
 
+
 ## Future:
+
+- kanban page improvements
+   - show optional future sprint? 
+   - What if an iteration has the start date of anothers end date?
+   - Have easy way to add backlog items to the current iteration (button with confirmation and way to skip confirmation by holding shift key? and clicking button
+   - start with backlog minimized (unless current sprint has few items?)
+   - show the total story points / iteration (and having count increase as you're adding items from backlog)
 
 - catch js errors in the app and report them back to us?
 

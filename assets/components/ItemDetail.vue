@@ -15,7 +15,7 @@
                     <div>
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
-                                            v-bind:item="item" v-bind:options="assigneeOptions" v-if="assigneeOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchAssigneeList"/>
                         </div>
 
                         <div class="item-field">
@@ -27,12 +27,12 @@
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Iteration'" v-bind:initialValue="item.Iteration"
-                                            v-bind:item="item" v-bind:options="iterationOptions" v-if="iterationOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchIterationList"/>
                         </div>
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Release'" v-bind:initialValue="item.Release"
-                                            v-bind:item="item" v-bind:options="releaseOptions" v-if="releaseOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchReleaseList"/>
                         </div>
 
                         <div class="item-field">
@@ -49,18 +49,9 @@
                             Tasks: {{ item.Tasks.Count }}
                         </div>
 
-                        <!-- TODO-mrc: schedule state is changed when you change the flow state. Seems redundant, let's think about removing it
-                        <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'ScheduleState'" v-bind:initialValue="item.ScheduleState"
-                                            v-bind:item="item" v-bind:options="scheduleStateOptions" v-bind:noBlankOption="true"
-                                            v-if="scheduleStateOptions.length > 0"/>
-                        </div>
-                        -->
-
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
-                                            v-bind:item="item" v-bind:options="flowStateOptions" v-bind:noBlankOption="true"
-                                            v-if="flowStateOptions.length > 0"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchFlowStateList" v-bind:noBlankOption="true"/>
                         </div>
                     </div> <!-- end `item-fields` wrapper -->
                 </div>
@@ -113,12 +104,14 @@
 
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component, Vue, Watch} from 'vue-property-decorator';
     import {
         fetchSingleItemByFormattedID,
-        getFlowStateList, getIterationList, getProjectTeamMembers,
-        getReleaseList,
-        getSelectOptionsFromRefs
+        getSelectOptionsFromRefs,
+        searchFlowStates,
+        searchIterations,
+        searchProjectTeamMembers,
+        searchReleases
     } from "../utils/rally-util";
     import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
@@ -151,13 +144,18 @@
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
         isReady = false;
-        scheduleStateOptions: SelectOption[] = [];
-        flowStateOptions: SelectOption[] = [];
-        iterationOptions: SelectOption[] = [];
-        releaseOptions: SelectOption[] = [];
-        assigneeOptions: SelectOption[] = [];
 
         async created() {
+            await this.loadItem();
+        }
+
+        // NOTE: this is needed so we reload the item on the page when the url changes
+        @Watch("$route")
+        async onRouteChange(to: any, from: any) {
+            await this.loadItem();
+        }
+
+        async loadItem() {
             const formattedID = this.$route.params['formattedID'];
 
             this.item = await fetchItem(formattedID);
@@ -165,32 +163,42 @@
                 throw new NotFoundError(`Unable to find item with id: ${formattedID}`);
             }
 
-            // TODO-mrc: why is this needed? Can't I just check to see if item is null or not above?
-            // It didn't work when I tried. The jist here is I want to show the item right away and wait on the
-            // other async calls
+            // Show item right away when it's ready, then do the other async calls
             this.isReady = true;
 
-            this.scheduleStateOptions = ["Defined", "In-Progress", "Completed", "Accepted"].map(v => {return {value: v}});
-
-            const user = store.getUser();
-            const projectRef = user.DefaultProject;
-
-            // TODO-mrc: there's a similar block in ItemList. Clean that up.
-            // TODO-mrc: maybe set the properties as part of the callback so they get set when returned rather then when all return
             try{
-                [this.flowStateOptions, this.iterationOptions, this.releaseOptions, this.assigneeOptions, this.activityItems] = await Promise.all([
-                    getSelectOptionsFromRefs(await getFlowStateList(projectRef)),
-                    getSelectOptionsFromRefs(await getIterationList(projectRef)),
-                    getSelectOptionsFromRefs(await getReleaseList(projectRef)),
-                    getSelectOptionsFromRefs(await getProjectTeamMembers(projectRef, user)),
-                    getActivityForItem(this.item),
-                ]);
+                this.activityItems = await getActivityForItem(this.item);
             }
             catch (e) {
                 showErrorToast({e});
             }
 
             this.itemFields = Object.keys(this.item);
+        }
+
+        async searchReleaseList(search: string) {
+            return await getSelectOptionsFromRefs(await searchReleases(this.item.Project, search));
+        }
+
+        async searchAssigneeList(search: string) {
+            const user = store.getUser();
+            return await getSelectOptionsFromRefs(await searchProjectTeamMembers(this.item.Project, search, user));
+        }
+
+        async searchIterationList(search: string) {
+            return await getSelectOptionsFromRefs(await searchIterations(this.item.Project, search));
+        }
+
+        async searchFlowStateList(search: string) {
+            return await getSelectOptionsFromRefs(await searchFlowStates(this.item.Project, search));
+        }
+
+        // TODO-mrc: also exists in itemlist. Fixme.
+        getValueFromLabelAndValue(s: string | undefined) {
+            if (!s) {
+                return "";
+            }
+            return s.split("|").slice(-1)[0];
         }
     }
 

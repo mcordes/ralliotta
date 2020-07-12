@@ -13,6 +13,7 @@
                             <router-link to="/list">Search</router-link>
                             <router-link to="/list/my">My work</router-link>
                             <router-link to="/kanban">Kanban</router-link>
+                            <router-link to="/new">New</router-link>
                         </nav>
                     </div>
                     <div class="md-toolbar-section-end">
@@ -42,6 +43,7 @@
     import LoginModal from "./LoginModal.vue";
     import {fetchCurrentUser} from "../utils/user-util";
     import {showErrorToast} from "../utils/util";
+    import {AuthenticationError} from "../exceptions";
 
     @Component({
         components: {LoginModal}
@@ -63,8 +65,12 @@
                     store.setUser(user);
                 }
                 catch(e) {
-                    showErrorToast({e});
-                    console.log("Unable to retrieve current user: " + e  + ": " + e.message);
+                    // NOTE: if we get a 401 back from the service we'll throw an AuthenticationError and that will be
+                    // handled in main.ts
+                    if (!(e instanceof AuthenticationError)) {
+                        showErrorToast({e});
+                        console.log("Unable to retrieve current user: " + e  + ": " + e.message);
+                    }
                 }
             }
         }

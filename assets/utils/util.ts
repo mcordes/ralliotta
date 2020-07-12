@@ -5,7 +5,6 @@ import {DateTime} from "luxon";
 export function showSuccessToast(msg: string) {
     // @ts-ignore
     Vue.$toast.open({ type: "success", message: msg });
-
 }
 
 interface ErrorToastType {

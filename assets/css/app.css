@@ -39,7 +39,7 @@ a:hover { border-color: #222; }
 /* Toolbar / nav items */
 .md-toolbar {
     background-color: #FFF;;
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid #DADADA;
 }
 
 .md-toolbar-row { position: relative; }
@@ -65,6 +65,11 @@ a:hover { border-color: #222; }
 
 .md-toolbar-section-start nav a:hover { background-color: #EEE; }
 
+.md-toolbar-section-start nav a.router-link-exact-active {
+    border-bottom: 1px solid #798faf;
+    color: #333;
+}
+
 .user-img {
     margin: 0 10px;
     max-width: 30px;
@@ -88,9 +93,16 @@ a:hover { border-color: #222; }
 }
 
 
+.md-radio .md-radio-label,
+.radio-field-wrapper > label {
+    top: 0;
+}
+
+
 /* table styles */
 .items-table {
     border-collapse: collapse;
+    margin-top: 15px;
     width: 100%;
 }
 
@@ -177,6 +189,50 @@ a:hover { border-color: #222; }
 .item-field-content-wrapper {
     align-items: center;
     display: flex;
+}
+
+.item-field-content-wrapper .md-field {
+    min-height: 40px;
+}
+
+.editing-select-wrapper {
+    display: flex;
+    flex-flow: column-reverse;
+    margin-bottom: 8px;
+}
+
+.editing-select-wrapper .select-buttons-wrapper,
+.editing-select-wrapper .select-wrapper,
+.editing-select-wrapper .select-wrapper .md-field {
+    width: 100%;
+}
+
+.editing-select-wrapper .select-wrapper .md-field.edit-field { padding-top: 0; }
+
+.editing-select-wrapper .select-wrapper .edit-field > .md-field { margin-bottom: 0px; }
+
+.editing-select-wrapper .select-wrapper .edit-field > .md-field .md-input-action { top: 8px; }
+
+.editing-select-wrapper .select-buttons-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.editing-select-wrapper .select-buttons-wrapper .md-button {
+    display: flex;
+    flex: 1;
+    margin: 0 10px 0 0;
+}
+
+.editing-select-wrapper .select-buttons-wrapper .md-button:last-child { margin-right: 0 }
+
+.sticky-element {
+    background-color: var(--md-theme-default-background-variant, #fafafa);
+    padding-bottom: 5px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 @media screen and (min-width: 501px) and (max-width: 800px) {

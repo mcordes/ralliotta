@@ -10,14 +10,13 @@ RUN mkdir -p /app/templates
 COPY templates/index_template.html /app/templates/
 COPY conf/modernizr-conf.json /app/conf
 COPY assets /app/assets
+COPY tsconfig.json /app/
 
 WORKDIR /app
 RUN npm install && \
-    npm run build
-
-# TODO-mrc
-#    npm run test && \
-#    npm run lint && \
+    npm run build && \
+    npm run test && \
+    npm run lint
 
 
 # now copy the whole app

@@ -2,14 +2,9 @@
     <div class="comment">
         <div v-if="isEdit">
 
-            <!-- TODO-mrc: fix me
-            <TextAreaInput v-model="text" v-bind:maxlength="32768"/>
-            -->
-
-            <md-field>
-                <md-textarea class="comment-textarea" v-model="text" required maxlength="32768"
-                             placeholder="Your comment..."/>
-            </md-field>
+            <div>
+                <TextAreaInput v-model="text" v-bind:maxlength="32768" v-bind:class="'comment-textarea'" v-bind:placeholder="'Your comment...'"/>
+            </div>
 
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
@@ -29,9 +24,7 @@
                     {{ activity.userName }} said:
                 </div>
             </div>
-            <div class="comment-details">
-                {{ comment.Text }}
-            </div>
+            <div class="comment-details" v-html="comment.Text"></div>
             <div class="comment-actions">
                 <md-button class="md-icon-button md-mini md-raised icon-btn-small" title="Edit" @click="edit">
                     <span>&#9998;</span>

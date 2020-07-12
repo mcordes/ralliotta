@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './components/App.vue';
 
 // @ts-ignore
-import {MdDialog, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList} from 'vue-material/dist/components';
+import {MdDialog, MdDialogConfirm, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList, MdRadio, MdAutocomplete, MdProgress} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
 
@@ -37,11 +37,13 @@ import MyWork from "./components/MyWork.vue";
 // @ts-ignore
 import config from "./config.json";
 import {toDateTime} from "./utils/util";
-import {NotFoundError} from "./exceptions";
+import {AuthenticationError, NotFoundError} from "./exceptions";
+import NewItem from "./components/NewItem.vue";
 import store from "./store";
 
 const routes = [
     { path: '/', component: Home },
+    { path: '/new', component: NewItem },
     { path: '/list', component: ItemList },
     { path: '/list/my', component: MyWork},
     { path: '/detail/:formattedID', component: ItemDetail },
@@ -62,10 +64,14 @@ Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(MdDialog);
+Vue.use(MdDialogConfirm);
 Vue.use(MdCheckbox);
 Vue.use(MdIcon);
 Vue.use(MdMenu);
 Vue.use(MdList);
+Vue.use(MdRadio);
+Vue.use(MdAutocomplete);
+Vue.use(MdProgress);
 Vue.use(VueRouter);
 Vue.use(VueToast);
 Vue.use(VueFroala);
@@ -114,9 +120,9 @@ Vue.config.errorHandler = function (err, vm, info) {
         vm.$router.push("/404");
     }
 
-    // Check for a 401 response from rally (by looking for the weird message request (used by rally's lib)
-    // returns when it gets a 401. If we see it assume the token is no good and logout.
-    if (err.message === "Error: no auth mechanism defined") {
+    // Handle 401s from api
+    if (err instanceof AuthenticationError) {
+        // NOTE: clearing the user triggers App.vue to hide the page and LoginModal.vue to show itself
         store.clearUser();
     }
 

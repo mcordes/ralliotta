@@ -9,7 +9,7 @@ import {Project} from "../types/Project";
 import {Iteration, ITERATION_SEARCH_FIELDS} from "../types/Iteration";
 import {Release} from "../types/Release";
 import {DateTime} from "luxon";
-import {NotFoundError} from "../exceptions";
+import {AuthenticationError, NotFoundError} from "../exceptions";
 import {TeamMember} from "../types/TeamMember";
 import {User} from "../types/User";
 
@@ -25,7 +25,40 @@ export function getRallyAPI(credentials: Credentials) {
         }
     });
 
-    return restApi;
+    const execOperation = (fn: (options: any) => any, options: any) => {
+        try {
+            return fn.bind(restApi)(options);
+        }
+        catch (e) {
+            if (e.message === "Error: no auth mechanism defined" || e.message.indexOf('Error 401') !== -1) {
+                throw new AuthenticationError();
+            }
+            throw e;
+        }
+    }
+
+    const api = {
+        create: async (options: any) => {
+            return execOperation(restApi.create, options);
+        },
+        query: async (options: any) => {
+            return execOperation(restApi.query, options);
+        },
+        get: async (options: any) => {
+            return execOperation(restApi.get, options);
+        },
+        add: async (options: any) => {
+            return execOperation(restApi.add, options);
+        },
+        del: async (options: any) => {
+            return execOperation(restApi.del, options);
+        },
+        update: async (options: any) => {
+            return execOperation(restApi.update, options);
+        },
+    };
+
+    return api;
 }
 
 export function validateRallyResponseOrThrow(resp: any) {
@@ -110,7 +143,6 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
         pageSize: options.pageSize || 20,
         limit: options.pageSize || 20,
 
-        //    order: 'Rank', // TODO-mrc
         fetch: fields,
         query: options.query,
         scope: scope,
@@ -183,62 +215,13 @@ export async function createItem(type: string, data: AddUpdateFieldData) {
     return result.Object;
 }
 
-// TODO-mrc: cache me
-export async function getFlowStateList(projectRef: Ref) {
-    const query = queryUtils.where('Project', '=', projectRef);
-
-    const response = await fetchListOfItems('flowstate', ['ScheduleStateMapping', 'Name'],{
-        pageSize: 100,
-        query,
-        order: "OrderIndex"
-    });
-    const items: FlowState[] = response.items;
-    return items;
-}
-
-export async function getProjectList() {
-    const response = await fetchListOfItems('project', ['Name', 'Description'], {
-        pageSize: 100,
-        order: "Name"
-    });
-    const items: Project[] = response.items;
-    return items;
-}
-
-export async function getIterationList(projectRef: Ref | string) {
-    const query = queryUtils.where('Project', '=', projectRef);
-    const response = await fetchListOfItems('iteration', ['Name', 'Description'], {
-        pageSize: 100,
-        query,
-        order: "StartDate"
-    });
-    const items: Iteration[] = response.items;
-    return items;
-}
-
-export async function getReleaseList(projectRef: Ref | string) {
-    const query = queryUtils.where('Project', '=', projectRef);
-
-    // TODO-mrc: ordering?
-    // TODO-mrc: max size?
-    // TODO-mrc: is there a way to just get 'current' releases?
-    const response = await fetchListOfItems('release', ['Name'], {
-        pageSize: 100,
-        query,
-    });
-    const items: Release[] = response.items;
-    return items;
-}
-
 // TODO-mrc: this definitely shouldn't be here. How about a ui-util or something like that?
-// TODO-mrc: maybe add typed selectoption fns there too?
-// TODO-mrc: this shouldn't be async fix me.
 export async function getSelectOptionsFromRefs(items: Ref[]) {
     const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r._refObjectName}; });
     return results;
 }
 
-export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationRef: Ref) {
+export async function getArtifactsGroupedByFlowState(projectRef: Ref | string, iterationRef: Ref) {
     const query = queryUtils.where('Project', '=', projectRef);
     const itemQuery = queryUtils.where('Iteration', '=', iterationRef);
 
@@ -262,57 +245,148 @@ export async function getArtifactsGroupedByFlowState(projectRef: Ref, iterationR
     return response.items;
 }
 
-export async function getCurrentIteration(projectRef: Ref, now: DateTime) {
+export async function getCurrentAndPreviousIterations(projectRef: Ref | string, now: DateTime) {
     const dateStr = now.toISO();
     let query = queryUtils.where('Project', '=', projectRef);
     query = query.and('StartDate', '<=', dateStr);
-    query = query.and('EndDate', '>=', dateStr);
 
     const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
-        order: "StartDate",
-        pageSize: 1,
+        order: "StartDate DESC",
+        pageSize: 2,
         query,
     });
     const items: Iteration[] = response.items;
-    return items[0];
+    return items;
 }
 
-export async function getPreviousIteration(projectRef: Ref, now: DateTime) {
-    const dateStr = now.toISO();
+export async function searchEpics(projectRef: Ref | string, searchStr: string) {
     let query = queryUtils.where('Project', '=', projectRef);
-    query = query.and('EndDate', '<=', dateStr);
 
-    const response = await fetchListOfItems('iteration', ITERATION_SEARCH_FIELDS, {
-        order: "StartDate desc",
-        pageSize: 1,
+    if (searchStr) {
+        let subQuery = queryUtils.where('FormattedID', 'contains', searchStr)
+        subQuery = subQuery.or('Name', 'contains', searchStr);
+        query = query.and(subQuery);
+    }
+
+    const response = await fetchListOfItems('artifact', ['Name', 'FormattedID'], {
+        kwargs: {types: "portfolioitem/epic"},
+        pageSize: 20,
+        order: "FormattedID",
         query,
     });
-    const items: Iteration[] = response.items;
-    return items[0];
+
+    const items: Artifact[] = response.items;
+    return items;
 }
 
-export async function getProjectTeamMembers(projectRef: Ref | string, user: User) {
+export async function searchProjects(searchStr: string) {
+    let query;
+
+    if (searchStr) {
+        query = queryUtils.where('Name', 'contains', searchStr);
+    }
+
+    const response = await fetchListOfItems('project', ['Name', 'Description'], {
+        pageSize: 100,
+        order: "Name",
+        query,
+    });
+
+    const items: Project[] = response.items;
+    return items;
+}
+
+export async function searchReleases(projectRef: Ref | string, searchStr: string) {
+    if (!projectRef) {
+        return [];
+    }
+
+    let query = queryUtils.where('Project', '=', projectRef);
+
+    if (searchStr) {
+        query = query.and('Name', 'contains', searchStr);
+    }
+
+    const response = await fetchListOfItems('release', ['Name'], {
+        pageSize: 20,
+        order: "Name",
+        query,
+    });
+
+    const items: Release[] = response.items;
+    return items;
+}
+
+export async function searchIterations(projectRef: Ref | string, searchStr: string) {
+    if (!projectRef) {
+        return [];
+    }
+
+    let query = queryUtils.where('Project', '=', projectRef);
+
+    if (searchStr) {
+        query = query.and('Name', 'contains', searchStr);
+    }
+
+    const response = await fetchListOfItems('iteration', ['Name'], {
+        pageSize: 20,
+        order: "StartDate",
+        query,
+    });
+
+    const items: Iteration[] = response.items;
+    return items;
+}
+
+export async function searchProjectTeamMembers(projectRef: Ref | string, search: string, user: User) {
     // https://rally1.rallydev.com/slm/webservice/v2.0/project/XXX/TeamMembers
+    if (!projectRef) {
+        return [];
+    }
+
     const projectId = refUtils.getId(projectRef);
     const typeStr = `project/${projectId}/TeamMembers`;
+    let query;
+
+    if (search) {
+        query = queryUtils.where('DisplayName', 'contains', search || null);
+    }
 
     const response = await fetchListOfItems(typeStr, ['Name'], {
-        pageSize: 100,
-        order: "DisplayName"
+        pageSize: 20,
+        order: "DisplayName",
+        query
     });
     const items: TeamMember[] = response.items;
 
-    // Note: the current user isn't in the results above. Add us in now.
-    const theUser: TeamMember = {
-        DisplayName: user.FirstName + " " + user.LastName,
-        EmailAddress: user.EmailAddress,
-        UserName: user.UserName,
-        _refObjectName: user._refObjectName,
-        _ref: user._ref,
-        _type: user._type
+    if (!search || user.DisplayName.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+        // Note: the current user isn't in the results above. Add us in now.
+        const theUser: TeamMember = {
+            DisplayName: user.DisplayName,
+            EmailAddress: user.EmailAddress,
+            UserName: user.UserName,
+            _refObjectName: user._refObjectName,
+            _ref: user._ref,
+            _type: user._type
+        }
+
+        items.unshift(theUser);
+    }
+    return items;
+}
+
+export async function searchFlowStates(projectRef: Ref | string, search: string) {
+    let query = queryUtils.where('Project', '=', projectRef);
+
+    if (search) {
+        query = query.and('Name', 'contains', search);
     }
 
-    items.unshift(theUser);
-
+    const response = await fetchListOfItems('flowstate', ['ScheduleStateMapping', 'Name'],{
+        pageSize: 20,
+        query,
+        order: "OrderIndex"
+    });
+    const items: FlowState[] = response.items;
     return items;
 }

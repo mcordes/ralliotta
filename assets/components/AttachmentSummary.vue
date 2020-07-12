@@ -33,6 +33,7 @@
     import AttachmentViewModal from "./AttachmentViewModal.vue";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
+    import {showErrorToast} from "../utils/util";
     @Component({
         components: {AttachmentViewModal, TimeSinceDate, Avatar}
     })
@@ -47,8 +48,12 @@
         async created() {
             this.attachment = this.activity.data;
 
-            // TODO-mrc: error handling
-            this.attachmentContent = await fetchAttachmentContent(this.attachment);
+            try{
+                this.attachmentContent = await fetchAttachmentContent(this.attachment);
+            }
+            catch (e) {
+                showErrorToast({e});
+            }
         }
 
         toggleViewFullImage() {

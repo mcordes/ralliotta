@@ -1,12 +1,9 @@
 <template>
     <div>
         <div v-if="isEdit">
-
-            <!-- TODO-mrc: use this-             <TextAreaInput v-model="value"/> -->
-            <!-- TODO-mrc: what's with config here, this isn't set and causes some warnings -->
-            <md-field>
-                <froala :tag="'textarea'" :config="config" v-model="value" required></froala>
-            </md-field>
+            <div>
+                <TextAreaInput v-model="value" />
+            </div>
 
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}

@@ -1,7 +1,6 @@
 import {Ref} from "./Ref";
 
 
-// TODO-mrc: is this endpoint really just returning user objects? do we need this?
 export interface TeamMember extends Ref {
     DisplayName: string;
     EmailAddress: string;

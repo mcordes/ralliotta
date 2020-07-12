@@ -3,9 +3,7 @@
         <div class="activity-wrapper">
             <div class="comment" v-for="comment in comments">
 
-                <!-- TODO-mrc: this won't work, comment.Artifact.FormattedID isn't filled in. new endpoint for ref?
                 <router-link :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
-                -->
 
                 <div class="comment-header">
                     <div class="comment-date">
@@ -52,16 +50,6 @@
         totalRecords = 0;
         isLoading = false;
         sharedState = store;
-
-        // TODO-mrc: needed?
-        /*
-        @Watch("$route")
-        async onRouteChange(to: any, from: any) {
-            this.comments = [];
-            this.hasMoreRecords = false;
-            await this.fetchResults();
-        }
-         */
 
         async created() {
             await this.fetchResults();

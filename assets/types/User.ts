@@ -5,6 +5,7 @@ export interface User extends Ref {
     UserName: string;
     FirstName: string;
     LastName: string;
+    DisplayName: string;
     EmailAddress: string;
     ProfileImage: Ref;
     DefaultProject: Ref;
