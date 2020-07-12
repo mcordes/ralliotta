@@ -166,7 +166,7 @@ export async function fetchListOfItems(type: string, fields: string[], options: 
 }
 
 export interface AddUpdateFieldData {
-    [key: string]: string | boolean | number
+    [key: string]: string | boolean | number | null
 }
 
 function getAddUpdateRequestOptions() {

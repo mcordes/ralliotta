@@ -59,6 +59,7 @@
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
     import {
+        AddUpdateFieldData,
         createItem,
         getSelectOptionsFromRefs,
         searchEpics, searchProjects, searchReleases
@@ -91,7 +92,7 @@
         async submit() {
             this.errorMessage = '';
 
-            const data = {
+            const data: AddUpdateFieldData = {
                 'Name': this.title,
                 'Description': this.description,
                 // TODO-mrc:
@@ -106,13 +107,8 @@
 
             let result;
             try {
-//                result = await createItem(this.itemType, data);
-
-                debugger;
-
-                // TODO-mrc
-//                this.createdItemFormattedID = result.FormattedID;
-                this.createdItemFormattedID = "US11232444";
+                result = await createItem(this.itemType, data);
+                this.createdItemFormattedID = result.FormattedID;
                 this.showSuccessMessage = true;
 
                 showSuccessToast("Saved.");
