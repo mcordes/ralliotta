@@ -20,14 +20,14 @@
             </div>
 
             <div>
-                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-model="projectLabelAndValue"/>
+                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
             </div>
             <div>
-                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-model="releaseLabelAndValue"/>
+                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-bind:selectedValue.sync="release"/>
             </div>
 
             <div>
-                <SelectInput v-bind:searchFunc="searchEpicList" v-bind:label="'Epic'" v-model="epicLabelAndValue"/>
+                <SelectInput v-bind:searchFunc="searchEpicList" v-bind:label="'Epic'" v-bind:selectedValue.sync="epic"/>
             </div>
 
             <md-field>
@@ -78,15 +78,18 @@
         itemType: "hierarchicalRequest" | "defect" = "hierarchicalRequest";
         title = "";
         description = "";
-        releaseLabelAndValue = "";
-        projectLabelAndValue = "";
+        release = "";
+        project = "";
         createdItemFormattedID = "";
         showSuccessMessage = false;
-        epicLabelAndValue = "";
+        epic = "";
 
         async created() {
             const user = store.getUser();
-            this.projectLabelAndValue = user.DefaultProject._refObjectName + "|" + user.DefaultProject._ref;
+
+            // TODO-mrc: label?
+            // TODO-mrc: user.DefaultProject._refObjectName + "|"
+            this.project = user.DefaultProject._ref;
         }
 
         async submit() {
@@ -95,9 +98,8 @@
             const data: AddUpdateFieldData = {
                 'Name': this.title,
                 'Description': this.description,
-                // TODO-mrc:
-                'Release': this.releaseLabelAndValue ? this.releaseLabelAndValue[0] : null,
-                'Parent': this.epicLabelAndValue ? this.epicLabelAndValue[0] : null
+                'Release': this.release,
+                'Parent': this.epic
             };
 
             if (!this.title || !this.description) {
@@ -107,7 +109,9 @@
 
             let result;
             try {
-                result = await createItem(this.itemType, data);
+                debugger;
+
+                //result = await createItem(this.itemType, data);
                 this.createdItemFormattedID = result.FormattedID;
                 this.showSuccessMessage = true;
 
@@ -125,13 +129,16 @@
         clearForm() {
             this.title = "";
             this.description = "";
-            this.releaseLabelAndValue = "";
+            this.release = "";
             this.createdItemFormattedID = "";
             this.showSuccessMessage = false;
-            this.epicLabelAndValue = '';
+            this.epic = '';
 
             const user = store.getUser();
-            this.projectLabelAndValue = user.DefaultProject._refObjectName + "|" + user.DefaultProject._ref;
+
+            // TODO-mrc: label?
+            // TODO-mrc: user.DefaultProject._refObjectName + "|"
+            this.project = user.DefaultProject._ref;
         }
 
         @Watch("description")
@@ -140,9 +147,7 @@
         }
 
         async searchEpicList(search: string) {
-            const projectValue = this.projectLabelAndValue.split("|")[1];
-
-            const epics = await searchEpics(projectValue, search);
+            const epics = await searchEpics(this.project, search);
             return epics.map(r => {
                 return {
                     value: r._ref,
@@ -156,13 +161,9 @@
         }
 
         async searchReleaseList(search: string) {
-            // TODO-mrc: fixme
-            const projectValue = this.projectLabelAndValue.split("|")[1];
-            return await getSelectOptionsFromRefs(await searchReleases(projectValue, search));
+            return await getSelectOptionsFromRefs(await searchReleases(this.project, search));
         }
-
     };
-
 
 </script>
 

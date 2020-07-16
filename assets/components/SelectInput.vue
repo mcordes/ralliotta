@@ -1,7 +1,6 @@
 <template>
     <div>
-        <md-autocomplete v-bind:value="syncedValue"
-                v-on:input="$emit('input', $event)"
+        <md-autocomplete v-model="internalValue"
                 :md-options="stringOptions"
                 @md-changed="search" @md-opened="search"
                 @md-selected="setSyncedValue">
@@ -24,9 +23,11 @@
         components: {},
     })
     export default class SelectInput extends Vue {
-        // Label|value
-        @PropSync("value", {required: true, default: ""})
-        syncedValue!: string;
+        @PropSync("selectedValue", {required: true})
+        syncedSelectedValue!: string;
+
+        @PropSync("selectedLabel", {default: "XXX"})
+        syncedSelectedLabel!: string;
 
         @Prop()
         searchFunc!: (s: string) => SelectOption[];
@@ -38,6 +39,12 @@
         cssClass!: string;
 
         stringOptions: string[] | Promise<string[]> = [];
+        internalValue = "";
+
+        created() {
+            // TODO-mrc
+            this.internalValue = this.syncedSelectedLabel + "|" + this.syncedSelectedValue;
+        }
 
         async search(search: string) {
             this.stringOptions = new Promise(async resolve => {
@@ -67,14 +74,18 @@
 
         setSyncedValue(selected: string | undefined) {
             console.log("AAAA setting synced value" + selected);
-            this.syncedValue = selected ?? "";
-        //    this.$emit('input', this.syncedValue);
+
+            this.syncedSelectedLabel = selected ? this.getLabelFromLabelAndValue(selected) : "";
+            this.syncedSelectedValue = selected ? this.getValueFromLabelAndValue(selected) : "";
         }
 
         getLabelFromLabelAndValue(s: string) {
             return s.split("|").slice(0, -1).join("|");
         }
 
+        getValueFromLabelAndValue(s: string) {
+            return s.split("|").slice(-1).join("|");
+        }
     };
 
 </script>

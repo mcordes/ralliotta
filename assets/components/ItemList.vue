@@ -31,19 +31,19 @@
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-model="projectLabelAndValue"/>
+                                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchAssigneeList" v-bind:label="'Assignee'" v-model="assigneeLabelAndValue"/>
+                                <SelectInput v-bind:searchFunc="searchAssigneeList" v-bind:label="'Assignee'" v-bind:selectedValue.sync="assignee"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-model="releaseLabelAndValue"/>
+                                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-bind:selectedValue.sync="release"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchIterationList" v-bind:label="'Iteration'" v-model="iterationLabelAndValue"/>
+                                <SelectInput v-bind:searchFunc="searchIterationList" v-bind:label="'Iteration'" v-bind:selectedValue.sync="iteration"/>
                             </div>
 
                         </div>
@@ -111,10 +111,10 @@
         expandSearchFilters = true;
         sortOrder = 'LastUpdateDate DESC';
         searchText = '';
-        projectLabelAndValue = '';
-        assigneeLabelAndValue = '';
-        releaseLabelAndValue = '';
-        iterationLabelAndValue = '';
+        project = '';
+        assignee = '';
+        release = '';
+        iteration = '';
 
         @Prop()
         showMyItemsOnly!: boolean;
@@ -125,9 +125,8 @@
         @Prop()
         heading!: string;
 
-        // TODO-mrc
         @Prop()
-        project!: Ref | string;
+        initialProject!: Ref;
 
         @Watch("$route")
         async onRouteChange(to: any, from: any) {
@@ -152,39 +151,24 @@
             await this.fetchResults();
         }
 
-        @Watch("projectLabelAndValue")
+        @Watch("project")
         async onSearchProject() {
-            // TODO-mrc: hack, this is a bit of a mess
-            // TODO-mrc: we won't want the label and value when it's on its way back from SelectInput
-            // TODO-mrc: this fields is also used for the search query. Learn more about .sync and v-model and
-            // figure out to just get the value back from SelectInput and remove this dumb crap
-            if (!this.projectLabelAndValue || this.projectLabelAndValue.indexOf('|') != -1) {
-                await this.fetchResults();
-            }
+            await this.fetchResults();
         }
 
-        @Watch("assigneeLabelAndValue")
+        @Watch("assignee")
         async onSearchAssignee() {
-            // TODO-mrc: same issue as above
-            if (!this.assigneeLabelAndValue || this.assigneeLabelAndValue.indexOf('|') != -1) {
-                await this.fetchResults();
-            }
+            await this.fetchResults();
         }
 
-        @Watch("releaseLabelAndValue")
+        @Watch("release")
         async onSearchRelease() {
-            // TODO-mrc: same issue as above
-            if (!this.releaseLabelAndValue || this.releaseLabelAndValue.indexOf('|') != -1) {
-                await this.fetchResults();
-            }
+            await this.fetchResults();
         }
 
-        @Watch("iterationLabelAndValue")
+        @Watch("iteration")
         async onSearchIteration() {
-            // TODO-mrc: same issue as above
-            if (!this.iterationLabelAndValue || this.iterationLabelAndValue.indexOf('|') != -1) {
-                await this.fetchResults();
-            }
+            await this.fetchResults();
         }
 
         @Watch("searchText")
@@ -195,16 +179,17 @@
         async created() {
             this.expandSearchFilters = !this.backlogOnly;
 
-            // TODO-mrc: default to all projects on the my work page?
-            // Default project list to the user's default project
-
-            // TODO-mrc: default to this.project if set
-            // TODO-mrc: we need both the code and the name, maybe it really needs to be a Ref object and never a string?
-            const user = this.sharedState.getUser();
-            const projectRef = user.DefaultProject;
+            let projectRef = this.initialProject;
+            if (!this.initialProject) {
+                const user = this.sharedState.getUser();
+                projectRef = user.DefaultProject;
+            }
 
             // NOTE: this triggers the onSearchProject watch which triggers a fetch
-            this.projectLabelAndValue = projectRef._refObjectName + "|" + projectRef._ref;
+
+            // TODO-mrc: what about the label?
+            // projectRef._refObjectName
+            this.project = projectRef._ref;
         }
 
         async showMore() {
@@ -224,9 +209,8 @@
             // TODO-mrc: is there no other way to create a query that will match anything?
             let query = queryUtils.where('Project', '!=', null);
 
-
-            if (this.projectLabelAndValue) {
-                query = queryUtils.where('Project', '=', this.getValueFromLabelAndValue(this.projectLabelAndValue));
+            if (this.project) {
+                query = queryUtils.where('Project', '=', this.project);
             }
 
             if (this.showMyItemsOnly) {
@@ -255,16 +239,16 @@
                 // query = query.or('Description', 'contains', this.searchText);
             }
 
-            if (this.releaseLabelAndValue) {
-                query = query.and('Release', '=', this.getValueFromLabelAndValue(this.releaseLabelAndValue));
+            if (this.release) {
+                query = query.and('Release', '=', this.release);
             }
 
-            if (this.iterationLabelAndValue) {
-                query = query.and('Iteration', '=', this.getValueFromLabelAndValue(this.iterationLabelAndValue));
+            if (this.iteration) {
+                query = query.and('Iteration', '=', this.iteration);
             }
 
-            if (this.assigneeLabelAndValue) {
-                query = query.and('Owner', '=', this.getValueFromLabelAndValue(this.assigneeLabelAndValue));
+            if (this.assignee) {
+                query = query.and('Owner', '=', this.assignee);
             }
 
             // clear all results if we're showing the first page worth of data
@@ -299,28 +283,17 @@
         }
 
         async searchReleaseList(search: string) {
-            const projectValue = this.getValueFromLabelAndValue(this.projectLabelAndValue);
-            return await getSelectOptionsFromRefs(await searchReleases(projectValue, search));
+            return await getSelectOptionsFromRefs(await searchReleases(this.project, search));
         }
 
         async searchAssigneeList(search: string) {
-            const projectValue = this.getValueFromLabelAndValue(this.projectLabelAndValue);
             const user = store.getUser();
-            return await getSelectOptionsFromRefs(await searchProjectTeamMembers(projectValue, search, user));
+            return await getSelectOptionsFromRefs(await searchProjectTeamMembers(this.project, search, user));
         }
 
         async searchIterationList(search: string) {
-            const projectValue = this.getValueFromLabelAndValue(this.projectLabelAndValue);
-            return await getSelectOptionsFromRefs(await searchIterations(projectValue, search));
+            return await getSelectOptionsFromRefs(await searchIterations(this.project, search));
         }
-
-        getValueFromLabelAndValue(s: string | undefined) {
-            if (!s) {
-                return "";
-            }
-            return s.split("|").slice(-1)[0];
-        }
-
     };
 
 </script>

@@ -3,7 +3,7 @@
         <h2>Kanban</h2>
 
         <div>
-            <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-model="projectLabelAndValue"/>
+            <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
         </div>
 
         <div v-if="isReady">
@@ -59,11 +59,14 @@
         currentIteration?: Iteration = undefined;
         previousIteration?: Iteration = undefined;
         isReady = false;
-        projectLabelAndValue = "";
+        project = "";
 
         async created() {
             const user = store.getUser();
-            this.projectLabelAndValue = user.DefaultProject._refObjectName + "|" + user.DefaultProject._ref;
+
+            // TODO-mrc: label?
+            // TODO-mrc: user.DefaultProject._refObjectName + "|"
+            this.project = user.DefaultProject._ref;
         }
 
         @Watch("projectLabelAndValue")
@@ -77,17 +80,12 @@
             const now = DateTime.utc();
 
             try {
-                [this.currentIteration, this.previousIteration] = await getCurrentAndPreviousIterations(this.getSelectedProject(), now);
+                [this.currentIteration, this.previousIteration] = await getCurrentAndPreviousIterations(this.project, now);
                 this.isReady = true;
             }
             catch (e) {
                 showErrorToast({e});
             }
-        }
-
-        getSelectedProject() {
-            // TODO-mrc: fix me
-            return this.projectLabelAndValue.split("|")[1];
         }
 
         async searchProjectList(search: string) {
