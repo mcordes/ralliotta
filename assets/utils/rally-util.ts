@@ -215,7 +215,6 @@ export async function createItem(type: string, data: AddUpdateFieldData) {
     return result.Object;
 }
 
-// TODO-mrc: this definitely shouldn't be here. How about a ui-util or something like that?
 export async function getSelectOptionsFromRefs(items: Ref[]) {
     const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r._refObjectName}; });
     return results;
