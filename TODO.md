@@ -1,6 +1,10 @@
 
 ## TODO next:
 
+- ? link to rally item page from our detail page? 
+
+- better text editor - joda3 looks good
+
 - ? can we do partial matches when searching by formatted id? do we want to?
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
@@ -102,5 +106,6 @@
    - maybe add users as watchers of the item (if possible)
 - Monitor when session token will expire and warn user before hand
 - SSO - https://stackoverflow.com/questions/21055043/how-to-sso-using-rally-restapi-dll/22102310#22102310
+- remove jodit-vue and use latest version of jodit (or another editor)
 
   

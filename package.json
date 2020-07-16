@@ -1,6 +1,6 @@
 {
   "name": "rally-alt",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@types/lodash": "^4.14.154",
     "@types/luxon": "^1.24.0",
@@ -8,6 +8,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "javascript-time-ago": "^2.0.7",
+    "jodit": "3.2.46",
+    "jodit-vue": "^2.2.0",
     "lodash": "^4.17.15",
     "luxon": "^1.24.1",
     "modernizr": "3.11.2",
@@ -16,7 +18,6 @@
     "underscore": "^1.10.2",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
-    "vue-froala-wysiwyg": "^3.1.1-1",
     "vue-hot-reload-api": "^2.3.4",
     "vue-material": "^1.0.0-beta-13",
     "vue-picture-input": "^2.1.6",

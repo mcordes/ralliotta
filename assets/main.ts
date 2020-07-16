@@ -5,14 +5,6 @@ import App from './components/App.vue';
 import {MdDialog, MdDialogConfirm, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList, MdRadio, MdAutocomplete, MdProgress} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
-
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/css/froala_style.min.css';
-
-// @ts-ignore
-import VueFroala from 'vue-froala-wysiwyg';
-
 import ItemList from "./components/ItemList.vue";
 import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
@@ -40,6 +32,10 @@ import {toDateTime} from "./utils/util";
 import {AuthenticationError, NotFoundError} from "./exceptions";
 import NewItem from "./components/NewItem.vue";
 import store from "./store";
+import 'jodit/build/jodit.min.css';
+
+// @ts-ignore
+import JoditVue from 'jodit-vue';
 
 const routes = [
     { path: '/', component: Home },
@@ -74,7 +70,7 @@ Vue.use(MdAutocomplete);
 Vue.use(MdProgress);
 Vue.use(VueRouter);
 Vue.use(VueToast);
-Vue.use(VueFroala);
+Vue.use(JoditVue)
 
 new Vue({
     render: h => h(App),

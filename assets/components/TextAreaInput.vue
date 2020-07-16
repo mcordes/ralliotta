@@ -1,20 +1,16 @@
 <template>
     <div>
         <md-field>
-             <froala :tag="'textarea'" :config="config"
-                    v-bind:value="syncedValue"
-                    v-on:input="$emit('input', $event)"
-                    required :class="cssClass"></froala>
+            <jodit-editor :class="cssClass" :config="config" :buttons="buttons"
+                  v-bind:value="syncedValue"
+                  v-on:input="$emit('input', $event)"/>
         </md-field>
     </div>
 </template>
 
 
-
 <script lang="ts">
     import {Component, Vue, PropSync, Prop} from 'vue-property-decorator';
-    // @ts-ignore
-    import VueFroala from 'vue-froala-wysiwyg';
 
     @Component
     export default class TextAreaInput extends Vue {
@@ -30,14 +26,21 @@
         @Prop()
         placeholder!: string;
 
-        config = {
-        }
+        config = {}
+
+        buttons = ["paragraph", "underline" , "italic", "bold", "strikethrough", "|", "ul", "ol", "|", "outdent",
+            "indent" , "|", "table", "link"];
 
         created() {
             this.config = {
-                placeholderText: this.placeholder || '',
-                charCounterCount: true,
-                maxlength: this.maxlength
+                spellcheck: false,
+                toolbarSticky: false,
+                showXPathInStatusbar: false,
+                showWordsCounter: false,
+                placeholder: this.placeholder || '',
+
+                // TODO-mrc
+                // maxlength: this.maxlength
             }
         }
     };

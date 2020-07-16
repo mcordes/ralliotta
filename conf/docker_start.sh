@@ -5,4 +5,8 @@ set -e
 /app/bin/run_proxy.sh &
 
 
+echo "Hello from Ralliotta!"
+echo "Visit http://localhost:8000"
+
+
 exec nginx -g 'daemon off;'

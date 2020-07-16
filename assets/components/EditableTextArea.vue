@@ -30,7 +30,7 @@
     @Component({
         components: {TextAreaInput}
     })
-    export default class Comment extends Vue {
+    export default class EditableTextArea extends Vue {
         // Reference to the item this field is part of
         @Prop()
         item!: Ref;
