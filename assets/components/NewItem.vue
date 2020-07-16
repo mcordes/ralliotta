@@ -109,9 +109,7 @@
 
             let result;
             try {
-                debugger;
-
-                //result = await createItem(this.itemType, data);
+                result = await createItem(this.itemType, data);
                 this.createdItemFormattedID = result.FormattedID;
                 this.showSuccessMessage = true;
 

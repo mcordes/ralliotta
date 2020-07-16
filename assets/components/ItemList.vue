@@ -182,7 +182,6 @@
             this.expandSearchFilters = !this.backlogOnly;
 
             let projectRef = this.initialProject;
-            debugger;
             if (!projectRef) {
                 const user = this.sharedState.getUser();
                 projectRef = user.DefaultProject;
