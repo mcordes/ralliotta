@@ -126,6 +126,7 @@
         @Prop()
         heading!: string;
 
+        // TODO-mrc: we're expecting a Ref here, but we actually pass a string in from the backlog. Fix me.
         @Prop()
         initialProject!: Ref;
 
@@ -181,7 +182,8 @@
             this.expandSearchFilters = !this.backlogOnly;
 
             let projectRef = this.initialProject;
-            if (!this.initialProject) {
+            debugger;
+            if (!projectRef) {
                 const user = this.sharedState.getUser();
                 projectRef = user.DefaultProject;
             }

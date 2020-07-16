@@ -50,6 +50,10 @@
                         </div>
 
                         <div class="item-field">
+                            Project: {{ item.Project._refObjectName }}
+                        </div>
+
+                        <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
                                             v-bind:item="item" v-bind:searchFunc="searchFlowStateList" v-bind:noBlankOption="true"/>
                         </div>

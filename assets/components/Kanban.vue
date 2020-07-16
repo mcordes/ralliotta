@@ -10,7 +10,9 @@
         <div v-if="isReady">
             <div v-if="currentIteration">
                 <h3>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h3>
-                <IterationItemListBySwimlane v-bind:iteration="currentIteration" v-bind:project="project"/>
+                <div>
+                    <IterationItemListBySwimlane v-bind:iteration="currentIteration" v-bind:project="project"/>
+                </div>
             </div>
 
             <div v-if="previousIteration">
@@ -33,7 +35,7 @@
                     <h3>Backlog</h3>
                 </template>
                 <template v-slot:main>
-                    <ItemList v-bind:backlogOnly="true" v-bind:project="getSelectedProject()"/>
+                    <ItemList v-bind:backlogOnly="true" v-bind:initialProject="project"/>
                 </template>
             </ExpandableSection>
         </div>
@@ -69,7 +71,7 @@
             this.projectLabel = user.DefaultProject._refObjectName;
         }
 
-        @Watch("projectLabelAndValue")
+        @Watch("project")
         async projectChanged(to: string, from: string) {
             if (to) {
                 await this.load();
