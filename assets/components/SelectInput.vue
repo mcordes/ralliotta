@@ -24,9 +24,6 @@
         components: {},
     })
     export default class SelectInput extends Vue {
-
-        stringOptions: string[] | Promise<string[]> = [];
-
         // Label|value
         @PropSync("value", {required: true, default: ""})
         syncedValue!: string;
@@ -39,6 +36,8 @@
 
         @Prop()
         cssClass!: string;
+
+        stringOptions: string[] | Promise<string[]> = [];
 
         async search(search: string) {
             this.stringOptions = new Promise(async resolve => {

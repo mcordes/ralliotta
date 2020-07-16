@@ -1,10 +1,6 @@
 
 ## TODO next:
 
-- ? link to rally item page from our detail page? 
-
-- better text editor - joda3 looks good
-
 - ? can we do partial matches when searching by formatted id? do we want to?
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
@@ -20,6 +16,8 @@
 
 
 
+- ~~better text editor - joda3 looks good~~
+- ~~? link to rally item page from our detail page?~~
 - ~~Cancelling a select box selection resets the r/o version, but not the editable version (it still shows the value I selcted before cancelling)~~
 - ~~Detail page doesn't refresh when formatted id is changed in URL~~
 - ~~adding a new comment didn't create a new empty box to add a future comment in~~

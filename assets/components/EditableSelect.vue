@@ -56,6 +56,7 @@
         @Prop()
         fieldName!: string;
 
+        // TODO-mrc
         @Prop()
         noBlankOption!: boolean;
 
@@ -79,15 +80,6 @@
             }
 
             this.updateSelectedOptionLabel();
-
-            // TODO-mrc: or use null for this instead? Seems to be builtin, no?
-            // TODO-mrc
-            /*
-            if (!this.noBlankOption) {
-                const label = this.blankOptionLabel ? this.blankOptionLabel : "-- No value --";
-                this.options.unshift({label, value: ""})
-            }
-             */
         }
 
         async submit() {
