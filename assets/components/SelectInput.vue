@@ -90,11 +90,11 @@
         }
 
         getLabelFromLabelAndValue(s: string) {
-            return s.split("|").slice(0, -1).join("|");
+            return s.split("|")[0];
         }
 
         getValueFromLabelAndValue(s: string) {
-            return s.split("|").slice(-1).join("|");
+            return s.split("|")[1];
         }
     };
 

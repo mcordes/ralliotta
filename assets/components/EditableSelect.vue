@@ -12,7 +12,7 @@
 
             <div class="select-wrapper">
                 <SelectInput v-bind:searchFunc="searchFunc" v-bind:label="fieldName" v-bind:cssClass="'edit-field md-has-value'"
-                    v-bind:selectedValue.sync="selectedValue" v-bind:selectedLabel="selectedLabel"/>
+                    v-bind:selectedValue.sync="selectedValue" v-bind:selectedLabel.sync="selectedLabel"/>
                 <span v-if="errorMessage" class="errorMessage">
                     {{ errorMessage }}
                 </span>
