@@ -1,7 +1,6 @@
 
 ## TODO next:
 
-- ? can we do partial matches when searching by formatted id? do we want to?
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
@@ -16,6 +15,7 @@
 
 
 
+- ~~? can we do partial matches when searching by formatted id? do we want to?~~
 - ~~better text editor - joda3 looks good~~
 - ~~? link to rally item page from our detail page?~~
 - ~~Cancelling a select box selection resets the r/o version, but not the editable version (it still shows the value I selcted before cancelling)~~
