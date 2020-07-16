@@ -3,13 +3,14 @@
         <h2>Kanban</h2>
 
         <div>
-            <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
+            <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"
+                v-bind:selectedLabel.sync="projectLabel"/>
         </div>
 
         <div v-if="isReady">
             <div v-if="currentIteration">
                 <h3>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h3>
-                <IterationItemListBySwimlane v-bind:iteration="currentIteration" v-bind:project="getSelectedProject()"/>
+                <IterationItemListBySwimlane v-bind:iteration="currentIteration" v-bind:project="project"/>
             </div>
 
             <div v-if="previousIteration">
@@ -20,7 +21,7 @@
                         </h3>
                     </template>
                     <template v-slot:main>
-                        <IterationItemListBySwimlane v-bind:iteration="previousIteration" v-bind:project="getSelectedProject()"/>
+                        <IterationItemListBySwimlane v-bind:iteration="previousIteration" v-bind:project="project"/>
                     </template>
                 </ExpandableSection>
             </div>
@@ -60,13 +61,12 @@
         previousIteration?: Iteration = undefined;
         isReady = false;
         project = "";
+        projectLabel = "";
 
         async created() {
             const user = store.getUser();
-
-            // TODO-mrc: label?
-            // TODO-mrc: user.DefaultProject._refObjectName + "|"
             this.project = user.DefaultProject._ref;
+            this.projectLabel = user.DefaultProject._refObjectName;
         }
 
         @Watch("projectLabelAndValue")

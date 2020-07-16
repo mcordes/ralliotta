@@ -20,7 +20,8 @@
             </div>
 
             <div>
-                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
+                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"
+                    v-bind:selectedLabel="projectLabel"/>
             </div>
             <div>
                 <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-bind:selectedValue.sync="release"/>
@@ -80,16 +81,15 @@
         description = "";
         release = "";
         project = "";
+        projectLabel = "";
         createdItemFormattedID = "";
         showSuccessMessage = false;
         epic = "";
 
         async created() {
             const user = store.getUser();
-
-            // TODO-mrc: label?
-            // TODO-mrc: user.DefaultProject._refObjectName + "|"
             this.project = user.DefaultProject._ref;
+            this.projectLabel = user.DefaultProject._refObjectName;
         }
 
         async submit() {
@@ -135,10 +135,8 @@
             this.epic = '';
 
             const user = store.getUser();
-
-            // TODO-mrc: label?
-            // TODO-mrc: user.DefaultProject._refObjectName + "|"
             this.project = user.DefaultProject._ref;
+            this.projectLabel = user.DefaultProject._refObjectName;
         }
 
         @Watch("description")

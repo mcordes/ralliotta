@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"/>
+                                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project" v-bind:selectedLabel.sync="projectLabel"/>
                             </div>
 
                             <div class="filter-item">
@@ -112,6 +112,7 @@
         sortOrder = 'LastUpdateDate DESC';
         searchText = '';
         project = '';
+        projectLabel = '';
         assignee = '';
         release = '';
         iteration = '';
@@ -186,10 +187,8 @@
             }
 
             // NOTE: this triggers the onSearchProject watch which triggers a fetch
-
-            // TODO-mrc: what about the label?
-            // projectRef._refObjectName
             this.project = projectRef._ref;
+            this.projectLabel = projectRef._refObjectName;
         }
 
         async showMore() {
@@ -206,7 +205,6 @@
 
         protected async fetchResults(startIndex = 1, pageSize = 20) {
             const user = this.sharedState.getUser();
-            // TODO-mrc: is there no other way to create a query that will match anything?
             let query = queryUtils.where('Project', '!=', null);
 
             if (this.project) {
@@ -218,7 +216,6 @@
             }
 
             if (this.showOpenItemsOnly) {
-                // TODO-mrc: include Completed too? Probably make what defines an open ticket configurable
                 query = query.and('ScheduleState', '!=', 'Accepted');
             }
 
@@ -231,12 +228,9 @@
             }
 
             if (this.searchText) {
-                // TOOD-mrc: paranthesis are sure to be wrong here
-                // TODO-mrc: the plan is to match text in either of these
-                query = query.and('Name', 'contains', this.searchText);
-
-                // TODO-mrc:
-                // query = query.or('Description', 'contains', this.searchText);
+                let subQuery = queryUtils.where('Name', 'contains', this.searchText)
+                subQuery = subQuery.or('Description', 'contains', this.searchText);
+                query = query.and(subQuery);
             }
 
             if (this.release) {

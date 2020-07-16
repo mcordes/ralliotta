@@ -26,7 +26,7 @@
         @PropSync("selectedValue", {required: true})
         syncedSelectedValue!: string;
 
-        @PropSync("selectedLabel", {default: "XXX"})
+        @PropSync("selectedLabel", {default: ""})
         syncedSelectedLabel!: string;
 
         @Prop()
@@ -40,6 +40,16 @@
 
         stringOptions: string[] | Promise<string[]> = [];
         internalValue = "";
+
+        @Watch("internalValue")
+        onInternalValueChanged(to: any, from: any) {
+            // NOTE: if we've unselected, then make sure the caller knows about it.
+            // See 'setSyncedValue' for where we set these when a value is selected.
+            if (!to) {
+                this.syncedSelectedLabel = "";
+                this.syncedSelectedValue = "";
+            }
+        }
 
         created() {
             // TODO-mrc
