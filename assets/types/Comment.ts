@@ -7,6 +7,10 @@ export interface Comment extends Ref {
     User: Ref;
     CreationDate: Date;
     Artifact: Ref;
+
+    // TODO-mrc: is tihs really part of this model?
+    FormattedID: string;
 }
 
-export const COMMENT_SEARCH_FIELDS = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate', 'Artifact', 'FormattedID'];
+
+export const COMMENT_SEARCH_FIELDS: Array<keyof Comment> = ['Name', 'PostNumber', 'Text', 'User', 'CreationDate', 'Artifact', 'FormattedID'];
