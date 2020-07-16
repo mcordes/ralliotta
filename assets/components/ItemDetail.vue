@@ -53,6 +53,10 @@
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
                                             v-bind:item="item" v-bind:searchFunc="searchFlowStateList" v-bind:noBlankOption="true"/>
                         </div>
+
+                        <div class="item-field">
+                            <a :href="rallyUIDetailURL" title="Open this item in Rally in a new window." target="_blank">View in Rally UI</a>
+                        </div>
                     </div> <!-- end `item-fields` wrapper -->
                 </div>
             </div>
@@ -111,7 +115,8 @@
         searchFlowStates,
         searchIterations,
         searchProjectTeamMembers,
-        searchReleases
+        searchReleases,
+        refUtils
     } from "../utils/rally-util";
     import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
@@ -130,10 +135,6 @@
     import {NotFoundError} from "../exceptions";
     import {TeamMember} from "../types/TeamMember";
 
-    async function fetchItem(formattedID: string) {
-        return await fetchSingleItemByFormattedID(formattedID);
-    }
-
     @Component({
         components: {
             TimeSinceDate, EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment,
@@ -144,6 +145,7 @@
         itemFields: string[] = [];
         activityItems: ActivityItem[] = [];
         isReady = false;
+        rallyUIDetailURL = "";
 
         async created() {
             await this.loadItem();
@@ -158,7 +160,7 @@
         async loadItem() {
             const formattedID = this.$route.params['formattedID'];
 
-            this.item = await fetchItem(formattedID);
+            this.item = await fetchSingleItemByFormattedID(formattedID);
             if (!this.item) {
                 throw new NotFoundError(`Unable to find item with id: ${formattedID}`);
             }
@@ -174,6 +176,13 @@
             }
 
             this.itemFields = Object.keys(this.item);
+
+            const projectId = refUtils.getId(this.item.Project);
+            const itemObjectId = refUtils.getId(this.item);
+            const itemType = refUtils.getType(this.item);
+
+            // Link to this item in the official Rally UI
+            this.rallyUIDetailURL = `https://rally1.rallydev.com/#/${projectId}/detail/${itemType}/${itemObjectId}`;
         }
 
         async searchReleaseList(search: string) {
