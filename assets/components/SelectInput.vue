@@ -1,7 +1,7 @@
 <template>
     <div>
         <md-autocomplete v-model="internalValue"
-                :md-options="stringOptions"
+                :md-options="options"
                 @md-changed="search" @md-opened="search"
                 @md-selected="setSyncedValue">
 
@@ -24,10 +24,10 @@
     })
     export default class SelectInput extends Vue {
         @PropSync("selectedValue", {required: true})
-        syncedSelectedValue!: string;
+        syncedSelectedValue!: string | undefined;
 
         @PropSync("selectedLabel", {default: ""})
-        syncedSelectedLabel!: string;
+        syncedSelectedLabel!: string | undefined;
 
         @Prop()
         searchFunc!: (s: string) => SelectOption[];
@@ -38,33 +38,34 @@
         @Prop()
         cssClass!: string;
 
-        stringOptions: string[] | Promise<string[]> = [];
-        internalValue = "";
+        options: SelectOption[] | Promise<SelectOption[]> = [];
+        internalValue: SelectOption | null = null;
 
         @Watch("internalValue")
-        onInternalValueChanged(to: any, from: any) {
+        onInternalValueChanged(to: SelectOption, from: any) {
             // NOTE: if we've unselected, then make sure the caller knows about it.
             // See 'setSyncedValue' for where we set these when a value is selected.
-            if (!to) {
+            if (!to || !to.value) {
                 this.syncedSelectedLabel = "";
                 this.syncedSelectedValue = "";
             }
         }
 
         created() {
-            // TODO-mrc
-            this.internalValue = this.syncedSelectedLabel + "|" + this.syncedSelectedValue;
+            if (this.syncedSelectedValue) {
+                this.internalValue = this.hackSelectOption({label: this.syncedSelectedLabel, value: this.syncedSelectedValue });
+            }
         }
 
         async search(search: string) {
-            this.stringOptions = new Promise(async resolve => {
-                const results: string[] = this.flattenSelectOptions(await this.searchFunc(search));
+            this.options = new Promise(async resolve => {
+                const results: SelectOption[] = (await this.searchFunc(search)).map(v => this.hackSelectOption(v));
 
                 // If there's an exact match, let's put (a copy of) it at the top of the results
                 if (search && results.length > 1) {
                     const searchLower = search.toLowerCase();
                     const exactMatchIndex = results.findIndex(r => {
-                        return r.toLowerCase().startsWith(searchLower)
+                        return r.label?.toLowerCase().startsWith(searchLower)
                     });
                     if (exactMatchIndex !== -1) {
                         const exactMatch = results[exactMatchIndex];
@@ -76,25 +77,33 @@
             })
         }
 
-        flattenSelectOptions(options: SelectOption[]) {
-            return options.map(o => {
-                return `${o.label}|${o.value}`;
-            });
-        }
-
-        setSyncedValue(selected: string | undefined) {
+        setSyncedValue(selected: SelectOption) {
             console.log("AAAA setting synced value" + selected);
+
+            // TODO-mrC: verify we really see a selectOption here
 
             this.syncedSelectedLabel = selected ? this.getLabelFromLabelAndValue(selected) : "";
             this.syncedSelectedValue = selected ? this.getValueFromLabelAndValue(selected) : "";
         }
 
-        getLabelFromLabelAndValue(s: string) {
-            return s.split("|")[0];
+        getLabelFromLabelAndValue(s: SelectOption) {
+            return s ? s.label : "";
         }
 
-        getValueFromLabelAndValue(s: string) {
-            return s.split("|")[1];
+        getValueFromLabelAndValue(s: SelectOption) {
+            return s.value;
+        }
+
+        // TODO-mrc: comment me
+        hackSelectOption(option: SelectOption): SelectOption {
+            const optionAny: any = option;
+            optionAny.toLowerCase = () => {
+                return option.label;
+            };
+            optionAny.toString = () => {
+                return option.label;
+            }
+            return optionAny;
         }
     };
 

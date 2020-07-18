@@ -1,6 +1,11 @@
 
 ## TODO next:
 
+- remove assignee from My work page? (or at least default it)
+- clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
+- modal details
+- mock rally
+- integration testing
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
@@ -15,6 +20,7 @@
 
 
 
+- ~~fix select fields~~
 - ~~? can we do partial matches when searching by formatted id? do we want to?~~
 - ~~better text editor - joda3 looks good~~
 - ~~? link to rally item page from our detail page?~~
