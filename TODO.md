@@ -2,7 +2,6 @@
 ## TODO next:
 
 - modal details
-- fix select fields
 - mock rally
 - integration testing
 
@@ -19,6 +18,7 @@
 
 
 
+- ~~fix select fields~~
 - ~~? can we do partial matches when searching by formatted id? do we want to?~~
 - ~~better text editor - joda3 looks good~~
 - ~~? link to rally item page from our detail page?~~
