@@ -1,6 +1,8 @@
 
 ## TODO next:
 
+- remove assignee from My work page? (or at least default it)
+- clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 - modal details
 - mock rally
 - integration testing
