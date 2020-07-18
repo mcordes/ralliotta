@@ -1,6 +1,10 @@
 
 ## TODO next:
 
+- modal details
+- fix select fields
+- mock rally
+- integration testing
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
