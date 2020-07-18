@@ -132,12 +132,10 @@
     import AttachmentSummary from "./AttachmentSummary.vue";
     import EditableText from "./EditableText.vue";
     import EditableSelect from "./EditableSelect.vue";
-    import {SelectOption} from "../types/SelectOption";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import store from "../store";
     import {showErrorToast} from "../utils/util";
     import {NotFoundError} from "../exceptions";
-    import {TeamMember} from "../types/TeamMember";
 
     @Component({
         components: {

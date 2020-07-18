@@ -36,13 +36,14 @@ import 'jodit/build/jodit.min.css';
 
 // @ts-ignore
 import JoditVue from 'jodit-vue';
+import ItemDetailModal from "./components/ItemDetailModal.vue";
 
 const routes = [
     { path: '/', component: Home },
     { path: '/new', component: NewItem },
     { path: '/list', component: ItemList },
     { path: '/list/my', component: MyWork},
-    { path: '/detail/:formattedID', component: ItemDetail },
+    { path: '/detail/:formattedID', component: ItemDetailModal },
     { path: '/404', component: InvalidRoute },
     { path: '/kanban', component: Kanban },
     { path: '*', component: InvalidRoute }

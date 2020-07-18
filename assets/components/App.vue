@@ -32,6 +32,7 @@
 
         <!-- NOTE: this will show / hide itself appropriately -->
         <LoginModal/>
+
     </div>
 </template>
 
@@ -87,7 +88,7 @@
         color: inherit;
     }
 
-    /* Added for by vue-router */
+    /* Added for vue-router */
     nav a.router-link-exact-active {
         color: blue;
     }
