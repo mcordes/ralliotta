@@ -41,22 +41,21 @@
         open() {
             window.history.replaceState({}, "", "/detail/" + this.formattedID);
             this.showDialog = true;
+            document.querySelector('body').classList.add('modal-open');
         }
 
         close() {
             const pageURL = this.$router.currentRoute.fullPath;
             window.history.replaceState({}, "", pageURL);
             this.showDialog = false;
+            document.querySelector('body').classList.remove('modal-open');
         }
     }
 
 </script>
 
 
-<style scoped>
-    .md-dialog {
-        z-index: 1002; /* 1 above sticky elements*/
-    }
+<style lang="css" scoped>
 </style>
 
 
