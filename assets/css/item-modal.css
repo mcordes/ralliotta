@@ -1,10 +1,10 @@
 /* Item modal */
 .md-overlay.md-fixed, body>.md-overlay {
-    z-index: 102;
+    z-index: 101;
 }
 
 .md-dialog {
-    z-index: 103;
+    z-index: 102;
 }
 
 .md-dialog.item-detail-modal .md-dialog-container {

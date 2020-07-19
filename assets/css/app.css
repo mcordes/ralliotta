@@ -243,7 +243,7 @@ a:hover { border-color: #222; }
 }
 
 .md-menu-content {
-    z-index: 101;
+    z-index: 103; /* needs to be above .md-dialog */
 }
 
 
