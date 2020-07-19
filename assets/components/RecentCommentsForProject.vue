@@ -3,15 +3,13 @@
         <div class="activity-wrapper">
             <div class="comment" v-for="comment in comments">
 
-                <router-link :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
-
                 <div class="comment-header">
                     <div class="comment-date">
                         <TimeSinceDate v-bind:date="comment.CreationDate"/>
                     </div>
                     <div class="comment-author">
                         <div class="ticket-id">
-                            <router-link v-bind:title="comment.Artifact.Name" class="item-id" :to="'/detail/' + comment.Artifact.FormattedID">{{ comment.Artifact.FormattedID }}</router-link>
+                            <ItemDetailModal v-bind:formattedID="comment.Artifact.FormattedID" v-bind:title="comment.Artifact.Name"/>
                         </div>
                         <div class="avatar-wrapper">
                             <Avatar v-bind:user="comment.User" v-bind:size="30"/>
@@ -38,11 +36,12 @@
     import store from "../store";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
+    import ItemDetailModal from "./ItemDetailModal.vue";
 
 
     // TODO-mrc: there's quite a bit of duplication here w/ ItemList. Fix me?
     @Component({
-        components: {Avatar, TimeSinceDate}
+        components: {Avatar, TimeSinceDate, ItemDetailModal}
     })
     export default class RecentCommentsForProject extends Vue {
         comments: Comment[] = [];

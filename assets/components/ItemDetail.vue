@@ -112,7 +112,7 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Watch} from 'vue-property-decorator';
+    import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
     import {
         fetchSingleItemByFormattedID,
         getSelectOptionsFromRefs,
@@ -149,22 +149,21 @@
         isReady = false;
         rallyUIDetailURL = "";
 
-        async created() {
-            await this.loadItem();
-        }
+        @Prop()
+        formattedID!: string;
 
-        // NOTE: this is needed so we reload the item on the page when the url changes
-        @Watch("$route")
-        async onRouteChange(to: any, from: any) {
+        async created() {
+            if (!this.formattedID) {
+                // TODO-mrc: fix warning
+                this.formattedID = this.$route.params['formattedID'];
+            }
             await this.loadItem();
         }
 
         async loadItem() {
-            const formattedID = this.$route.params['formattedID'];
-
-            this.item = await fetchSingleItemByFormattedID(formattedID);
+            this.item = await fetchSingleItemByFormattedID(this.formattedID);
             if (!this.item) {
-                throw new NotFoundError(`Unable to find item with id: ${formattedID}`);
+                throw new NotFoundError(`Unable to find item with id: ${this.formattedID}`);
             }
 
             // Show item right away when it's ready, then do the other async calls

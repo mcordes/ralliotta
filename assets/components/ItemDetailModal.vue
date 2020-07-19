@@ -4,13 +4,9 @@
                    v-bind:md-close-on-esc="false"
                    v-bind:md-click-outside-to-close="false">
 
-            <!-- TODO-mrc:
-            <md-dialog-title>{{ item.data.FormattedID }} - {{ item.data.Name }}</md-dialog-title>
-            -->
-
             <md-dialog-content>
-                <div>
-                    <ItemDetail/>
+                <div :class="cssClass">
+                    <ItemDetail v-bind:formattedID="formattedID"/>
                 </div>
             </md-dialog-content>
 
@@ -18,31 +14,40 @@
                 <md-button class="md-primary" @click="close()">Close</md-button>
             </md-dialog-actions>
         </md-dialog>
+
+        <a :href="'/detail/' + formattedID" @click.prevent="open" :title="title">{{ formattedID }}</a>
     </div>
 </template>
 
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
     import ItemDetail from "./ItemDetail.vue";
-
 
     @Component({
         components: {ItemDetail},
     })
     export default class ItemDetailModal extends Vue {
-        showDialog = true;
+        showDialog = false;
+
+        @Prop({required: true})
+        formattedID!: string;
+
+        @Prop()
+        title!: string;
+
+        @Prop()
+        cssClass!: string;
+
+        open() {
+            window.history.replaceState({}, "", "/detail/" + this.formattedID);
+            this.showDialog = true;
+        }
 
         close() {
+            const pageURL = this.$router.currentRoute.fullPath;
+            window.history.replaceState({}, "", pageURL);
             this.showDialog = false;
-            const hasHistory = window.history.length > 2;
-
-            if (hasHistory) {
-                this.$router.back();
-            }
-            else {
-                this.$router.push('/');
-            }
         }
     }
 

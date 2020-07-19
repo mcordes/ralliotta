@@ -1,7 +1,8 @@
 <template>
     <tr class="item-detail md-table-row">
         <td class="md-table-cell">
-            <router-link :to="detailLink">{{ item.FormattedID }}</router-link>
+            <ItemDetailModal v-bind:formattedID="item.FormattedID"/>
+
         </td>
         <td class="md-table-cell">{{ item.Name }}</td>
         <td class="md-table-cell">
@@ -26,23 +27,20 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import Avatar from "./Avatar.vue";
+    import ItemDetailModal from "./ItemDetailModal.vue";
 
     @Component({
-        components: {Avatar}
+        components: {Avatar, ItemDetailModal}
     })
     export default class ItemSummary extends Vue {
         @Prop()
         item: any;
 
-        detailLink = "";
         ownerName = "";
         reporterName = "";
         status = "";
 
         async created() {
-            const formattedID = this.item['FormattedID'];
-            this.detailLink = `/detail/${formattedID}`;
-
             if (this.item.Owner) {
                 this.ownerName = this.item.Owner._refObjectName;
             }

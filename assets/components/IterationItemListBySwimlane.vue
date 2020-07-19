@@ -4,7 +4,9 @@
             <div class="swimlane-header">{{ flowState.Group.Name }}</div>
             <ul>
                 <li class="item" v-for="item in flowState.Items" v-bind:item="item">
-                    <router-link class="item-id" :to="'/detail/' + item.FormattedID">{{ item.FormattedID }}</router-link>
+                    <div>
+                        <ItemDetailModal v-bind:formattedID="item.FormattedID" cssClass="item-id"/>
+                    </div>
                     <div class="item-name">{{ item.Name }}</div>
                     <div class="avatar-wrapper" v-if="item.Owner">
                         <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
@@ -26,9 +28,10 @@
     import Avatar from "./Avatar.vue";
     import {Iteration} from "../types/Iteration";
     import {Ref} from "../types/Ref";
+    import ItemDetailModal from "./ItemDetailModal.vue";
 
     @Component({
-        components: {Avatar}
+        components: {Avatar, ItemDetailModal}
     })
     export default class IterationItemListBySwimlane extends Vue {
         groupedArtifacts: {Group: any, Items: Artifact[]}[] = [];
