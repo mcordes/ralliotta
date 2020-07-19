@@ -3,7 +3,6 @@
 
 - remove assignee from My work page? (or at least default it)
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
-- modal details
 - mock rally
 - integration testing
 
@@ -15,11 +14,13 @@
 - Add / remove (?) attachment on the detail page 
 - add attachments on new item page? (or just send them to the detail page?)
 
-- Text search fields on list page should only lookup on change not on every key press (or maybe after a certain # of letters or time? or just throttle / dequeue them?
+- debounce calls to rally so we don't call them so often (particularly on search filters)
 
 
 
 
+
+- ~~modal details~~
 - ~~fix select fields~~
 - ~~? can we do partial matches when searching by formatted id? do we want to?~~
 - ~~better text editor - joda3 looks good~~
