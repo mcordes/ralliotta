@@ -88,6 +88,7 @@
    - Have easy way to add backlog items to the current iteration (button with confirmation and way to skip confirmation by holding shift key? and clicking button
    - start with backlog minimized (unless current sprint has few items?)
    - show the total story points / iteration (and having count increase as you're adding items from backlog)
+   - show story points for each user story / defect / whatever with a simple running total that's easily visible when viewing the backlog
 
 - catch js errors in the app and report them back to us?
 
