@@ -47,6 +47,13 @@
 </script>
 
 
-<style lang="css">
-    .fr-box { width: 100%; }
+<style lang="css" scoped>
+    .md-field {
+        margin: 0;
+        padding: 0;
+    }
+
+    .md-field.md-theme-default:after {
+        background: none;
+    }
 </style>

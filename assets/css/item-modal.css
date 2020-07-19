@@ -1,0 +1,21 @@
+/* Item modal */
+.md-dialog-container {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.md-dialog-container.md-theme-default {
+    background: var(--md-theme-default-background-variant, #fafafa);
+}
+
+.md-dialog-actions {
+    padding: 8px 24px;
+    position: fixed;
+    right: 0;
+    z-index: 100;
+}
+
+.md-dialog-actions .md-button {
+    background-color: #FFF;
+    border: 1px solid #dcdcdc;
+}

@@ -3,16 +3,15 @@
         <md-dialog :md-active.sync="showDialog" class="item-detail-modal"
                    v-bind:md-close-on-esc="false"
                    v-bind:md-click-outside-to-close="false">
+            <md-dialog-actions>
+                <md-button class="md-primary" @click="close()">Close</md-button>
+            </md-dialog-actions>
 
             <md-dialog-content>
                 <div :class="cssClass">
                     <ItemDetail v-bind:formattedID="formattedID"/>
                 </div>
             </md-dialog-content>
-
-            <md-dialog-actions>
-                <md-button class="md-primary" @click="close()">Close</md-button>
-            </md-dialog-actions>
         </md-dialog>
 
         <a :href="'/detail/' + formattedID" @click.prevent="open" :title="title">{{ formattedID }}</a>
@@ -55,6 +54,10 @@
 
 
 <style scoped>
+    .md-dialog {
+        z-index: 1001; /* 1 above sticky elements*/
+    }
+
     /* used by vue-material thingey
         TODO-mrc: Caleb help me! :) I just want to increase the width / height of the modal
     .item-detail-modal .md-dialog-container {

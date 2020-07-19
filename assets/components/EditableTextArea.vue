@@ -67,5 +67,4 @@
 
 
 <style lang="css">
-    .fr-box { width: 100%; }
 </style>

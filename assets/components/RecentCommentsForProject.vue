@@ -2,7 +2,6 @@
     <div>
         <div class="activity-wrapper">
             <div class="comment" v-for="comment in comments">
-
                 <div class="comment-header">
                     <div class="comment-date">
                         <TimeSinceDate v-bind:date="comment.CreationDate"/>
@@ -116,6 +115,12 @@
     .comment .ticket-id {
         float: left;
         margin-right: 10px;
+    }
+
+    .comment .ticket-id .item-id {
+        color: #1A59AB;
+        font-weight: 600;
+        text-decoration: none;
     }
 
     .attachment:before,
