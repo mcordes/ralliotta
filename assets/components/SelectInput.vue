@@ -80,8 +80,6 @@
         setSyncedValue(selected: SelectOption) {
             console.log("AAAA setting synced value" + selected);
 
-            // TODO-mrC: verify we really see a selectOption here
-
             this.syncedSelectedLabel = selected ? this.getLabelFromLabelAndValue(selected) : "";
             this.syncedSelectedValue = selected ? this.getValueFromLabelAndValue(selected) : "";
         }
@@ -94,7 +92,9 @@
             return s.value;
         }
 
-        // TODO-mrc: comment me
+        // NOTE: vuematerial's autocomplete only handles a single value so we're
+        // hacking making an object look enough like a string to make get this work
+        // See: https://github.com/vuematerial/vue-material/issues/1243
         hackSelectOption(option: SelectOption): SelectOption {
             const optionAny: any = option;
             optionAny.toLowerCase = () => {

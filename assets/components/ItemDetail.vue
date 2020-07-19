@@ -202,14 +202,6 @@
         async searchFlowStateList(search: string) {
             return await getSelectOptionsFromRefs(await searchFlowStates(this.item.Project, search));
         }
-
-        // TODO-mrc: also exists in itemlist. Fixme.
-        getValueFromLabelAndValue(s: string | undefined) {
-            if (!s) {
-                return "";
-            }
-            return s.split("|").slice(-1)[0];
-        }
     }
 
 </script>

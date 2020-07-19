@@ -260,7 +260,8 @@
                     pageSize,
                     order: this.sortOrder,
                     kwargs: {
-                        // TODO-mrc: document me (and use this elsewhere?)
+                        // NOTE: this operation errors on the rally site unless we 
+                        // limit the results to just the types we care about
                         types: "hierarchicalRequirement,defect"
                     }
                 });
