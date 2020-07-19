@@ -8,7 +8,7 @@
                     </div>
                     <div class="comment-author">
                         <div class="ticket-id">
-                            <ItemDetailModal v-bind:formattedID="comment.Artifact.FormattedID" v-bind:title="comment.Artifact.Name"/>
+                            <ItemDetailModal class="item-id" v-bind:formattedID="comment.Artifact.FormattedID" v-bind:title="comment.Artifact.Name"/>
                         </div>
                         <div class="avatar-wrapper">
                             <Avatar v-bind:user="comment.User" v-bind:size="30"/>
@@ -117,12 +117,6 @@
         margin-right: 10px;
     }
 
-    .comment .ticket-id .item-id {
-        color: #1A59AB;
-        font-weight: 600;
-        text-decoration: none;
-    }
-
     .attachment:before,
     .add-comment:before,
     .comment:before {
@@ -138,4 +132,10 @@
 <style lang="css">
     .comment-details p:first-child { margin-top: 0; }
     .comment-details p:last-child { margin-bottom: 0; }
+
+    .comment .ticket-id .item-id > a {
+        color: #1A59AB;
+        font-weight: 600;
+        text-decoration: none;
+    }
 </style>

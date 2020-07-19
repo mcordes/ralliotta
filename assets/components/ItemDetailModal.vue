@@ -55,17 +55,8 @@
 
 <style scoped>
     .md-dialog {
-        z-index: 1001; /* 1 above sticky elements*/
+        z-index: 1002; /* 1 above sticky elements*/
     }
-
-    /* used by vue-material thingey
-        TODO-mrc: Caleb help me! :) I just want to increase the width / height of the modal
-    .item-detail-modal .md-dialog-container {
-        max-height: 95%;
-        max-width: 90%;
-    }
-     */
-
 </style>
 
 

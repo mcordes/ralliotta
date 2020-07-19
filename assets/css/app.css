@@ -238,6 +238,10 @@ a:hover { border-color: #222; }
     z-index: 1000;
 }
 
+.md-menu-content {
+    z-index: 1001;
+}
+
 
 /* WYSIWYG style overrides */
 .jodit_container { width: 100% !important; }
