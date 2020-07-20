@@ -46,7 +46,7 @@
                 <md-dialog-confirm
                     :md-active.sync="showSuccessMessage"
                     :md-title="'Created!'"
-                    :md-content="'Created item <a href=\'/detail/' + createdItemFormattedID + '\' target=\'_blank\' title=\'click to open in new window\'>' + createdItemFormattedID + '</a>'"
+                    :md-content="'Created item <a href=\'' + createItemDetailURLPath + '\' target=\'_blank\' title=\'click to open in new window\'>' + createdItemFormattedID + '</a>'"
                     md-confirm-text="View"
                     md-cancel-text="Ok"
                     @md-cancel="clearForm"
@@ -65,7 +65,7 @@
         getSelectOptionsFromRefs,
         searchEpics, searchProjects, searchReleases
     } from "../utils/rally-util";
-    import {showErrorToast, showSuccessToast} from "../utils/util";
+    import {getItemDetailURLPath, showErrorToast, showSuccessToast} from "../utils/util";
     import SelectInput from "./SelectInput.vue";
     import {SelectOption} from "../types/SelectOption";
     import store from "../store";
@@ -83,6 +83,7 @@
         project = "";
         projectLabel = "";
         createdItemFormattedID = "";
+        createItemDetailURLPath = "";
         showSuccessMessage = false;
         epic = "";
 
@@ -111,6 +112,7 @@
             try {
                 result = await createItem(this.itemType, data);
                 this.createdItemFormattedID = result.FormattedID;
+                this.createItemDetailURLPath = getItemDetailURLPath(this.createdItemFormattedID);
                 this.showSuccessMessage = true;
 
                 showSuccessToast("Saved.");

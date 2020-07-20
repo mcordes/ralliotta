@@ -1,6 +1,12 @@
 
 ## TODO next:
 
+- search by text on the search page doesn't work very well. It's hitting the backend 
+   multiple times and needs to be throttled / cancelled when you type more. Also 
+   b/c there are multiple searches the same results get added more than once.
+       * this shouldn't happen any more for the list pages, but be careful
+
+- urls get messed up after going to detail page and back if you're using # history mode in the browser - just needs to check config
 - remove assignee from My work page? (or at least default it)
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 - mock rally
@@ -15,6 +21,7 @@
 - add attachments on new item page? (or just send them to the detail page?)
 
 - debounce calls to rally so we don't call them so often (particularly on search filters)
+- make search pages populate URL parameters so you can bookmark / share searches with others
 
 
 

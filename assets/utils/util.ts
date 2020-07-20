@@ -1,6 +1,7 @@
 import {Vue} from "vue-property-decorator";
 import {DateTime} from "luxon";
-
+// @ts-ignore
+import config from "../config.json";
 
 export function showSuccessToast(msg: string) {
     // @ts-ignore
@@ -44,4 +45,13 @@ export function toStringOrBlank(value: any) {
 export function isRef(obj: any) {
     // Return true if obj looks (vaguely) like a Ref type
     return obj && obj._ref;
+}
+
+export function getItemDetailURLPath(formattedID: string) {
+    let path = '/detail/' + formattedID;
+
+    if (config.routerMode === "hash") {
+        path = "#" + path;
+    }
+    return path;
 }

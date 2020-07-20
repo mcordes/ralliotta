@@ -14,7 +14,7 @@
             </md-dialog-content>
         </md-dialog>
 
-        <a :href="'/detail/' + formattedID" @click.prevent="open" :title="title">{{ formattedID }}</a>
+        <a :href="linkPath" @click.prevent="open" :title="title">{{ formattedID }}</a>
     </div>
 </template>
 
@@ -22,12 +22,14 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import ItemDetail from "./ItemDetail.vue";
+    import {getItemDetailURLPath} from "../utils/util";
 
     @Component({
         components: {ItemDetail},
     })
     export default class ItemDetailModal extends Vue {
         showDialog = false;
+        linkPath = "";
 
         @Prop({required: true})
         formattedID!: string;
@@ -38,14 +40,21 @@
         @Prop()
         cssClass!: string;
 
+        created() {
+            this.linkPath = getItemDetailURLPath(this.formattedID);
+        }
+
         open() {
-            window.history.replaceState({}, "", "/detail/" + this.formattedID);
+            window.history.replaceState({}, "", getItemDetailURLPath(this.formattedID));
             this.showDialog = true;
             document.querySelector('body').classList.add('modal-open');
         }
 
         close() {
-            const pageURL = this.$router.currentRoute.fullPath;
+            let pageURL = this.$router.currentRoute.fullPath;
+            if (this.$router.mode === 'hash') {
+                pageURL = "#" + pageURL;
+            }
             window.history.replaceState({}, "", pageURL);
             this.showDialog = false;
             document.querySelector('body').classList.remove('modal-open');
