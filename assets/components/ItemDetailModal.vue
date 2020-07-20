@@ -14,7 +14,7 @@
             </md-dialog-content>
         </md-dialog>
 
-        <a :href="linkPath" @click.prevent="open" :title="title">{{ formattedID }}</a>
+        <a :href="linkPath" @click.exact.prevent="open" @click.ctrl="openNewTab()" @click.meta="openNewTab()" :title="title">{{ formattedID }}</a>
     </div>
 </template>
 
@@ -48,6 +48,10 @@
             window.history.replaceState({}, "", getItemDetailURLPath(this.formattedID));
             this.showDialog = true;
             document.querySelector('body').classList.add('modal-open');
+        }
+
+        openNewTab() {
+            /* noop */
         }
 
         close() {
