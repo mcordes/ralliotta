@@ -96,6 +96,7 @@
     import {SelectOption} from "../types/SelectOption";
     import SelectInput from "./SelectInput.vue";
     import {Ref} from "../types/Ref";
+    import {debounce} from "underscore";
 
     @Component({
         components: {ExpandableSection, ItemSummary, SelectInput, Sortable},
@@ -179,6 +180,9 @@
         }
 
         async created() {
+            // Call fetchResults at most once every 300ms
+            this.fetchResults = debounce(this.fetchResults, 300);
+
             this.expandSearchFilters = !this.backlogOnly;
 
             let projectRef = this.initialProject;
