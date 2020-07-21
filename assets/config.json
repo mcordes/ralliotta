@@ -1,5 +1,5 @@
 {
-    "avatarURL": "https://us-central1-actualized.cloudfunctions.net/avatarImage", 
-    "userLookupURL": "https://us-central1-actualized.cloudfunctions.net/lookup",
-    "routerMode": "hash"
+    "avatarURL": "http://localhost:8088/avatar",
+    "userLookupURL": "http://localhost:8088/lookup",
+    "routerMode": "history"
 }
