@@ -55,3 +55,16 @@ export function getItemDetailURLPath(formattedID: string) {
     }
     return path;
 }
+
+export function getItemSearchURLPath(path: string, queryParams: any) {
+    if (config.routerMode === "hash") {
+        path = "#" + path;
+    }
+
+    const requestParams = new URLSearchParams(queryParams).toString();
+    if (requestParams) {
+        path += "?" + requestParams;
+    }
+
+    return path;
+}

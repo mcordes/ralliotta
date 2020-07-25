@@ -70,7 +70,7 @@ export function validateRallyResponseOrThrow(resp: any) {
     }
 }
 
-export async function fetchSingleItemByRef(ref: string) {
+export async function fetchSingleItemByRef(ref: string | Ref) {
     console.assert(ref != null);
 
     const resp = await getRallyAPI(store.getCredentials()).get({
@@ -337,7 +337,7 @@ export async function searchIterations(projectRef: Ref | string, searchStr: stri
     return items;
 }
 
-export async function searchProjectTeamMembers(projectRef: Ref | string, search: string, user: User) {
+export async function searchProjectTeamMembers(projectRef: Ref | string, search: string) {
     // https://rally1.rallydev.com/slm/webservice/v2.0/project/XXX/TeamMembers
     if (!projectRef) {
         return [];
@@ -358,6 +358,7 @@ export async function searchProjectTeamMembers(projectRef: Ref | string, search:
     });
     const items: TeamMember[] = response.items;
 
+    /* TODO-mrc: needed?
     if (!search || user.DisplayName.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
         // Note: the current user isn't in the results above. Add us in now.
         const theUser: TeamMember = {
@@ -371,6 +372,7 @@ export async function searchProjectTeamMembers(projectRef: Ref | string, search:
 
         items.unshift(theUser);
     }
+     */
     return items;
 }
 

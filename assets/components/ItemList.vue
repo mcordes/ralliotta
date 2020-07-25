@@ -13,7 +13,7 @@
                     <template slot="main">
                         <div class="search-filters">
                             <div class="filter-item">
-                                <md-checkbox v-model="showOpenItemsOnly">Only open items</md-checkbox>
+                                <md-checkbox v-model="includeClosedItems">Included closed items</md-checkbox>
                             </div>
 
                             <div class="filter-item">
@@ -31,19 +31,19 @@
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project" v-bind:selectedLabel.sync="projectLabel"/>
+                                <RefSelectInput v-bind:itemType="'project'" v-bind:label="'Project'" v-bind:selectedRef.sync="project"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchAssigneeList" v-bind:label="'Assignee'" v-bind:selectedValue.sync="assignee"/>
+                                <RefSelectInput v-bind:itemType="'user'" v-bind:label="'Assignee'" v-bind:selectedRef.sync="assignee" v-bind:project="project"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-bind:selectedValue.sync="release"/>
+                                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'" v-bind:selectedRef.sync="release" v-bind:project="project"/>
                             </div>
 
                             <div class="filter-item">
-                                <SelectInput v-bind:searchFunc="searchIterationList" v-bind:label="'Iteration'" v-bind:selectedValue.sync="iteration"/>
+                                <RefSelectInput v-bind:itemType="'iteration'" v-bind:label="'Iteration'" v-bind:selectedRef.sync="iteration" v-bind:project="project"/>
                             </div>
 
                         </div>
@@ -84,22 +84,19 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {showErrorToast} from "../utils/util";
+    import {getItemDetailURLPath, getItemSearchURLPath, showErrorToast} from "../utils/util";
     import Sortable from "./Sortable.vue";
-    import {
-        fetchListOfItems,
-        getSelectOptionsFromRefs,
-        queryUtils, searchIterations, searchProjects, searchProjectTeamMembers, searchReleases
-    } from "../utils/rally-util";
+    import {fetchListOfItems, queryUtils, refUtils} from "../utils/rally-util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
-    import {SelectOption} from "../types/SelectOption";
     import SelectInput from "./SelectInput.vue";
     import {Ref} from "../types/Ref";
     import {debounce} from "underscore";
+    import RefSelectInput from "./RefSelectInput.vue";
+    import config from "../config.json";
 
     @Component({
-        components: {ExpandableSection, ItemSummary, SelectInput, Sortable},
+        components: {ExpandableSection, ItemSummary, SelectInput, Sortable, RefSelectInput},
     })
     export default class ItemList extends Vue {
         items: any[] = [];
@@ -107,16 +104,16 @@
         hasMoreRecords = false;
         totalRecords = 0;
         isLoading = false;
-        showOpenItemsOnly = true;
+        includeClosedItems = false;
         searchFormattedId = '';
         expandSearchFilters = true;
         sortOrder = 'LastUpdateDate DESC';
         searchText = '';
         project = '';
-        projectLabel = '';
         assignee = '';
         release = '';
         iteration = '';
+        hasInitializedSearchParams = false;
 
         @Prop()
         showMyItemsOnly!: boolean;
@@ -138,48 +135,24 @@
             await this.fetchResults();
         }
 
-        @Watch("showOpenItemsOnly")
-        async onShowOpenItemsOnlyChanged() {
-            await this.fetchResults();
-        }
-
+        @Watch("includeClosedItems")
         @Watch("searchFormattedId")
-        async onSearchFormattedIdChanged() {
-            await this.fetchResults();
-        }
-
         @Watch("sortOrder")
-        async onSortOrderChanged() {
-            console.log("Sort order changed!");
-            await this.fetchResults();
-        }
-
         @Watch("project")
-        async onSearchProject() {
-            await this.fetchResults();
-        }
-
         @Watch("assignee")
-        async onSearchAssignee() {
-            await this.fetchResults();
-        }
-
         @Watch("release")
-        async onSearchRelease() {
-            await this.fetchResults();
-        }
-
         @Watch("iteration")
-        async onSearchIteration() {
-            await this.fetchResults();
-        }
-
         @Watch("searchText")
-        async onSearchTextChanged() {
-            await this.fetchResults();
+        async onSearchFieldChanged() {
+            if (this.hasInitializedSearchParams) {
+                await this.fetchResults();
+            }
         }
 
         async created() {
+            this.setSearchFieldsFromRequestParams()
+            this.hasInitializedSearchParams = true;
+
             // Call fetchResults at most once every 300ms
             this.fetchResults = debounce(this.fetchResults, 300);
 
@@ -191,9 +164,8 @@
                 projectRef = user.DefaultProject;
             }
 
-            // NOTE: this triggers the onSearchProject watch which triggers a fetch
+            // NOTE: this triggers the onSearchFieldChanged watch which triggers a fetch
             this.project = projectRef._ref;
-            this.projectLabel = projectRef._refObjectName;
         }
 
         async showMore() {
@@ -208,20 +180,54 @@
             this.isLoading = false;
         }
 
+        setSearchFieldsFromRequestParams() {
+            // TODO-mrc: centralize this somewhere
+            const apiPrefix = "https://rally1.rallydev.com/slm/webservice/v2.0/";
+            this.includeClosedItems = Boolean(this.$route.query.closed);
+            this.searchFormattedId = "" + (this.$route.query.id ?? "");
+            this.searchText = "" + (this.$route.query.text ?? "");
+
+            const projectOid = this.$route.query.project;
+            if (projectOid) {
+                this.project = apiPrefix + "project/" + projectOid;
+            }
+
+            const releaseOid = this.$route.query.release;
+            if (releaseOid) {
+                this.release = apiPrefix + "release/" + releaseOid;
+            }
+
+            const iterationOid = this.$route.query.iteration;
+            if (iterationOid) {
+                this.iteration = apiPrefix + "iteration/" + iterationOid;
+            }
+
+            const assigneeOid = this.$route.query.assignee;
+            if (assigneeOid) {
+                this.assignee = apiPrefix + "user/" + assigneeOid;
+            }
+        }
+
         protected async fetchResults(startIndex = 1, pageSize = 20) {
+            const queryParams: any = {};
             const user = this.sharedState.getUser();
             let query = queryUtils.where('Project', '!=', null);
 
             if (this.project) {
                 query = queryUtils.where('Project', '=', this.project);
+                queryParams.project = refUtils.getId(this.project);
             }
 
             if (this.showMyItemsOnly) {
                 query = query.and('Owner', '=', user._ref);
             }
 
-            if (this.showOpenItemsOnly) {
+            if (this.includeClosedItems) {
+                queryParams.closed = 1;
+            }
+            else {
                 query = query.and('ScheduleState', '!=', 'Accepted');
+                query = query.and('ScheduleState', '!=', 'Completed');
             }
 
             if (this.backlogOnly) {
@@ -230,25 +236,34 @@
 
             if (this.searchFormattedId) {
                 query = query.and('FormattedID', 'contains', this.searchFormattedId);
+                queryParams.id = this.searchFormattedId;
             }
 
             if (this.searchText) {
                 let subQuery = queryUtils.where('Name', 'contains', this.searchText)
                 subQuery = subQuery.or('Description', 'contains', this.searchText);
                 query = query.and(subQuery);
+                queryParams.text = this.searchText;
             }
 
             if (this.release) {
                 query = query.and('Release', '=', this.release);
+                queryParams.release = refUtils.getId(this.release);
             }
 
             if (this.iteration) {
                 query = query.and('Iteration', '=', this.iteration);
+                queryParams.iteration = refUtils.getId(this.iteration);
             }
 
             if (this.assignee) {
                 query = query.and('Owner', '=', this.assignee);
+                queryParams.assignee = refUtils.getId(this.assignee);
             }
+
+            // Update request parameters so the user can refresh the page and retain search parameters
+            // it also opens up the possibility of bookmarking search criteria or sharing it between people. Hooray!
+            window.history.replaceState({}, "", getItemSearchURLPath(this.$router.currentRoute.path, queryParams));
 
             // clear all results if we're showing the first page worth of data
             if (startIndex === 1) {
@@ -276,23 +291,6 @@
             catch(e) {
                 showErrorToast({e});
             }
-        }
-
-        async searchProjectList(search: string) {
-            return await getSelectOptionsFromRefs(await searchProjects(search));
-        }
-
-        async searchReleaseList(search: string) {
-            return await getSelectOptionsFromRefs(await searchReleases(this.project, search));
-        }
-
-        async searchAssigneeList(search: string) {
-            const user = store.getUser();
-            return await getSelectOptionsFromRefs(await searchProjectTeamMembers(this.project, search, user));
-        }
-
-        async searchIterationList(search: string) {
-            return await getSelectOptionsFromRefs(await searchIterations(this.project, search));
         }
     };
 

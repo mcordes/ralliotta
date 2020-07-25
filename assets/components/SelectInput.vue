@@ -5,8 +5,6 @@
                 @md-changed="search" @md-opened="search"
                 @md-selected="setSyncedValue">
 
-            <!-- TODO-mrc; debounce? 300 ms or so? -->
-
             <label>{{ label }}</label>
             <template slot="md-autocomplete-item" slot-scope="{ item }">{{ getLabelFromLabelAndValue(item) }}</template>
             <template slot="md-autocomplete-empty" slot-scope="{ term }">{{ term ? "No results found": ""}}</template>
@@ -78,8 +76,6 @@
         }
 
         setSyncedValue(selected: SelectOption) {
-            console.log("AAAA setting synced value" + selected);
-
             this.syncedSelectedLabel = selected ? this.getLabelFromLabelAndValue(selected) : "";
             this.syncedSelectedValue = selected ? this.getValueFromLabelAndValue(selected) : "";
         }
