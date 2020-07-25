@@ -6,7 +6,6 @@
    b/c there are multiple searches the same results get added more than once.
        * this shouldn't happen any more for the list pages, but be careful
 
-- urls get messed up after going to detail page and back if you're using # history mode in the browser - just needs to check config
 - remove assignee from My work page? (or at least default it)
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 - mock rally
@@ -15,18 +14,19 @@
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
 - updating a comment works, but doesn't refresh the comment on the page
-- Fix backlog query - should just show items with a null iteration. 
 
 - Add / remove (?) attachment on the detail page 
 - add attachments on new item page? (or just send them to the detail page?)
 
-- debounce calls to rally so we don't call them so often (particularly on search filters)
-- make search pages populate URL parameters so you can bookmark / share searches with others
 
 
 
 
 
+- ~~make search pages populate URL parameters so you can bookmark / share searches with others~~
+- ~~debounce calls to rally so we don't call them so often (particularly on search filters)~~
+- ~~Fix backlog query - should just show items with a null iteration.~~
+- ~~urls get messed up after going to detail page and back if you're using # history mode in the browser - just needs to check config~~
 - ~~modal details~~
 - ~~fix select fields~~
 - ~~? can we do partial matches when searching by formatted id? do we want to?~~
