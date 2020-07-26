@@ -68,8 +68,6 @@ app.put('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     }
 
     // Incoming data is expected to be in this format - {hierarchicalrequirement: {Description: "test"}}
-
-    debugger;
     const data = toLowerKeys(req.body)[req.params.type];
 
     // NOTE: just apply all past in fields.
@@ -99,6 +97,7 @@ app.post("/slm/webservice/v2.0/:type/create", (req, res) => {
         item.FormattedID = nextFormattedId(type === "hierarchicalrequirement" ? "US" : "D");
     }
 
+    console.log("Adding newly created item to list: " + type);
     list.push(item);
 
     // TODO-mrc: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
@@ -155,16 +154,12 @@ function doSearch(req, res, type) {
             return true;
         }
 
-        debugger;
-
         // Otherwise convert the query string (something along the lines of [((foo = bar) or (bar = baz) and (baz !contains foo))]
         // to a boolean string we can evaluate [something like ((1) || (0) && (1))]
         const queryStr = `${query}`.replace(/\s+/g, " ");
         const queryChunks = queryStr.split("(");
 
         queryChunks.forEach(chunk => {
-
-            debugger;
 
             let result = chunk.match(/([^)\s]+) ([^)\s]+) ([^)\s])/);
             if (result) {
@@ -226,6 +221,7 @@ function getObjectOr404(list, req, res, rootElement) {
 
     if (!obj) {
         res.status(404);
+        return;
     }
 
     const result = {};
@@ -236,8 +232,6 @@ function getObjectOr404(list, req, res, rootElement) {
 
 function getSingleObjectByObjectId(list, oid) {
     return list.find((value) => {
-        debugger;
-        console.log("XXXXX = oid="+oid + ", value=" + JSON.stringify(value));
         const match = value.ObjectID.toString() === oid;
         console.log(`Comparing ${value.ObjectID} vs ${oid}, result: ${match}`);
         return match;

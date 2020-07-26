@@ -20,15 +20,14 @@
             </div>
 
             <div>
-                <SelectInput v-bind:searchFunc="searchProjectList" v-bind:label="'Project'" v-bind:selectedValue.sync="project"
-                    v-bind:selectedLabel="projectLabel"/>
+                <RefSelectInput v-bind:itemType="'project'" v-bind:label="'Project'" v-bind:selectedRef.sync="project"/>
             </div>
             <div>
-                <SelectInput v-bind:searchFunc="searchReleaseList" v-bind:label="'Release'" v-bind:selectedValue.sync="release"/>
+                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'" v-bind:selectedRef.sync="release" v-bind:project="project"/>
             </div>
 
             <div>
-                <SelectInput v-bind:searchFunc="searchEpicList" v-bind:label="'Epic'" v-bind:selectedValue.sync="epic"/>
+                <RefSelectInput v-bind:itemType="'epic'" v-bind:label="'Epic'" v-bind:selectedRef.sync="epic" v-bind:project="project"/>
             </div>
 
             <md-field>
@@ -70,9 +69,10 @@
     import {SelectOption} from "../types/SelectOption";
     import store from "../store";
     import TextAreaInput from "./TextAreaInput.vue";
+    import RefSelectInput from "./RefSelectInput.vue";
 
     @Component({
-        components: {TextAreaInput, SelectInput},
+        components: {TextAreaInput, RefSelectInput},
     })
     export default class NewItem extends Vue {
         errorMessage = '';
