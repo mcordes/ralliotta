@@ -55,7 +55,8 @@
                     flowStateName = this.item.FlowState._refObjectName;
                 }
 
-                this.status = `${this.item.ScheduleState}: ${flowStateName}`;
+                // TODO-mrc: what about this.item.ScheduleState ? maybe some people don't use flow state?
+                this.status = flowStateName;
             }
         }
     }
