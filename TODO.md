@@ -1,6 +1,7 @@
 
 ## TODO next:
 
+- in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
    b/c there are multiple searches the same results get added more than once.

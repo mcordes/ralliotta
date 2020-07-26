@@ -4,4 +4,4 @@
 cwd=$(realpath $(dirname $0))
 
 
-npx nodemon $cwd/proxy.js -w $cwd
+npx nodemon $cwd/mockrally.js -w $cwd

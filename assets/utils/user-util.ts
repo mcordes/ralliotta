@@ -21,6 +21,9 @@ export async function fetchCurrentUser() {
     // NOTE: The result isn't wrapped with a top level element like the others
     const user: User = resp;
 
+    console.log("Response: " + JSON.stringify(resp));
+
+
     await Promise.all([
         fetchDefaultProject(user),
         fetchUserProfileImage(user),
@@ -56,6 +59,10 @@ export async function login(username: string, password: string) {
 
 export async function fetchUserProfileImage(user: User) {
     const profileImageRef = user.ProfileImage?._ref;
+    if (!profileImageRef) {
+        return null;
+    }
+
     const result = await fetchSingleItemByRef(profileImageRef);
     // NOTE: doesn't already have a prefix for some reason
     const prefix = "data:image/png;base64, ";

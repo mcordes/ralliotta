@@ -13,7 +13,7 @@
                     <template slot="main">
                         <div class="search-filters">
                             <div class="filter-item">
-                                <md-checkbox v-model="includeClosedItems">Included closed items</md-checkbox>
+                                <md-checkbox v-model="includeClosedItems">Include closed items</md-checkbox>
                             </div>
 
                             <div class="filter-item">

@@ -1,6 +1,8 @@
 import store, {Credentials} from "../store";
 // @ts-ignore
 import rally from 'rally';
+// @ts-ignore
+import config from "../config.json";
 import {Artifact, ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
 import {SelectOption} from "../types/SelectOption";
 import {FlowState} from "../types/FlowState";
@@ -22,7 +24,12 @@ export function getRallyAPI(credentials: Credentials) {
         apiKey: credentials.sessionId,
         requestOptions: {
             headers: {},
-        }
+        },
+
+        // Optionally use a local mock version of the Rally API
+        // TODO-mrc: what's the best way to set this for both the backend and frontend?
+        // TODO-mrc: we can just do it once in docker-compose can we?
+        server: config.useMockRallyAPI ? 'http://localhost:8089' : 'https://rally1.rallydev.com'
     });
 
     const execOperation = (fn: (options: any) => any, options: any) => {

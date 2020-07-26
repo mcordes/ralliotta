@@ -5,7 +5,7 @@
         <div>
             <md-field class="radio-field-wrapper">
                 <label>Type</label>
-                <md-radio value="hierarchicalRequest" v-model="itemType" class="md-primary">Story</md-radio>
+                <md-radio value="hierarchicalrequirement" v-model="itemType" class="md-primary">Story</md-radio>
                 <md-radio value="defect" v-model="itemType" class="md-secondary">Defect</md-radio>
             </md-field>
 
@@ -76,7 +76,7 @@
     })
     export default class NewItem extends Vue {
         errorMessage = '';
-        itemType: "hierarchicalRequest" | "defect" = "hierarchicalRequest";
+        itemType: "hierarchicalrequirement" | "defect" = "hierarchicalrequirement";
         title = "";
         description = "";
         release = "";
@@ -129,10 +129,12 @@
         clearForm() {
             this.title = "";
             this.description = "";
-            this.release = "";
             this.createdItemFormattedID = "";
             this.showSuccessMessage = false;
+
+            // TODO-mrc: these don't get reset. Why?
             this.epic = '';
+            this.release = "";
 
             const user = store.getUser();
             this.project = user.DefaultProject._ref;

@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="item-field">
-                            Tasks: {{ item.Tasks.Count }}
+                            Tasks: {{ item.Tasks ? item.Tasks.Count : "0" }}
                         </div>
 
                         <div class="item-field">
