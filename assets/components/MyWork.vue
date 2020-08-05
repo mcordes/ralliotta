@@ -1,6 +1,9 @@
 <template>
     <div>
-        <ItemList v-bind:showMyItemsOnly="true" v-bind:heading="'My work'"/>
+        <ItemList v-bind:showMyItemsOnly="true"
+                  v-bind:heading="'My work'"
+                  v-bind:showProject="true"
+                  v-bind:initialProjectNone="true"/>
     </div>
 </template>
 

@@ -2,7 +2,6 @@
     <md-dialog :md-active.sync="show">
         <md-dialog-title>View attachment - {{ attachment.Name }}</md-dialog-title>
 
-        <!-- TODO-mrc: what if it's not an image? -->
         <div>
             <img :src="attachmentContent">
         </div>

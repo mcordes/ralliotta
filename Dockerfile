@@ -35,8 +35,7 @@ COPY --from=bootstrapper --chown=nginx:nginx /app /app
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log && \
     cp /app/conf/nginx.conf /etc/nginx/nginx.conf && \
-    rm -rf ~root/.cache && \
-    rm -rf ~root/.npm 
+    rm -rf ~root/.cache
 
 
 

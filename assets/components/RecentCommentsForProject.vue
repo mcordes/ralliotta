@@ -38,7 +38,6 @@
     import ItemDetailModal from "./ItemDetailModal.vue";
 
 
-    // TODO-mrc: there's quite a bit of duplication here w/ ItemList. Fix me?
     @Component({
         components: {Avatar, TimeSinceDate, ItemDetailModal}
     })

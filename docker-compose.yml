@@ -13,5 +13,5 @@ services:
       - ./templates:/app/templates
       - ./bin:/app/bin
     environment:  
-      - FOO=1
+      - SUPPRESS_SUPPORT=1
 

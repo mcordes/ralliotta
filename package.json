@@ -8,6 +8,7 @@
     "@types/lodash": "^4.14.154",
     "@types/luxon": "^1.24.0",
     "@types/underscore": "^1.10.1",
+    "@types/vuedraggable": "^2.23.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "javascript-time-ago": "^2.0.7",
@@ -27,7 +28,8 @@
     "vue-property-decorator": "^8.4.2",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.2.0",
-    "vue-toast-notification": "^0.4.0"
+    "vue-toast-notification": "^0.4.0",
+    "vuedraggable": "^2.24.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",

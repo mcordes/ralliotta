@@ -1,6 +1,7 @@
 
 ## TODO next:
 
+- refreshing search page returns to default project (do any search request params work?)
 - in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
@@ -90,6 +91,7 @@
 
 ## Future:
 
+- Attachments / non-image attachments
 - kanban page improvements
    - show optional future sprint? 
    - What if an iteration has the start date of anothers end date?

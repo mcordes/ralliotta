@@ -1,17 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const sortBy = require("underscore").sortBy;
+const groupBy = require("underscore").groupBy;
+const isEqual = require("underscore").isEqual;
 const transform = require("lodash").transform;
 const app = express();
 const port = 8089;
-
-// TODO-mrc NEXT
-// 4. what do we do about login? mock that too? assume alrady logged in somehow?
-// 6. Give it a shot, what's working?
-// 7. fix dates
-// 8. make sure iteration start/end dates make sense
-
-
 
 app.use(express.json());
 app.use(cors())
@@ -47,6 +41,7 @@ function getDataListForType(type) {
     return objectTypeMapping[type];
 }
 
+// Lookup a single object
 app.get('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     const type = req.params.type.toLowerCase();
     const list = getDataListForType(type);
@@ -58,6 +53,7 @@ app.get('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     return getObjectOr404(list, req, res, type.toUpperCase());
 });
 
+// Update a single object
 app.put('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     const type = req.params.type.toLowerCase();
     const list = getDataListForType(type);
@@ -70,8 +66,13 @@ app.put('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     // Incoming data is expected to be in this format - {hierarchicalrequirement: {Description: "test"}}
     const data = toLowerKeys(req.body)[req.params.type];
 
+    // TODO-mrc: what about _ref fields, on the way in we'll see /type/id, but we need to set that to the actual object, right?
+    // TODO-mrc: maybe just look at every incoming values and look for a corresponding object?
+    // TODO-mrc: also error if the incoming value isn't valid
+    // TODO-mrc: this explains why updating the flow state isn't working
+
     // NOTE: just apply all past in fields.
-    // XXX: no validation here
+    // XXX: no validation here (shouldn't overwrite type, objectid, _ref, etc)
     Object.assign(item, data);
 
     // TODO-mrc: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
@@ -79,6 +80,7 @@ app.put('/slm/webservice/v2.0/:type/:oid', (req, res) => {
     res.send({ OperationResult: { Object: item, Errors: [], Warnings: []}});
 });
 
+// Create a new object
 app.post("/slm/webservice/v2.0/:type/create", (req, res) => {
     const type = req.params.type.toLowerCase();
     const list = getDataListForType(type);
@@ -90,6 +92,11 @@ app.post("/slm/webservice/v2.0/:type/create", (req, res) => {
     const incomingData = toLowerKeys(req.body)[req.params.type];
 
     const oid = nextOid();
+
+    // TODO-mrc: we need to identify the ref fields (e.g. project, iteration, etc) and set the actual object
+    // rather than the ref, right?
+
+
     const item = { ...sampleData, ...incomingData, ObjectID: oid};
 
     // Set formatted id for defects or user stories
@@ -105,6 +112,8 @@ app.post("/slm/webservice/v2.0/:type/create", (req, res) => {
     res.send({ OperationResult: { Object: item, Errors: [], Warnings: []}});
 });
 
+// User search
+// NOTE: Also conditionally returns just the logged in user (undocumented behavior in Rally API)
 app.get("/slm/webservice/v2.0/user", (req, res) => {
     if (!('query' in req.query)) {
         // NOTE: if the query attribute is not supplied this just returns a single record - the logged in user
@@ -116,7 +125,46 @@ app.get("/slm/webservice/v2.0/user", (req, res) => {
     doSearch(req, res, 'user');
 });
 
-// search endpoint
+app.get("/slm/webservice/v2.0/artifact/groupby/flowstate", (req, res) => {
+    // NOTE: itemquery is the query used for actual items when searching and grouping
+    const selectedArtifacts = doSearch(req, res, 'artifact', true, req.query.itemquery);
+
+    // TODO-mrc: handle these too?
+    // itemfetch= - comma separated of fields to return on the item objects (we're returning all fields now)
+    // itemorder
+    // itemtypes=defect%2ChierarchicalRequirement
+
+    // TODO-mrc: get project from query param
+    const projectRef = selectedArtifacts[0] ? selectedArtifacts[0].Project._ref : null;
+    const projectFlowStates = flowStates.filter((f) => {
+        return f.Project._ref === projectRef;
+    });
+
+    const result = {"GroupedQueryResult": {
+        "Errors": [], "Warnings": [], "TotalResultCount": projectFlowStates.length, "StartIndex": 1, "PageSize": 9999, "Groups": []
+    }};
+
+    const artifactsByFlowState = groupBy(selectedArtifacts, (item) => {
+        return item.FlowState._ref;
+    });
+
+    projectFlowStates.forEach((flowState) => {
+        const artifactsInState = artifactsByFlowState[flowState._ref] || [];
+
+        const group = {
+            Group: flowState,
+            TotalResultCount: artifactsInState.length,
+            StartIndex: 1, PageSize: 9999,
+            Items: artifactsInState
+        };
+        result.GroupedQueryResult.Groups.push(group);
+    });
+
+    res.send(result);
+});
+
+
+// Search endpoint
 app.get("/slm/webservice/v2.0/:type*", (req, res) => {
     const type = req.params.type.toLowerCase();
     doSearch(req, res, type);
@@ -128,28 +176,83 @@ function toLowerKeys(obj) {
     });
 }
 
-function doSearch(req, res, type) {
-    const fetch = req.query.fetch; //comma delimited list of fields to return. If a field is invalid Rally ignores it
-    const query = req.query.query; // Rally's query language, you can do =, contains, !=, !contains
-    const start = parseInt((req.query.start || "1"));  // 1 based
-    const pageSize = parseInt((req.query.pagesize || "20"));
-    const order = req.query.order || ""; // field name then optional ASC or DESC. Default to ascending?
-    // TODO-mrc: only used by artifact search?
-    const types = req.query.types;
+function shouldIncludeItem(chunk, item) {
+    let result = chunk.match(/([^)\s]+) ([^)\s]+) ([^)\s]+)/);
+    if (result) {
+        const field = result[1];
+        const operator = result[2];
+        const value = result[3];
 
-    // TODO-mrc
-    // NOTE: flowstate grouped by (artifact/groupby/flowstate) has a bunch of exta fields, maybe make that separate?
+        // Does the item have this field?
+        if (!field in item) {
+            console.log(`Excluding item ${item._ref} - doesn't have field: ${field}`);
+            return false;
+        }
 
-    console.log("Searching for " + type + " records");
+        // Is the field a ref field, if so see if it ends with value - operator can be ignored, right?
+        // TODO-mrc: if it's a ref field I bet you can do == or !=, but the other values don't make sense
+        if (item[field] && item[field]._ref) {
+            return item[field]._ref.endsWith(value);
+        }
 
-    const list = getDataListForType(type);
-    if (!list) {
-        res.sendStatus(404);
-        return;
+        const itemValue = `${item[field]}`;
+        let includeItem = false;
+        switch (operator) {
+            case "=":
+                includeItem = isEqual(itemValue, value);
+                break;
+            case "!=":
+                includeItem = itemValue != value;
+                break;
+            case "contains":
+                includeItem = itemValue.indexOf(value) != -1;
+                break;
+            case "!contains":
+                includeItem = itemValue.indexOf(value) == -1;
+                break;
+            case "<=":
+                includeItem = itemValue <= value;
+                break;
+            case "<":
+                includeItem = itemValue < value;
+                break;
+            case ">=":
+                includeItem = itemValue >= value;
+                break;
+            case ">":
+                    includeItem = itemValue > value;
+                    break;
+                default:
+                    throw new Error(`Unexpected query operator: ${operator}`);
+            }
+            console.log(`Filtering on field ${field}: '${itemValue}' ${operator} '${value}' == ${includeItem}`);
+            return includeItem;
+
+            // TODO-mrc: what about null / blank values?
+        }
     }
 
-    let results = list.filter((v) => {
+    function doSearch(req, res, type, resultsOnly=false, query=null) {
+        const fetch = req.query.fetch; //comma delimited list of fields to return. If a field is invalid Rally ignores it
         if (!query) {
+            // Rally's query language, you can do =, contains, !=, !contains, <, <=, >, >=
+            query = req.query.query;
+        }
+        const start = parseInt((req.query.start || "1"));  // 1 based
+        const pageSize = parseInt((req.query.pagesize || "20"));
+        const order = req.query.order || ""; // field name then optional ASC or DESC. Default to ascending?
+        const types = req.query.types;
+
+        console.log("Searching for " + type + " records");
+
+        const list = getDataListForType(type);
+        if (!list) {
+            res.sendStatus(404);
+            return;
+        }
+
+        let results = list.filter((item) => {
+            if (!query) {
             // If there's no query filter then return all results
             return true;
         }
@@ -158,35 +261,27 @@ function doSearch(req, res, type) {
         // to a boolean string we can evaluate [something like ((1) || (0) && (1))]
         const queryStr = `${query}`.replace(/\s+/g, " ");
         const queryChunks = queryStr.split("(");
+        const updatedChunks = [];
+        console.log(`Query: ${queryStr}`);
 
         queryChunks.forEach(chunk => {
+            const includeItem = shouldIncludeItem(chunk, item);
 
-            let result = chunk.match(/([^)\s]+) ([^)\s]+) ([^)\s])/);
-            if (result) {
+            // replace each equation with boolean
+            chunk = chunk.replace(/([^)\s]+) ([^)\s]+) ([^)\s]+)/, `${includeItem}`);
+            chunk = chunk.replace(/and/i, "&&");
+            chunk = chunk.replace(/or/i, "||");
 
-                // TODO-mrc: implement me
-                const includeItem = true;
-
-                // replace each equation with boolean
-                chunk.replace(/([^)\s]+) ([^)\s]+) ([^)\s])/, `${includeItem}`);
-            }
-
-            // TODO-mrc: prevent false positives
-            result = chunk.match(/(and|or)/);
-            if (result) {
-                // TODO-mrc; again beware of false positives. This will match in field names
-                chunk.replace(/and/, "&&");
-                chunk.replace(/or/, "||");
-            }
+            updatedChunks.push(chunk);
         });
 
         // Now the query chunks should just contain boolean values and operators so if we
         // evaluate it, we'll get the end result. Should we include this item in the results list or not?
-        const queryStringBool = queryChunks.join("(");
+        const queryStringBool = updatedChunks.join("(");
         console.log("* query: " + queryStringBool);
 
-        // TODO-mrc: implement me
-        return true; // eval(queryStringBool);
+        // TODO-mrc: this isn't safe fix me.
+        return eval(queryStringBool);
     })
 
     // TODO-mrc: value for DESCending?
@@ -200,9 +295,10 @@ function doSearch(req, res, type) {
         results = results.reverse();
     }
 
-    // TODO-mrc: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
-
     const resultsPaged = results.slice(start-1, pageSize);
+    if (resultsOnly) {
+        return resultsPaged;
+    }
 
     res.send({QueryResult: {"Errors": [], "Warnings": [], "TotalResultCount": resultsPaged.length, "Results": resultsPaged,
             "StartIndex": start, "PageSize": pageSize, }});
@@ -255,8 +351,8 @@ var users = [
 ];
 
 var releases = [
-    getSampleRelease("Release One"),
-    getSampleRelease("Release Two"),
+    getSampleRelease("Release One", projects[0]),
+    getSampleRelease("Release Two", projects[0]),
 ];
 var flowStates = [
     getSampleFlowState("Ready", projects[0]),
@@ -279,9 +375,11 @@ var epics = [
 
 // TODO-mrc: user stories vs defects here?
 var artifacts = [
-    getSampleArtifact("User story 1", projects[0], flowStates[0]),
-    getSampleArtifact("User story 2", projects[0], flowStates[1]),
-    getSampleArtifact("User story 3", projects[1], flowStates[3]),
+    getSampleArtifact("User story 1", projects[0], flowStates[0], iterations[1]),
+    getSampleArtifact("User story 2", projects[0], flowStates[1], iterations[1]),
+    getSampleArtifact("User story 3", projects[1], flowStates[5], iterations[0]),
+    getSampleArtifact("User story 4", projects[0], flowStates[0], null),
+    getSampleArtifact("User story 5", projects[0], flowStates[0], null),
 ];
 
 var comments = [
@@ -305,7 +403,7 @@ function getSampleDataByType(type, project) {
             return getSampleIteration("", project);
         case "hierarchicalrequirement":
             // TODO-mrc: should get flowstate for project, right?
-            return getSampleArtifact("", project, flowStates[0]);
+            return getSampleArtifact("", project, flowStates[0], iterations[0]);
         case "defect":
             throw new Error("Implement me");
         default:
@@ -375,7 +473,7 @@ function getSampleUser(username, project) {
     }
 }
 
-function getSampleArtifact(name, project, flowState) {
+function getSampleArtifact(name, project, flowState, iteration) {
     const oid = nextOid();
     const formattedId = nextFormattedId("US");
 
@@ -418,7 +516,7 @@ function getSampleArtifact(name, project, flowState) {
         "DragAndDropRank": "",
         "HasParent": false,
         "InProgressDate": "2020-07-16T03:41:23.736Z",
-        "Iteration": iterations[0],
+        "Iteration": iteration,
         "Parent": null,
         "PlanEstimate": 3.0,
         "Recycled": false,
@@ -450,12 +548,12 @@ function getSampleArtifact(name, project, flowState) {
     }
 }
 
-function getSampleRelease(name) {
+function getSampleRelease(name, project) {
     const oid = nextOid();
     return {
         "_ref": `${urlPrefix}/release/${oid}`, "_refObjectUUID": "XXX",
         "_objectVersion": "1", "_refObjectName": name,
-        "Name": name, "_type": "Release"
+        "Name": name, "_type": "Release", "Project": getRef(project),
     };
 }
 

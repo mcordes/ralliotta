@@ -1,22 +1,32 @@
 <template>
     <div class="swimlane-wrapper">
-        <div class="swimlane" v-for="flowState in groupedArtifacts" v-bind:flowState="flowState">
-            <div class="swimlane-header">{{ flowState.Group.Name }}</div>
-            <ul>
-                <li class="item" v-for="item in flowState.Items" v-bind:item="item">
-                    <div>
-                        <ItemDetailModal v-bind:formattedID="item.FormattedID" cssClass="item-id"/>
+        <div class="swimlane" v-for="flowStateGroup in groupedArtifacts">
+            <div class="swimlane-header">{{ flowStateGroup.Group.Name }}</div>
+
+            <div>
+                <!--
+                // TODO-mrc
+                <draggable :list="flowStateGroup.Items" group="kanbanItems" @change="itemDragged(flowStateGroup.Group, $event)">
+                -->
+
+                    <div v-for="item in flowStateGroup.Items" v-bind:item="item"
+                             class="item" :key="item._ref">
+                        <div>
+                            <ItemDetailModal v-bind:formattedID="item.FormattedID" cssClass="item-id"/>
+                        </div>
+                        <div class="item-name">{{ item.Name }}</div>
+                        <div class="avatar-wrapper" v-if="item.Owner">
+                            <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
+                        </div>
+                        <div class="item-owner">{{ item.Owner ? item.Owner._refObjectName : "" }}</div>
                     </div>
-                    <div class="item-name">{{ item.Name }}</div>
-                    <div class="avatar-wrapper" v-if="item.Owner">
-                        <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
-                    </div>
-                    <div class="item-owner">{{ item.Owner ? item.Owner._refObjectName : "" }}</div>
-                </li>
-            </ul>
+                <!--
+                </draggable>
+                -->
+            </div>
             <br>
         </div>
-        </div>
+    </div>
 </template>
 
 
@@ -28,10 +38,12 @@
     import Avatar from "./Avatar.vue";
     import {Iteration} from "../types/Iteration";
     import {Ref} from "../types/Ref";
+    import draggable from "vuedraggable";
     import ItemDetailModal from "./ItemDetailModal.vue";
+    import {FlowState} from "../types/FlowState";
 
     @Component({
-        components: {Avatar, ItemDetailModal}
+        components: {Avatar, ItemDetailModal, draggable}
     })
     export default class IterationItemListBySwimlane extends Vue {
         groupedArtifacts: {Group: any, Items: Artifact[]}[] = [];
@@ -55,6 +67,21 @@
 
         async load() {
             this.groupedArtifacts = await getArtifactsGroupedByFlowState(this.project, this.iteration);
+        }
+
+        // TODO-mrc: implement me
+        itemDragged(flowState: FlowState, event: any) {
+            alert("Dragging and dropping not implemented quite yet. We accept PRs!");
+
+            // TODO-mrc: I'm not sure I like this dnd library - I want to show a confirmation page and give the user
+            // a chance to cancel. I don't see how to do that. Also, I don't care about sorting within a list
+            // and I don't see a way to disable that. Maybe try another library?
+            console.log('item dragged: ' + arguments);
+            // flowState._ref
+            // arguments[1].added.element._ref
+            // TODO-mrc: ignore removed event
+            // TODO-mrc: move item to flowstate and return
+            // TODO-mrc: can we do this asynchronously or will that cause issues?
         }
     }
 

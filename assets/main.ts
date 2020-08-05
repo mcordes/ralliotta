@@ -36,11 +36,12 @@ import 'jodit/build/jodit.min.css';
 
 // @ts-ignore
 import JoditVue from 'jodit-vue';
+import Search from "./components/Search.vue";
 
 const routes = [
     { path: '/', component: Home },
     { path: '/new', component: NewItem },
-    { path: '/list', component: ItemList },
+    { path: '/list', component: Search },
     { path: '/list/my', component: MyWork},
     { path: '/detail/:formattedID', component: ItemDetail },
     { path: '/404', component: InvalidRoute },

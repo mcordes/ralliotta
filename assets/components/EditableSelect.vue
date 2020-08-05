@@ -57,10 +57,6 @@
         @Prop()
         fieldName!: string;
 
-        // TODO-mrc
-        @Prop()
-        noBlankOption!: boolean;
-
         @Prop()
         blankOptionLabel!: string;
 

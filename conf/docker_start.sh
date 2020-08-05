@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e 
 
-# TODO-mrc: these should probably be able to compile / relaunch themselves if their
-# src code changes
 # Start proxy we'll use to lookup the session id and avatar images
 /app/bin/run_proxy.sh &
 

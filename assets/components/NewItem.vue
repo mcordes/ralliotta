@@ -155,14 +155,6 @@
                 }
             });
         }
-
-        async searchProjectList(search: string) {
-            return await getSelectOptionsFromRefs(await searchProjects(search));
-        }
-
-        async searchReleaseList(search: string) {
-            return await getSelectOptionsFromRefs(await searchReleases(this.project, search));
-        }
     };
 
 </script>

@@ -35,7 +35,7 @@
                     <h3>Backlog</h3>
                 </template>
                 <template v-slot:main>
-                    <ItemList v-bind:backlogOnly="true" v-bind:initialProject="project"/>
+                    <Backlog v-bind:initialProject="project"/>
                 </template>
             </ExpandableSection>
         </div>
@@ -54,9 +54,10 @@
     import {showErrorToast} from "../utils/util";
     import {Iteration} from "../types/Iteration";
     import SelectInput from "./SelectInput.vue";
+    import Backlog from "./Backlog.vue";
 
     @Component({
-        components: {ItemList, IterationItemListBySwimlane, ExpandableSection, SelectInput}
+        components: {ItemList, IterationItemListBySwimlane, ExpandableSection, SelectInput, Backlog}
     })
     export default class Kanban extends Vue {
         currentIteration?: Iteration = undefined;

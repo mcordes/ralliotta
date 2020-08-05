@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="item-list">
-            <h2>
-                {{ heading ? heading : "Search" }}
+            <h2 v-if="heading">
+                {{ heading }}
             </h2>
 
             <div class="sticky-element">
@@ -53,6 +53,8 @@
 
             <table class="items-table">
                 <tr class="md-table-row">
+                    <th v-if="backlogOnly" class="md-table-head">Actions</th>
+
                     <th class="md-table-head">ID</th>
                     <th class="md-table-head">Title</th>
                     <th class="md-table-head">
@@ -60,6 +62,9 @@
                     </th>
                     <th class="md-table-head">Reporter</th>
                     <th class="md-table-head">Status</th>
+
+                    <th v-if="showProject" class="md-table-head">Project</th>
+
                     <th class="md-table-head">
                         <Sortable v-bind:field="'CreationDate'" v-model="sortOrder">Created</Sortable>
                     </th>
@@ -68,7 +73,9 @@
                     </th>
                 </tr>
 
-                <ItemSummary v-for="item in items" v-bind:item="item"></ItemSummary>
+                <ItemSummary v-for="item in items" v-bind:item="item"
+                             v-bind:showAddToIteration="backlogOnly"
+                             v-bind:showProject="showProject"></ItemSummary>
             </table>
 
             <div v-if="hasMoreRecords" style="text-align: center;">
@@ -84,7 +91,7 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {getItemDetailURLPath, getItemSearchURLPath, showErrorToast} from "../utils/util";
+    import {getItemDetailURLPath, getItemSearchURLPath, isRef, showErrorToast} from "../utils/util";
     import Sortable from "./Sortable.vue";
     import {fetchListOfItems, queryUtils, refUtils} from "../utils/rally-util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
@@ -93,7 +100,6 @@
     import {Ref} from "../types/Ref";
     import {debounce} from "underscore";
     import RefSelectInput from "./RefSelectInput.vue";
-    import config from "../config.json";
 
     @Component({
         components: {ExpandableSection, ItemSummary, SelectInput, Sortable, RefSelectInput},
@@ -122,11 +128,19 @@
         backlogOnly!: boolean;
 
         @Prop()
+        collapseSearchFilters!: boolean;
+
+        @Prop()
         heading!: string;
 
-        // TODO-mrc: we're expecting a Ref here, but we actually pass a string in from the backlog. Fix me.
+        @Prop({default: false})
+        showProject!: boolean;
+
         @Prop()
-        initialProject!: Ref;
+        initialProject!: string | Ref;
+
+        @Prop({default: false})
+        initialProjectNone!: boolean;
 
         @Watch("$route")
         async onRouteChange(to: any, from: any) {
@@ -156,16 +170,18 @@
             // Call fetchResults at most once every 300ms
             this.fetchResults = debounce(this.fetchResults, 300);
 
-            this.expandSearchFilters = !this.backlogOnly;
+            this.expandSearchFilters = !this.collapseSearchFilters;
 
-            let projectRef = this.initialProject;
-            if (!projectRef) {
+            // @ts-ignore
+            let projectRefStr = isRef(this.initialProject) ? this.initialProject._ref : this.initialProject;
+
+            if (!projectRefStr && !this.initialProjectNone) {
                 const user = this.sharedState.getUser();
-                projectRef = user.DefaultProject;
+                projectRefStr = user.DefaultProject;
             }
 
             // NOTE: this triggers the onSearchFieldChanged watch which triggers a fetch
-            this.project = projectRef._ref;
+            this.project = projectRefStr;
         }
 
         async showMore() {
