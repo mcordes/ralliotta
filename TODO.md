@@ -1,6 +1,7 @@
 
 ## TODO next:
 
+- backlog isn't filtered by project still, fix me
 - refreshing search page returns to default project (do any search request params work?)
 - in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.
 - search by text on the search page doesn't work very well. It's hitting the backend 

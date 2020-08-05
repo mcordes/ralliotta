@@ -1,5 +1,7 @@
 <template>
     <tr class="item-detail md-table-row">
+
+        <!-- TODO-mrc: implement me
         <td class="md-table-cell" v-if="showAddToIteration">
             <button title="Add to current iteration" class="md-primary md-raised"
                        @click="showAddToIterationConfirmation = true">++</button>
@@ -7,6 +9,7 @@
             <button title="Remove from current iteration" class="md-primary md-raised"
                        @click="showRemoveFromIterationConfirmation = true">--</button>
         </td>
+        -->
 
         <td class="md-table-cell">
             <ItemDetailModal v-bind:formattedID="item.FormattedID"/>

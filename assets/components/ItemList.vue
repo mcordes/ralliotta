@@ -53,7 +53,10 @@
 
             <table class="items-table">
                 <tr class="md-table-row">
+
+                    <!-- TODO-mrc
                     <th v-if="backlogOnly" class="md-table-head">Actions</th>
+                    -->
 
                     <th class="md-table-head">ID</th>
                     <th class="md-table-head">Title</th>

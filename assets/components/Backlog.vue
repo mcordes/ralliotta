@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ItemList v-bind:backlog-only="true"
+        <ItemList v-bind:backlogOnly="true"
                   v-bind:initialProject="initialProject"
                   v-bind:collapseSearchFilters="true"
         />
