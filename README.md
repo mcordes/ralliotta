@@ -63,7 +63,7 @@ Troubleshooting
 
 First try `docker-compose down` and then `docker-compose build && docker-compose up`.
 
-The application runs on ports 8088 and 8089. Verify these are free. You can change them in docker-compose.ymland pleasant to use to a modern audience.
+The application runs on ports 8088 and 8089. Verify these are free. You can change them in docker-compose.yml.
 
 Thank You!
 ------------
