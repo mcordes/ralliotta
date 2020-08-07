@@ -16,7 +16,7 @@ The other option is to run this application locally using docker like so:
 * cd ralliotta
 * docker-compose build 
 * docker-compose up
-* Visit http://localhost:8000
+* Visit http://localhost:8088
 
 That's it. Now you have your own wonderful Rally UI running locally on your computer!
 
@@ -33,7 +33,7 @@ Follow these steps to get the application running on your machine for developmen
 * cd ralliotta
 * docker-compose build 
 * docker-compose up
-* Visit http://localhost:8000
+* Visit http://localhost:8088
 
 And these additional steps (development only - these aren't needed if you just want to run / use the application):
 
