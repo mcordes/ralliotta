@@ -3,6 +3,13 @@ Ralliotta
 
 A FREE, streamlined and easy to use alternative UI to Broadcom's [Rally](https://www.broadcom.com/products/software/agile-development/rally-software). Enjoy viewing all your existing Rally data in a format that is pleasant to use, straightforward and heavily simplified for common use cases. 
 
+What's the status of this?
+-----------
+
+Definitely BETA. Some things are incomplete and there will be bugs. What is there now is quite useable, but YMMV depending upon your organizations (crazy) Rally configuration. If something doesn't work for you or my assumptions aren't true for your organization either Let us know at ralliotta.app@gmail.com, via a github issue or (if you're a hero) create a pull request. 
+
+You can always try it out at [https://ralliotta.com](https://ralliotta.com) by logging in with your Rally username / password or touring our demo app which doesn't require existing Rally credentials. 
+
 
 I'm an end user, how do I use this? 
 -----------
