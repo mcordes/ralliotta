@@ -112,7 +112,7 @@
 
 
 <script lang="ts">
-    import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+    import {Component, Prop, PropSync, Vue, Watch} from 'vue-property-decorator';
     import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import RevisionInfo from "./RevisionInfo.vue";
@@ -142,22 +142,22 @@
         isReady = false;
         rallyUIDetailURL = "";
         isLiveService = !config.useMockRallyAPI;
+        _formattedID = "";
 
         @Prop()
         formattedID!: string;
 
         async created() {
-            if (!this.formattedID) {
-                // TODO-mrc: fix warning
-                this.formattedID = this.$route.params['formattedID'];
+            if (!this._formattedID) {
+                this._formattedID = this.$route.params['formattedID'];
             }
             await this.loadItem();
         }
 
         async loadItem() {
-            this.item = await getService().fetchSingleItemByFormattedID(this.formattedID);
+            this.item = await getService().fetchSingleItemByFormattedID(this._formattedID);
             if (!this.item) {
-                throw new NotFoundError(`Unable to find item with id: ${this.formattedID}`);
+                throw new NotFoundError(`Unable to find item with id: ${this._formattedID}`);
             }
 
             // Show item right away when it's ready, then do the other async calls
