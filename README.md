@@ -42,6 +42,16 @@ And these additional steps (development only - these aren't needed if you just w
 * Make changes to *.ts and *.vue files and the watcher will rebuild them in the background making development a snap!
 
 
+Why did you make this? 
+-----------
+
+Rally's UI is pretty dated and not very cohesive or user friendly. In fact after my company switched to Rally we had a few people quit in protest. This is an attempt to reimagine Rally in a modern user-friendly format similar to other existing issue tracking / scrum / kanban tools and to filter out the cruft, silly options and strange UI choices.  
+
+We use the very functional [rally-node](https://github.com/RallyTools/rally-node) library to talk to their API. It's 
+
+I'll admit this is a strange passion project, but in the spirit of Open source software we're scratching our own itch. Maybe you'll find it useful too.
+
+
 Troubleshooting
 -----------
 
