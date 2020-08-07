@@ -4,4 +4,5 @@
 cwd=$(realpath $(dirname $0))
 
 
-npx nodemon $cwd/proxy.js -w $cwd
+node $cwd/proxy.js -w $cwd
+#npx nodemon $cwd/proxy.js -w $cwd
