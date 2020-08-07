@@ -63,5 +63,5 @@ Thank You!
 
 Thank you to Broadcom / Rally for writing Rally in the first place. [Ralliotta](https://ralliotta.com) uses the very functional [rally-node](https://github.com/RallyTools/rally-node) Open source library to talk to their API. Clearly Rally has had great success and we'd like to make that more accessible and pleasant to use to a modern audience.
 
-Thank you to Vuejs and Typescript. Both amazing libraries / frameworks and a pleasure to code in.
+Thank you to Vuejs and Typescript. Both amazing libraries / frameworks and a pleasure to develop with.
 
