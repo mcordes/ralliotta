@@ -14,7 +14,7 @@ You can always try it out at [https://ralliotta.com](https://ralliotta.com) by l
 I'm an end user, how do I use this? 
 -----------
 
-The easiest way is to use our hosted version at [https://ralliotta.com](https://ralliotta.com). It's *FREE*, secure and give you instant access to your existing Rally data. 
+The easiest way is to use our hosted version at [https://ralliotta.com](https://ralliotta.com). It's *FREE*, secure and gives you instant access to your existing Rally data. 
 
 The other option is to run this application locally using docker like so:
 
