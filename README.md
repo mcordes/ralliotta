@@ -47,9 +47,8 @@ Why did you make this?
 
 Rally's UI is pretty dated and not very cohesive or user friendly. In fact after my company switched to Rally we had a few people quit in protest. This is an attempt to reimagine Rally in a modern user-friendly format similar to other existing issue tracking / scrum / kanban tools and to filter out the cruft, silly options and strange UI choices.  
 
-We use the very functional [rally-node](https://github.com/RallyTools/rally-node) library to talk to their API. It's 
-
 I'll admit this is a strange passion project, but in the spirit of Open source software we're scratching our own itch. Maybe you'll find it useful too.
+
 
 
 Troubleshooting
@@ -57,4 +56,12 @@ Troubleshooting
 
 First try `docker-compose down` and then `docker-compose build && docker-compose up`.
 
-The application runs on ports 8088 and 8089. Verify these are free. You can change them in docker-compose.yml
+The application runs on ports 8088 and 8089. Verify these are free. You can change them in docker-compose.ymland pleasant to use to a modern audience.
+
+Thank You!
+------------
+
+Thank you to Broadcom / Rally for writing Rally in the first place. (Ralliotta)[https://ralliotta.com] uses the very functional [rally-node](https://github.com/RallyTools/rally-node) Open source library to talk to their API. Clearly Rally has had great success and we'd like to make that more accessible and pleasant to use to a modern audience.
+
+Thank you to Vuejs and Typescript. Both amazing libraries / frameworks and a pleasure to code in.
+
