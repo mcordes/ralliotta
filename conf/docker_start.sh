@@ -6,7 +6,7 @@ set -e
 
 
 echo "Hello from Ralliotta!"
-echo "Visit http://localhost:8000"
+echo "Visit http://localhost:8088"
 
 
 exec nginx -g 'daemon off;'

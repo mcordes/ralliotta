@@ -1,6 +1,6 @@
 {
-    "avatarURL": "http://localhost:8088/avatar",
-    "userLookupURL": "http://localhost:8088/lookup",
+    "avatarURL": "http://localhost:8089/avatar",
+    "userLookupURL": "http://localhost:8089/lookup",
     "routerMode": "history",
     "useMockRallyAPI": false
 }

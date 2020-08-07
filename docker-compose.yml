@@ -5,8 +5,7 @@ services:
       context: .
     image: ralliotta:latest
     ports:
-      - "8000:80"
-      - "8088:8088"
+      - "8088:80"
       - "8089:8089"
     volumes:
       - ./assets:/app/assets
