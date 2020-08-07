@@ -27,12 +27,13 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {ActivityItem, fetchAttachmentContent} from "../utils/activity-util";
     import {Attachment} from "../types/Attachment";
     import AttachmentViewModal from "./AttachmentViewModal.vue";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
     import {showErrorToast} from "../utils/util";
+    import {ActivityItem} from "../services/service";
+    import {getService} from "../services/init";
     @Component({
         components: {AttachmentViewModal, TimeSinceDate, Avatar}
     })
@@ -48,7 +49,7 @@
             this.attachment = this.activity.data;
 
             try{
-                this.attachmentContent = await fetchAttachmentContent(this.attachment);
+                this.attachmentContent = await getService().fetchAttachmentContent(this.attachment);
             }
             catch (e) {
                 showErrorToast({e});

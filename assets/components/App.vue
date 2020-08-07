@@ -42,9 +42,9 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import store from "../store";
     import LoginModal from "./LoginModal.vue";
-    import {fetchCurrentUser} from "../utils/user-util";
     import {showErrorToast} from "../utils/util";
     import {AuthenticationError} from "../exceptions";
+    import {getService} from "../services/init";
 
     @Component({
         components: {LoginModal}
@@ -62,7 +62,7 @@
             // NOTE: This isn't a login, its continuing a session that's already active
             if (this.sharedState.hasCredentials()) {
                 try {
-                    const user = await fetchCurrentUser();
+                    const user = await getService().fetchCurrentUser();
                     store.setUser(user);
                 }
                 catch(e) {

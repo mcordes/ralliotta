@@ -58,18 +58,14 @@
 
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
-    import {
-        AddUpdateFieldData,
-        createItem,
-        getSelectOptionsFromRefs,
-        searchEpics, searchProjects, searchReleases
-    } from "../utils/rally-util";
     import {getItemDetailURLPath, showErrorToast, showSuccessToast} from "../utils/util";
     import SelectInput from "./SelectInput.vue";
     import {SelectOption} from "../types/SelectOption";
     import store from "../store";
     import TextAreaInput from "./TextAreaInput.vue";
     import RefSelectInput from "./RefSelectInput.vue";
+    import {AddUpdateFieldData} from "../services/service";
+    import {getService} from "../services/init";
 
     @Component({
         components: {TextAreaInput, RefSelectInput},
@@ -110,7 +106,7 @@
 
             let result;
             try {
-                result = await createItem(this.itemType, data);
+                result = await getService().createItem(this.itemType, data);
                 this.createdItemFormattedID = result.FormattedID;
                 this.createItemDetailURLPath = getItemDetailURLPath(this.createdItemFormattedID);
                 this.showSuccessMessage = true;
@@ -147,7 +143,7 @@
         }
 
         async searchEpicList(search: string) {
-            const epics = await searchEpics(this.project, search);
+            const epics = await getService().searchEpics(this.project, search);
             return epics.map(r => {
                 return {
                     value: r._ref,

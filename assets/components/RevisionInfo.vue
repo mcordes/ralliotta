@@ -26,10 +26,10 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import ExpandableSection from "./ExpandableSection.vue";
-    import {ActivityItem} from "../utils/activity-util";
     import {Revision} from "../types/Revision";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
+    import {ActivityItem} from "../services/service";
     @Component({
         components: {ExpandableSection, TimeSinceDate, Avatar}
     })

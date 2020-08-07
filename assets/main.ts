@@ -5,7 +5,6 @@ import App from './components/App.vue';
 import {MdDialog, MdDialogConfirm, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList, MdRadio, MdAutocomplete, MdProgress} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
-import ItemList from "./components/ItemList.vue";
 import ItemDetail from "./components/ItemDetail.vue";
 import InvalidRoute from "./components/InvalidRoute.vue";
 import Home from "./components/Home.vue";
@@ -25,9 +24,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Kanban from "./components/Kanban.vue";
 import MyWork from "./components/MyWork.vue";
-
-// @ts-ignore
-import config from "./config.json";
+import {config} from "./config";
 import {toDateTime} from "./utils/util";
 import {AuthenticationError, NotFoundError} from "./exceptions";
 import NewItem from "./components/NewItem.vue";
@@ -120,6 +117,11 @@ Vue.config.errorHandler = function (err, vm, info) {
     // Handle 401s from api
     if (err instanceof AuthenticationError) {
         // NOTE: clearing the user triggers App.vue to hide the page and LoginModal.vue to show itself
+        store.clearUser();
+    }
+
+    // Any other errors with 'error 401' in it - also clear user
+    if (`${err}`.indexOf("Error 401") !== -1) {
         store.clearUser();
     }
 

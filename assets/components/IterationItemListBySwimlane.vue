@@ -32,7 +32,6 @@
 
 <script lang="ts">
     import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-    import {getArtifactsGroupedByFlowState} from "../utils/rally-util";
     import store from "../store";
     import {Artifact} from "../types/Artifact";
     import Avatar from "./Avatar.vue";
@@ -41,6 +40,7 @@
     import draggable from "vuedraggable";
     import ItemDetailModal from "./ItemDetailModal.vue";
     import {FlowState} from "../types/FlowState";
+    import {getService} from "../services/init";
 
     @Component({
         components: {Avatar, ItemDetailModal, draggable}
@@ -66,7 +66,7 @@
         }
 
         async load() {
-            this.groupedArtifacts = await getArtifactsGroupedByFlowState(this.project, this.iteration);
+            this.groupedArtifacts = await getService().getArtifactsGroupedByFlowState(this.project, this.iteration);
         }
 
         // TODO-mrc: implement me

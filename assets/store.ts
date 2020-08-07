@@ -1,9 +1,10 @@
 import {User} from "./types/User";
 import {toStringOrBlank} from "./utils/util";
+import {config} from "./config";
 
-const USERNAME_STORAGE_KEY = "username";
-const SESSION_ID_STORAGE_KEY = "sessionId";
-const SECURITY_TOKEN_STORAGE_KEY = "securityToken";
+const USERNAME_STORAGE_KEY = config.useMockRallyAPI ? "sampleUsername" : "username";
+const SESSION_ID_STORAGE_KEY = config.useMockRallyAPI ? "sampleSessionId" : "sessionId";
+const SECURITY_TOKEN_STORAGE_KEY = config.useMockRallyAPI ? "sampleSecurityToken" : "securityToken";
 
 const username = localStorage.getItem(USERNAME_STORAGE_KEY);
 const sessionId = localStorage.getItem(SESSION_ID_STORAGE_KEY);

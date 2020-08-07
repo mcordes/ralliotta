@@ -29,7 +29,6 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {AddUpdateFieldData, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast, toStringOrBlank} from "../utils/util";
     import {updateSingleItemAndShowToast} from "../utils/component-util";
     import {Ref} from "../types/Ref";

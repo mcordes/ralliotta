@@ -23,11 +23,11 @@
 <script lang="ts">
     import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
     import store from "../store";
-    import {createItem, fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
-    import {ActivityItem, toActivityItem} from "../utils/activity-util";
     import {Ref} from "../types/Ref";
     import TextAreaInput from "./TextAreaInput.vue";
+    import {ActivityItem, toActivityItem} from "../services/service";
+    import {getService} from "../services/init";
 
     @Component({
         components: {TextAreaInput}
@@ -55,16 +55,17 @@
             const data = {'Text': this.text, 'Artifact': this.item._ref};
 
             let result;
+            const service = getService();
             try {
-                result = await createItem("conversationpost", data)
+                result = await service.createItem("conversationpost", data)
                 showSuccessToast("Saved.");
             }
             catch(e) {
-                showErrorToast();
+                showErrorToast({e});
             }
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
-            const comment = await fetchSingleItemByRef(result._ref);
+            const comment = await getService().fetchSingleItemByRef(result._ref);
 
             // add to list of activities
             this.activityItems.push(toActivityItem(comment, "comment"));

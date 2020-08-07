@@ -1,7 +1,13 @@
 import {Vue} from "vue-property-decorator";
 import {DateTime} from "luxon";
+import {config} from "../config";
+import {SelectOption} from "../types/SelectOption";
+import {Ref} from "../types/Ref";
 // @ts-ignore
-import config from "../config.json";
+import rally from 'rally';
+
+export const queryUtils = rally.util.query;
+export const refUtils = rally.util.ref;
 
 export function showSuccessToast(msg: string) {
     // @ts-ignore
@@ -68,3 +74,10 @@ export function getItemSearchURLPath(path: string, queryParams: any) {
 
     return path;
 }
+
+export async function getSelectOptionsFromRefs(items: Ref[]) {
+    const results: SelectOption[] = items.map(r => { return {value: r._ref, label: r._refObjectName}; });
+    return results;
+}
+
+export const RALLY_API_ROOT_URL = "https://rally1.rallydev.com/slm/webservice/v2.0";

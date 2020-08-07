@@ -54,9 +54,7 @@
             <table class="items-table">
                 <tr class="md-table-row">
 
-                    <!-- TODO-mrc
                     <th v-if="backlogOnly" class="md-table-head">Actions</th>
-                    -->
 
                     <th class="md-table-head">ID</th>
                     <th class="md-table-head">Title</th>
@@ -72,7 +70,7 @@
                         <Sortable v-bind:field="'CreationDate'" v-model="sortOrder">Created</Sortable>
                     </th>
                     <th class="md-table-head">
-                        <Sortable v-bind:field="'LastUpdateDate'" v-model="sortOrder">Last Updated</Sortable>
+                        <Sortable v-bind:field="'LastUpdateDate'" v-model="sortOrder">Updated</Sortable>
                     </th>
                 </tr>
 
@@ -94,15 +92,22 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import store from "../store";
     import ItemSummary from "./ItemSummary.vue";
-    import {getItemDetailURLPath, getItemSearchURLPath, isRef, showErrorToast} from "../utils/util";
+    import {
+        getItemDetailURLPath,
+        getItemSearchURLPath,
+        isRef,
+        queryUtils, RALLY_API_ROOT_URL,
+        refUtils,
+        showErrorToast
+    } from "../utils/util";
     import Sortable from "./Sortable.vue";
-    import {fetchListOfItems, queryUtils, refUtils} from "../utils/rally-util";
     import {ARTIFACT_SEARCH_FIELDS} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
     import SelectInput from "./SelectInput.vue";
     import {Ref} from "../types/Ref";
     import {debounce} from "underscore";
     import RefSelectInput from "./RefSelectInput.vue";
+    import {getService} from "../services/init";
 
     @Component({
         components: {ExpandableSection, ItemSummary, SelectInput, Sortable, RefSelectInput},
@@ -200,30 +205,28 @@
         }
 
         setSearchFieldsFromRequestParams() {
-            // TODO-mrc: centralize this somewhere
-            const apiPrefix = "https://rally1.rallydev.com/slm/webservice/v2.0/";
             this.includeClosedItems = Boolean(this.$route.query.closed);
             this.searchFormattedId = "" + (this.$route.query.id ?? "");
             this.searchText = "" + (this.$route.query.text ?? "");
 
             const projectOid = this.$route.query.project;
             if (projectOid) {
-                this.project = apiPrefix + "project/" + projectOid;
+                this.project = RALLY_API_ROOT_URL + "/project/" + projectOid;
             }
 
             const releaseOid = this.$route.query.release;
             if (releaseOid) {
-                this.release = apiPrefix + "release/" + releaseOid;
+                this.release = RALLY_API_ROOT_URL + "/release/" + releaseOid;
             }
 
             const iterationOid = this.$route.query.iteration;
             if (iterationOid) {
-                this.iteration = apiPrefix + "iteration/" + iterationOid;
+                this.iteration = RALLY_API_ROOT_URL + "/iteration/" + iterationOid;
             }
 
             const assigneeOid = this.$route.query.assignee;
             if (assigneeOid) {
-                this.assignee = apiPrefix + "user/" + assigneeOid;
+                this.assignee = RALLY_API_ROOT_URL + "/user/" + assigneeOid;
             }
         }
 
@@ -233,7 +236,7 @@
             let query = queryUtils.where('Project', '!=', null);
 
             if (this.project) {
-                query = queryUtils.where('Project', '=', this.project);
+                query = query.and('Project', '=', this.project);
                 queryParams.project = refUtils.getId(this.project);
             }
 
@@ -250,7 +253,7 @@
             }
 
             if (this.backlogOnly) {
-                query = queryUtils.where('Iteration', '=', 'null');
+                query = query.and('Iteration', '=', 'null');
             }
 
             if (this.searchFormattedId) {
@@ -292,7 +295,7 @@
             }
 
             try {
-                const results = await fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {
+                const results = await getService().fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {
                     query,
                     startIndex,
                     pageSize,

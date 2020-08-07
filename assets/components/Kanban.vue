@@ -45,16 +45,16 @@
 
 <script lang="ts">
     import {Component, Vue, Watch} from 'vue-property-decorator';
-    import {getCurrentAndPreviousIterations, getSelectOptionsFromRefs, searchProjects} from "../utils/rally-util";
     import store from "../store";
     import ItemList from "./ItemList.vue";
     import IterationItemListBySwimlane from "./IterationItemListBySwimlane.vue";
     import ExpandableSection from "./ExpandableSection.vue";
     import {DateTime} from "luxon";
-    import {showErrorToast} from "../utils/util";
+    import {getSelectOptionsFromRefs, showErrorToast} from "../utils/util";
     import {Iteration} from "../types/Iteration";
     import SelectInput from "./SelectInput.vue";
     import Backlog from "./Backlog.vue";
+    import {getService} from "../services/init";
 
     @Component({
         components: {ItemList, IterationItemListBySwimlane, ExpandableSection, SelectInput, Backlog}
@@ -83,7 +83,7 @@
             const now = DateTime.utc();
 
             try {
-                [this.currentIteration, this.previousIteration] = await getCurrentAndPreviousIterations(this.project, now);
+                [this.currentIteration, this.previousIteration] = await getService().getCurrentAndPreviousIterations(this.project, now);
                 this.isReady = true;
             }
             catch (e) {
@@ -92,7 +92,7 @@
         }
 
         async searchProjectList(search: string) {
-            return await getSelectOptionsFromRefs(await searchProjects(search));
+            return await getSelectOptionsFromRefs(await getService().searchProjects(search));
         }
     }
 

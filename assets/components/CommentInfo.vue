@@ -38,14 +38,14 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
-    import {fetchSingleItemByRef, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {Comment} from "../types/Comment";
-    import {ActivityItem} from "../utils/activity-util";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import {Ref} from "../types/Ref";
     import Avatar from "./Avatar.vue";
     import TextAreaInput from "./TextAreaInput.vue";
+    import {ActivityItem} from "../services/service";
+    import {getService} from "../services/init";
 
     @Component({
         components: {TimeSinceDate, Avatar, TextAreaInput},
@@ -77,7 +77,7 @@
 
             let result;
             try {
-                result = await updateItem(this.comment._ref, data)
+                result = await getService().updateItem(this.comment._ref, data)
                 showSuccessToast("Saved.");
             }
             catch(e) {
@@ -85,7 +85,7 @@
             }
 
             // re-retrive comment with all the fields included (the responses above just include a subset of them)
-            const persistedComment = await fetchSingleItemByRef(result._ref);
+            const persistedComment = await getService().fetchSingleItemByRef(result._ref);
             this.comment = persistedComment;
 
             this.isEdit = false;

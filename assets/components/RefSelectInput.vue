@@ -12,14 +12,8 @@
     import {Component, Prop, PropSync, Vue, Watch} from "vue-property-decorator";
     import {Ref} from "../types/Ref";
     import SelectInput from "./SelectInput.vue";
-    import {
-        fetchSingleItemByRef,
-        getSelectOptionsFromRefs, searchEpics, searchIterations,
-        searchProjects,
-        searchProjectTeamMembers,
-        searchReleases
-    } from "../utils/rally-util";
-    import store from "../store";
+    import {getSelectOptionsFromRefs} from "../utils/util";
+    import {getService} from "../services/init";
 
     export type ItemSelectType = "project" | "release" | "iteration" | "epic" | "user";
 
@@ -47,7 +41,7 @@
 
         async created() {
             if (this.syncedSelectedRef) {
-                const item: Ref = await fetchSingleItemByRef(this.syncedSelectedRef);
+                const item: Ref = await getService().fetchSingleItemByRef(this.syncedSelectedRef);
                 this.selectedRefLabel = item._refObjectName;
             }
         }
@@ -57,19 +51,19 @@
 
             switch(this.itemType) {
                 case "project":
-                    results = await searchProjects(s);
+                    results = await getService().searchProjects(s);
                     break;
                 case "release":
-                    results = await searchReleases(this.project, s);
+                    results = await getService().searchReleases(this.project, s);
                     break;
                 case "iteration":
-                    results = await searchIterations(this.project, s);
+                    results = await getService().searchIterations(this.project, s);
                     break;
                 case "epic":
-                    results = await searchEpics(this.project, s);
+                    results = await getService().searchEpics(this.project, s);
                     break;
                 case "user":
-                    results = await searchProjectTeamMembers(this.project, s);
+                    results = await getService().searchProjectTeamMembers(this.project, s);
                     break;
                 default:
                     throw new Error("Unexpected search item type: " + this.itemType);

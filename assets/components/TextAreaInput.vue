@@ -38,9 +38,6 @@
                 showXPathInStatusbar: false,
                 showWordsCounter: false,
                 placeholder: this.placeholder || '',
-
-                // TODO-mrc
-                // maxlength: this.maxlength
             }
         }
     };

@@ -6,8 +6,6 @@ const fns = require('./functions');
 const app = express();
 const port = 8088;
 
-// TODO-mrc: override this somehow too
-// TODO-mrc: I think it could also use an environment variable
 const rallyURL = "https://rally1.rallydev.com/slm/webservice/v2.0/security/authorize";
 
 app.use(express.json());

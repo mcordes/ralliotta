@@ -30,12 +30,12 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import {showErrorToast} from "../utils/util";
-    import {fetchListOfItems, queryUtils} from "../utils/rally-util";
     import {COMMENT_SEARCH_FIELDS} from "../types/Comment";
     import store from "../store";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import Avatar from "./Avatar.vue";
     import ItemDetailModal from "./ItemDetailModal.vue";
+    import {getService} from "../services/init";
 
 
     @Component({
@@ -76,7 +76,7 @@
             }
 
             try {
-                const results = await fetchListOfItems('conversationPost', COMMENT_SEARCH_FIELDS, {
+                const results = await getService().fetchListOfItems('conversationPost', COMMENT_SEARCH_FIELDS, {
                     startIndex,
                     pageSize,
                     order: "CreationDate desc",

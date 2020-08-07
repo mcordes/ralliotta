@@ -22,7 +22,7 @@
                             Created: <TimeSinceDate v-bind:date="item.CreationDate"/>
                         </div>
                         <div class="item-field">
-                            Last Updated: <TimeSinceDate v-bind:date="item.LastUpdateDate"/>
+                            Updated: <TimeSinceDate v-bind:date="item.LastUpdateDate"/>
                         </div>
 
                         <div class="item-field">
@@ -58,7 +58,7 @@
                                             v-bind:item="item" v-bind:searchFunc="searchFlowStateList" v-bind:noBlankOption="true"/>
                         </div>
 
-                        <div class="item-field">
+                        <div class="item-field" v-if="isLiveService">
                             <a :href="rallyUIDetailURL" title="Open this item in Rally in a new window." target="_blank">View in Rally UI</a>
                         </div>
                     </div> <!-- end `item-fields` wrapper -->
@@ -113,29 +113,22 @@
 
 <script lang="ts">
     import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-    import {
-        fetchSingleItemByFormattedID,
-        getSelectOptionsFromRefs,
-        searchFlowStates,
-        searchIterations,
-        searchProjectTeamMembers,
-        searchReleases,
-        refUtils
-    } from "../utils/rally-util";
     import CommentInfo from "./CommentInfo.vue";
     import EditableTextArea from "./EditableTextArea.vue";
     import RevisionInfo from "./RevisionInfo.vue";
     import AddComment from "./AddComment.vue";
     import {Artifact} from "../types/Artifact";
     import ExpandableSection from "./ExpandableSection.vue";
-    import {ActivityItem, getActivityForItem} from "../utils/activity-util";
     import AttachmentSummary from "./AttachmentSummary.vue";
     import EditableText from "./EditableText.vue";
     import EditableSelect from "./EditableSelect.vue";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import store from "../store";
-    import {showErrorToast} from "../utils/util";
+    import {getSelectOptionsFromRefs, refUtils, showErrorToast} from "../utils/util";
     import {NotFoundError} from "../exceptions";
+    import {ActivityItem} from "../services/service";
+    import {getService} from "../services/init";
+    import {config} from "../config";
 
     @Component({
         components: {
@@ -148,6 +141,7 @@
         activityItems: ActivityItem[] = [];
         isReady = false;
         rallyUIDetailURL = "";
+        isLiveService = !config.useMockRallyAPI;
 
         @Prop()
         formattedID!: string;
@@ -161,7 +155,7 @@
         }
 
         async loadItem() {
-            this.item = await fetchSingleItemByFormattedID(this.formattedID);
+            this.item = await getService().fetchSingleItemByFormattedID(this.formattedID);
             if (!this.item) {
                 throw new NotFoundError(`Unable to find item with id: ${this.formattedID}`);
             }
@@ -170,7 +164,7 @@
             this.isReady = true;
 
             try{
-                this.activityItems = await getActivityForItem(this.item);
+                this.activityItems = await getService().getActivityForItem(this.item);
             }
             catch (e) {
                 showErrorToast({e});
@@ -187,20 +181,20 @@
         }
 
         async searchReleaseList(search: string) {
-            return await getSelectOptionsFromRefs(await searchReleases(this.item.Project, search));
+            return await getSelectOptionsFromRefs(await getService().searchReleases(this.item.Project, search));
         }
 
         async searchAssigneeList(search: string) {
             const user = store.getUser();
-            return await getSelectOptionsFromRefs(await searchProjectTeamMembers(this.item.Project, search, user));
+            return await getSelectOptionsFromRefs(await getService().searchProjectTeamMembers(this.item.Project, search));
         }
 
         async searchIterationList(search: string) {
-            return await getSelectOptionsFromRefs(await searchIterations(this.item.Project, search));
+            return await getSelectOptionsFromRefs(await getService().searchIterations(this.item.Project, search));
         }
 
         async searchFlowStateList(search: string) {
-            return await getSelectOptionsFromRefs(await searchFlowStates(this.item.Project, search));
+            return await getSelectOptionsFromRefs(await getService().searchFlowStates(this.item.Project, search));
         }
     }
 

@@ -9,12 +9,8 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {refUtils} from "../utils/rally-util";
     import {Ref} from "../types/Ref";
-    import store from "../store";
-
-    // @ts-ignore
-    import config from "../config.json";
+    import {getService} from "../services/init";
 
     @Component
     export default class Avatar extends Vue {
@@ -31,10 +27,7 @@
                 return;
             }
 
-            const userObjectId = refUtils.getId(this.user._ref);
-            const sessionId = store.getCredentials().sessionId;
-            const size = this.size || 43;
-            this.imageURL = `${config.avatarURL}?oid=${userObjectId}&sid=${sessionId}&size=${size}`;
+            this.imageURL = getService().getAvatarImageURL(this.user, this.size);
         }
     }
 

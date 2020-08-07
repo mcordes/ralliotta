@@ -1,15 +1,17 @@
 <template>
     <tr class="item-detail md-table-row">
 
-        <!-- TODO-mrc: implement me
         <td class="md-table-cell" v-if="showAddToIteration">
+            <!--
+            // TODO-mrc
+
             <button title="Add to current iteration" class="md-primary md-raised"
                        @click="showAddToIterationConfirmation = true">++</button>
 
             <button title="Remove from current iteration" class="md-primary md-raised"
                        @click="showRemoveFromIterationConfirmation = true">--</button>
+            -->
         </td>
-        -->
 
         <td class="md-table-cell">
             <ItemDetailModal v-bind:formattedID="item.FormattedID"/>
@@ -61,9 +63,9 @@
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import Avatar from "./Avatar.vue";
     import ItemDetailModal from "./ItemDetailModal.vue";
-    import {getCurrentAndPreviousIterations, updateItem} from "../utils/rally-util";
     import {showErrorToast, showSuccessToast} from "../utils/util";
     import {DateTime} from "luxon";
+    import {getService} from "../services/init";
 
     @Component({
         components: {Avatar, ItemDetailModal}
@@ -109,11 +111,11 @@
         async addToCurrentIteration() {
             // TODO-mrc: cache this?
             const now = DateTime.utc();
-            const [currentIteration] = await getCurrentAndPreviousIterations(this.item.Project, now);
+            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
 
             try {
                 const data = {Iteration: currentIteration._ref};
-                await updateItem(this.item._ref, data);
+                await getService().updateItem(this.item._ref, data);
 
                 showSuccessToast("Added to current iteration");
                 // TODO-mrc: reload row? Change styling of row?
@@ -121,7 +123,7 @@
                 // TODO-mrc: show include total storypoints for sprint / iteration?
             }
             catch(e) {
-                showErrorToast();
+                showErrorToast({e});
             }
 
             // TODO-mrc: hide add button and show remove button
@@ -131,13 +133,13 @@
         async removeFromCurrentIteration() {
             try {
                 const data = {Iteration: null};
-                await updateItem(this.item._ref, data);
+                await getService().updateItem(this.item._ref, data);
                 showSuccessToast("Removed from current iteration");
 
                 // TODO-mrc: reload row? Change styling of row?
             }
             catch(e) {
-                showErrorToast();
+                showErrorToast({e});
             }
             // TODO-mrc: hide remove button and show add button
         }

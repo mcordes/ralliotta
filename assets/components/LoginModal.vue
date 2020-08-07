@@ -34,7 +34,7 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import store from "../store";
-    import {fetchCurrentUser, login} from "../utils/user-util";
+    import {getService} from "../services/init";
 
     @Component
     export default class LoginModal extends Vue {
@@ -52,7 +52,7 @@
             this.errorMessage = '';
 
             try {
-                const session = await login(this.username, this.password);
+                const session = await getService().login(this.username, this.password);
                 store.setCredentials(this.username, this.password, session.sessionId, session.securityToken);
             }
             catch (e) {
@@ -62,7 +62,7 @@
             }
 
             try {
-                const user = await fetchCurrentUser();
+                const user = await getService().fetchCurrentUser();
                 store.setUser(user);
             }
             catch (e) {

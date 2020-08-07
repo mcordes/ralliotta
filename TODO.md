@@ -1,7 +1,15 @@
 
 ## TODO next:
 
-- backlog isn't filtered by project still, fix me
+- Finish sample data
+   - build sample app script in site project
+   - include link to sample site in site project
+   - detail fields and comments look like they work, but aren't persisted
+   - kanban needs work
+- kanban
+   - refesh iteration after adding / removing item from backlog
+-site 
+   - include email and more prose on site
 - refreshing search page returns to default project (do any search request params work?)
 - in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.
 - search by text on the search page doesn't work very well. It's hitting the backend 
@@ -26,6 +34,7 @@
 
 
 
+- ~~backlog isn't filtered by project still, fix me~~
 - ~~make search pages populate URL parameters so you can bookmark / share searches with others~~
 - ~~debounce calls to rally so we don't call them so often (particularly on search filters)~~
 - ~~Fix backlog query - should just show items with a null iteration.~~
