@@ -1,7 +1,11 @@
+Ralliotta
+-----------
+
 A FREE, streamlined and easy to use alternative UI to Broadcom's [Rally](https://www.broadcom.com/products/software/agile-development/rally-software). Enjoy viewing all your existing Rally data in a format that is pleasant to use, straightforward and heavily simplified for common use cases. 
 
 
-# I'm an end user, how do I use this? 
+I'm an end user, how do I use this? 
+-----------
 
 The easiest way is to use our hosted version at [https://ralliotta.com](https://ralliotta.com). It's *FREE*, secure and give you instant access to your existing Rally data. 
 
@@ -17,7 +21,8 @@ The other option is to run this application locally using docker like so:
 That's it. Now you have your own wonderful Rally UI running locally on your computer!
 
 
-# I'm a developer and I want to contribute.
+I'm a developer and I want to contribute.
+-----------
 
 Fantastic! The application is written in [Typescript](https://www.typescriptlang.org/) and the code is pragmatic and relatively well documented. We strive for simplicity and self documenting code as much as possible. 
 
@@ -37,7 +42,8 @@ And these additional steps (development only - these aren't needed if you just w
 * Make changes to *.ts and *.vue files and the watcher will rebuild them in the background making development a snap!
 
 
-# Troubleshooting
+Troubleshooting
+-----------
 
 First try `docker-compose down` and then `docker-compose build && docker-compose up`.
 
