@@ -1,5 +1,6 @@
 <template>
     <div>
+        XXXXXX
         <div v-if="(syncedSelectedRef && selectedRefLabel) || (!syncedSelectedRef)">
             <SelectInput v-bind:searchFunc="searchFunc" v-bind:label="label" v-bind:selectedValue.sync="syncedSelectedRef"
                          v-bind:selectedLabel.sync="selectedRefLabel" v-bind:cssClass="cssClass"
@@ -53,6 +54,7 @@
         async searchFunc(s: string) {
             let results;
 
+            debugger;
             switch(this.itemType) {
                 case "project":
                     results = await getService().searchProjects(s);

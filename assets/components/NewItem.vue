@@ -23,11 +23,13 @@
                 <RefSelectInput v-bind:itemType="'project'" v-bind:label="'Project'" v-bind:selectedRef.sync="project"/>
             </div>
             <div>
-                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'" v-bind:selectedRef.sync="release" v-bind:project="project"/>
+                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'" v-bind:selectedRef.sync="release"
+                                v-bind:project="project" v-bind:disabled="!project"/>
             </div>
 
             <div>
-                <RefSelectInput v-bind:itemType="'epic'" v-bind:label="'Epic'" v-bind:selectedRef.sync="epic" v-bind:project="project"/>
+                <RefSelectInput v-bind:itemType="'epic'" v-bind:label="'Epic'" v-bind:selectedRef.sync="epic"
+                                v-bind:project="project" v-bind:disabled="!project"/>
             </div>
 
             <md-field>
@@ -137,16 +139,6 @@
         @Watch("description")
         descriptionChanged() {
             console.log("description changed - " + this.description);
-        }
-
-        async searchEpicList(search: string) {
-            const epics = await getService().searchEpics(this.project, search);
-            return epics.map(r => {
-                return {
-                    value: r._ref,
-                    label: r.FormattedID + ": " + r.Name,
-                }
-            });
         }
     };
 
