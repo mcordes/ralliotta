@@ -20,12 +20,3 @@ https://rally1.rallydev.com/slm/webservice/1.43/user.js?start=1&pagesize=2
 
 1. https://github.com/jkamenik/Rally-CLI
 
-
-## Problems with rally
- - UI is abysmal 
- - Extensions are lame 
- - Separating task / userstory / defect is stupid - developers works on all of these - it's stupid to group them separately (only)
- - can't edit comments
- - no @mentions in comments
- - comments lose formatting
- - data model is bloated and weird
