@@ -581,9 +581,10 @@ function replaceWithRefs(data: any) {
     for (const key of Object.keys(data)) {
         // replace incoming strings that look like Ref string with the real ref object
         // throws an exception if we can't find the referenced object
-        if (key.startsWith(urlPrefix)) {
-            const type = refUtils.getType(key).toLowerCase();
-            const oid = refUtils.getId(key);
+        const value = data[key];
+        if (value.startsWith(urlPrefix)) {
+            const type = refUtils.getType(value).toLowerCase();
+            const oid = refUtils.getId(value);
             const obj = getSingleObjectByObjectId(type, oid);
             data[key] = getRef(obj);
         }
