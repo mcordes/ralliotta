@@ -11,20 +11,16 @@
 -site 
    - include email and more prose on site
 - refreshing search page returns to default project (do any search request params work?)
-- in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
    b/c there are multiple searches the same results get added more than once.
        * this shouldn't happen any more for the list pages, but be careful
 
-- remove assignee from My work page? (or at least default it)
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
-- mock rally
 - integration testing
 
 - Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
 
-- updating a comment works, but doesn't refresh the comment on the page
 
 - Add / remove (?) attachment on the detail page 
 - add attachments on new item page? (or just send them to the detail page?)
@@ -34,6 +30,9 @@
 
 
 
+- ~~in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.~~
+- ~~updating a comment works, but doesn't refresh the comment on the page~~
+- ~~remove assignee from My work page? (or at least default it)~~
 - ~~backlog isn't filtered by project still, fix me~~
 - ~~make search pages populate URL parameters so you can bookmark / share searches with others~~
 - ~~debounce calls to rally so we don't call them so often (particularly on search filters)~~

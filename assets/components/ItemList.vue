@@ -34,8 +34,10 @@
                                 <RefSelectInput v-bind:itemType="'project'" v-bind:label="'Project'" v-bind:selectedRef.sync="project"/>
                             </div>
 
-                            <div class="filter-item">
-                                <RefSelectInput v-bind:itemType="'user'" v-bind:label="'Assignee'" v-bind:selectedRef.sync="assignee" v-bind:project="project"/>
+                            <div v-if="!showMyItemsOnly">
+                                <div class="filter-item">
+                                    <RefSelectInput v-bind:itemType="'user'" v-bind:label="'Assignee'" v-bind:selectedRef.sync="assignee" v-bind:project="project"/>
+                                </div>
                             </div>
 
                             <div class="filter-item">
