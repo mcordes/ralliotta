@@ -2,9 +2,7 @@
 ## TODO next:
 
 - Finish sample data
-   - kanban needs work
-- kanban
-   - refesh iteration after adding / removing item from backlog
+- kanban needs work
 -site 
    - include email and more prose on site
 - search by text on the search page doesn't work very well. It's hitting the backend 
@@ -34,6 +32,7 @@
 
 ## Done
 
+   - ~~refesh iteration after adding / removing item from backlog~~
    - ~~detail fields and comments look like they work, but aren't persisted~~
 - ~~refreshing search page returns to default project (do any search request params work?)~~
 - ~~in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.~~
