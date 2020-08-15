@@ -24,7 +24,7 @@
                             <md-button md-menu-trigger>
                                 <h3 class="md-subheading">Hello, {{ sharedState.getUser().FirstName }}!</h3>
                                 <div v-if="sharedState.getUser().userProfileImage">
-                                    <!-- NOTE: the weird urls here b/c parcel mangles them otherwise -->
+                                    <!-- NOTE: the weird urls are here b/c parcel mangles them otherwise -->
                                     <img class="user-img" :src="`${sharedState.getUser().userProfileImage }`">
                                 </div>
                             </md-button>
