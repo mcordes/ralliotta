@@ -268,8 +268,10 @@ function initStore() {
         getSampleArtifact(users, releases, epics, "User story 1", projects[0], flowStates[0], iterations[1]),
         getSampleArtifact(users, releases, epics,"User story 2", projects[0], flowStates[1], iterations[1]),
         getSampleArtifact(users, releases, epics, "User story 3", projects[0], flowStates[2], iterations[0]),
-        getSampleArtifact(users, releases, epics, "User story 4", projects[1], flowStates[0], null),
+        getSampleArtifact(users, releases, epics, "User story 4", projects[0], flowStates[0], null),
         getSampleArtifact(users, releases, epics, "User story 5", projects[0], flowStates[0], null),
+        getSampleArtifact(users, releases, epics, "User story 6", projects[1], flowStates[0], null),
+        getSampleArtifact(users, releases, epics, "User story 7", projects[1], flowStates[0], null),
     ];
 
     const comments = [
@@ -478,6 +480,7 @@ function getSampleIteration(name: string, project: any, startDate: DateTime, end
 
     return {
         "_ref": `${urlPrefix}/iteration/${oid}`, "_refObjectUUID": "XXX", "_objectVersion": "3", "_refObjectName": name,
+        "ObjectID": oid,
         "EndDate": endDate.toISO(), "Name": name,
         "Project": getRef(project),
         "StartDate": startDate.toISO(), "_type": "Iteration"
@@ -597,7 +600,7 @@ function replaceWithRefs(data: any) {
         // replace incoming strings that look like Ref string with the real ref object
         // throws an exception if we can't find the referenced object
         const value = data[key];
-        if (value.startsWith(urlPrefix)) {
+        if (value && value.startsWith(urlPrefix)) {
             const type = refUtils.getType(value).toLowerCase();
             const oid = refUtils.getId(value);
             const obj = getSingleObjectByObjectId(type, oid);

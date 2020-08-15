@@ -32,6 +32,8 @@
     import ItemDetailModal from "./ItemDetailModal.vue";
     import {FlowState} from "../types/FlowState";
     import {getService} from "../services/init";
+    import {refUtils} from "../utils/util";
+    import {debounce} from "underscore";
 
     @Component({
         components: {Avatar, ItemDetailModal}
@@ -53,7 +55,19 @@
         async created() {
             console.assert(this.iteration != null);
             console.assert(!!this.iteration);
+
+            // Listen for items to be added to our iteration and reload when we see it
+            this.$root.$on("iterationItemsChanged", async (iterationRef: string) => {
+                if (iterationRef === this.iteration._ref) {
+                    console.log(`Refreshing iteration swimlanes - ${refUtils.getId(this.iteration._ref)}`);
+                    await this.load();
+                }
+           });
+
             await this.load();
+
+            // Call the load fn at most once every 2 seconds
+            this.load = debounce(this.load, 2000);
         }
 
         async load() {

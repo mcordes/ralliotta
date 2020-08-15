@@ -1,16 +1,14 @@
 <template>
-    <tr class="item-detail md-table-row">
-
+    <tr class="item-detail md-table-row" v-bind:class="{'added-to-iteration': addedToIteration}">
         <td class="md-table-cell" v-if="showAddToIteration">
-            <!--
-            // TODO-mrc
-
-            <button title="Add to current iteration" class="md-primary md-raised"
-                       @click="showAddToIterationConfirmation = true">++</button>
-
-            <button title="Remove from current iteration" class="md-primary md-raised"
-                       @click="showRemoveFromIterationConfirmation = true">--</button>
-            -->
+            <div v-if="addedToIteration">
+                <button title="Remove from current iteration" class="md-primary md-raised"
+                        @click="showRemoveFromIterationConfirmation = true">--</button>
+            </div>
+            <div v-else>
+                <button title="Add to current iteration" class="md-primary md-raised"
+                        @click="showAddToIterationConfirmation = true">++</button>
+            </div>
         </td>
 
         <td class="md-table-cell">
@@ -48,7 +46,8 @@
                         md-confirm-text="Yes"
                         md-cancel-text="No"
                         @md-confirm="addToCurrentIteration" />
-
+            </div>
+            <div>
                 <md-dialog-confirm
                         :md-active.sync="showRemoveFromIterationConfirmation"
                         md-title="Are you sure?"
@@ -80,6 +79,7 @@
         projectName = "";
         showAddToIterationConfirmation = false;
         showRemoveFromIterationConfirmation = false;
+        addedToIteration = false;
 
         @Prop()
         item: any;
@@ -115,6 +115,7 @@
         }
 
         async addToCurrentIteration() {
+            // TODO-mrc: pass this in?
             const now = DateTime.utc();
             const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
 
@@ -122,37 +123,50 @@
                 const data = {Iteration: currentIteration._ref};
                 await getService().updateItem(this.item._ref, data);
 
-                showSuccessToast("Added to current iteration");
-                // TODO-mrc: reload row? Change styling of row?
+                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 + this.item.PlanEstimate ?? 0;
 
-                // TODO-mrc: show include total storypoints for sprint / iteration?
+                showSuccessToast(`Added to current iteration (story points: ${newTotalPoints})`);
+                this.addedToIteration = true;
+
+                // Trigger an event that Kanban.vue will look for a reload the iteration swimlane breakdown thingey
+                this.$root.$emit("iterationItemsChanged", currentIteration._ref);
             }
             catch(e) {
                 showErrorToast({e});
             }
-
-            // TODO-mrc: hide add button and show remove button
-            // TODO-mrc: reload current iteration swimlanes
         }
 
         async removeFromCurrentIteration() {
+            const now = DateTime.utc();
+            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
+
             try {
                 const data = {Iteration: null};
                 await getService().updateItem(this.item._ref, data);
-                showSuccessToast("Removed from current iteration");
 
-                // TODO-mrc: reload row? Change styling of row?
+                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 - this.item.PlanEstimate ?? 0;
+                showSuccessToast(`Removed from current iteration (story points: ${newTotalPoints})`);
+
+                this.addedToIteration = false;
+
+                // Trigger an event that Kanban.vue will look for a reload the iteration swimlane breakdown thingey
+                this.$root.$emit("iterationItemsChanged", currentIteration._ref);
             }
             catch(e) {
                 showErrorToast({e});
             }
-            // TODO-mrc: hide remove button and show add button
         }
     }
 
 </script>
 
 <style scoped>
+    .added-to-iteration {
+        opacity: 0.3;
+    }
+    .added-to-iteration button {
+        opacity: 1;
+    }
 </style>
 
 
