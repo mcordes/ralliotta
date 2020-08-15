@@ -77,7 +77,6 @@
         description = "";
         release = "";
         project = "";
-        projectLabel = "";
         createdItemFormattedID = "";
         createItemDetailURLPath = "";
         showSuccessMessage = false;
@@ -86,7 +85,6 @@
         async created() {
             const user = store.getUser();
             this.project = user.DefaultProject._ref;
-            this.projectLabel = user.DefaultProject._refObjectName;
         }
 
         async submit() {
@@ -134,7 +132,6 @@
 
             const user = store.getUser();
             this.project = user.DefaultProject._ref;
-            this.projectLabel = user.DefaultProject._refObjectName;
         }
 
         @Watch("description")
