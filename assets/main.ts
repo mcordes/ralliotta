@@ -51,6 +51,10 @@ const router = new VueRouter({
     routes
 });
 
+router.afterEach((to, from) => {
+    document.querySelector('.md-drawer').classList.remove('md-active');
+});
+
 Vue.config.productionTip = false;
 
 Vue.use(MdField);

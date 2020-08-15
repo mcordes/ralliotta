@@ -4,6 +4,7 @@
     background: #FFF;
     border: 1px solid #CCC;
     border-radius: 10px;
+    box-shadow: inset -10px 0px 10px -10px rgba(0,0,0,0.4), inset 10px 0px 10px -10px rgba(0,0,0,0.4);
     display: flex;
     overflow: auto;;
     width: 100%;
@@ -16,7 +17,24 @@
     float: left;
     height: 65px;
     padding: 5px 15px;
+    position: relative;
 }
+
+.search-filters .filter-item:first-child:before,
+.search-filters .filter-item:last-child:after {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 50px;
+    z-index: 0;
+}
+.search-filters .filter-item:last-child { width: 100%; }
+.search-filters .filter-item:first-child:before {
+    background: linear-gradient(-90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    left: 0;
+}
+.search-filters .filter-item:last-child:after { right: 0; }
 
 .search-filters .filter-item .md-checkbox-label { white-space: nowrap; }
 

@@ -268,3 +268,12 @@ a:hover { border-color: #222; }
         width: 100%;
     }
 }
+
+/* specific to the main navigation */
+@media screen and (min-width: 651px) {
+    .main-nav-toggle { display: none; }
+}
+
+@media screen and (max-width: 650px) {
+    .main-nav { display: none !important; }
+}
