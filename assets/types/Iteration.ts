@@ -9,5 +9,5 @@ export interface Iteration extends Ref {
 }
 
 
-export const ITERATION_SEARCH_FIELDS: Array<keyof Iteration> = ['Name', 'Project', 'StartDate', 'EndDate'];
+export const ITERATION_SEARCH_FIELDS: Array<keyof Iteration> = ['Name', 'Project', 'StartDate', 'EndDate', 'PlannedVelocity'];
 

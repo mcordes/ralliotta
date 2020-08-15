@@ -27,11 +27,11 @@ export interface ListOptions {
     pageSize?: number;
     order?: string;
     kwargs?: {[key: string]: any}
-    projectScope?: Project | Ref;
+    projectScope?: Ref | string;
 }
 
 export interface Scope {
-    project?: string;
+    project?: Ref | string;
 
     // NOTE: the up/down has to do with the way Rally does project hierarchy searches. Hopefully we can ignore
     // this in most cases.

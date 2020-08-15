@@ -135,7 +135,7 @@ export class RallyService extends Service {
         console.assert(fields != null);
         const scope: Scope = {};
         if (options.projectScope) {
-            scope.project = options.projectScope._ref;
+            scope.project = options.projectScope;
         }
 
         const resp = await getRallyAPI(store.getCredentials()).query({

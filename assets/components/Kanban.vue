@@ -9,7 +9,9 @@
 
         <div v-if="isReady">
             <div v-if="currentIteration">
-                <h3>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})</h3>
+                <h3>Current iteration: {{ currentIteration.StartDate | formatDate }} - {{ currentIteration.EndDate | formatDate }} ({{ currentIteration.Name }})
+                    <span v-if="currentIteration.PlannedVelocity">(Story points: {{ currentIteration.PlannedVelocity }})</span>
+                </h3>
                 <div>
                     <IterationItemListBySwimlane v-bind:iteration="currentIteration" v-bind:project="project"/>
                 </div>
@@ -20,6 +22,7 @@
                     <template v-slot:header>
                         <h3>Previous iteration
                             {{ previousIteration.StartDate | formatDate }} - {{ previousIteration.EndDate | formatDate }} ({{ previousIteration.Name }})
+                            <span v-if="previousIteration.PlannedVelocity">(Story points: {{ previousIteration.PlannedVelocity }})</span>
                         </h3>
                     </template>
                     <template v-slot:main>
@@ -62,6 +65,8 @@
     export default class Kanban extends Vue {
         currentIteration?: Iteration = undefined;
         previousIteration?: Iteration = undefined;
+        currentIterationMetrics?: any;
+        previousIterationMetrics?: any;
         isReady = false;
         project = "";
         projectLabel = "";
