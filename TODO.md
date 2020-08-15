@@ -13,6 +13,8 @@
 
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 
+- make friendly time (1 min ago, etc) update efficiently. How w/o having each component do it?
+
 
 
 
