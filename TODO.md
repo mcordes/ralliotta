@@ -18,9 +18,6 @@
 
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 
-- Add / remove (?) attachment on the detail page 
-- add attachments on new item page? (or just send them to the detail page?)
-
 
 
 

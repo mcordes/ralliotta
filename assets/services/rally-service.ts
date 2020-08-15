@@ -73,7 +73,7 @@ function getAddUpdateRequestOptions() {
 
 export class RallyService extends Service {
     async fetchCurrentUser() {
-        // NOTE: Looking for users without a query string returns a single user - the logged in user
+        // NOTE: Looking for users without a query parameter string returns a single user - the logged in user
         const resp = await getRallyAPI(store.getCredentials()).query({
             type: 'user',
             start: 1, // 1-based

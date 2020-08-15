@@ -140,8 +140,8 @@ export abstract class Service {
         let query = queryUtils.where('Project', '=', projectRef);
 
         if (searchStr) {
-            let subQuery = queryUtils.where('FormattedID', 'contains', searchStr)
-            subQuery = subQuery.or('Name', 'contains', searchStr);
+            let subQuery = queryUtils.where('FormattedID', 'contains', '"' + searchStr + '"');
+            subQuery = subQuery.or('Name', 'contains', '"' + searchStr + '"');
             query = query.and(subQuery);
         }
 
@@ -160,7 +160,7 @@ export abstract class Service {
         let query;
 
         if (searchStr) {
-            query = queryUtils.where('Name', 'contains', searchStr);
+            query = queryUtils.where('Name', 'contains', '"' + searchStr + '"');
         }
 
         const response = await this.fetchListOfItems('project', ['Name', 'Description'], {
@@ -226,7 +226,7 @@ export abstract class Service {
         let query;
 
         if (search) {
-            query = queryUtils.where('DisplayName', 'contains', search || null);
+            query = queryUtils.where('DisplayName', 'contains', '"' + search + '"');
         }
 
         const response = await this.fetchListOfItems(typeStr, ['Name'], {

@@ -271,7 +271,7 @@
             }
 
             if (this.searchText) {
-                let subQuery = queryUtils.where('Name', 'contains', this.searchText)
+                let subQuery = queryUtils.where('Name', 'contains', '"' + this.searchText + '"')
                 subQuery = subQuery.or('Description', 'contains', this.searchText);
                 query = query.and(subQuery);
                 queryParams.text = this.searchText;
