@@ -248,9 +248,9 @@ a:hover { border-color: #222; }
 
 
 /* WYSIWYG style overrides */
-.jodit_container { width: 100% !important; }
-.jodit_toolbar { border-radius: 6px 6px 0 0; }
-.jodit_statusbar { border-radius: 0 0 6px 6px; }
+.jodit-container { width: 100% !important; }
+.jodit-toolbar { border-radius: 6px 6px 0 0; }
+.jodit-statusbar { border-radius: 0 0 6px 6px; }
 
 
 
