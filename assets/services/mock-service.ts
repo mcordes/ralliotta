@@ -54,7 +54,6 @@ export class MockService extends Service {
     }
 
     getAvatarImageURL(user: User | Ref, size: number): string {
-        // TODO-mrc:
         return "";
     }
 }

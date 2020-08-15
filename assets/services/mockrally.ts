@@ -32,8 +32,8 @@ function getDataListForType(type: string) {
         hierarchicalrequirement: store.artifacts,
         attachment: store.attachments,
 
-        // TODO-mrc
-        //defect: artifacts,
+        // TODO: support defects too?
+        defect: [],
     };
     return objectTypeMapping[type];
 }
