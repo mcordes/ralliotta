@@ -28,7 +28,13 @@
 
 
 
+## Iteration 2
+   - Refresh thing after changing other things
+   - Show total story points on kanban page for iterations
 
+
+
+## Done
 
 - ~~in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.~~
 - ~~updating a comment works, but doesn't refresh the comment on the page~~
