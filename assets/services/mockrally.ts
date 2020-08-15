@@ -267,8 +267,8 @@ function initStore() {
     const artifacts = [
         getSampleArtifact(users, releases, epics, "User story 1", projects[0], flowStates[0], iterations[1]),
         getSampleArtifact(users, releases, epics,"User story 2", projects[0], flowStates[1], iterations[1]),
-        getSampleArtifact(users, releases, epics, "User story 3", projects[1], flowStates[5], iterations[0]),
-        getSampleArtifact(users, releases, epics, "User story 4", projects[0], flowStates[0], null),
+        getSampleArtifact(users, releases, epics, "User story 3", projects[0], flowStates[2], iterations[0]),
+        getSampleArtifact(users, releases, epics, "User story 4", projects[1], flowStates[0], null),
         getSampleArtifact(users, releases, epics, "User story 5", projects[0], flowStates[0], null),
     ];
 
