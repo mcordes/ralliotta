@@ -36,16 +36,22 @@
 
                             <div v-if="!showMyItemsOnly">
                                 <div class="filter-item">
-                                    <RefSelectInput v-bind:itemType="'user'" v-bind:label="'Assignee'" v-bind:selectedRef.sync="assignee" v-bind:project="project"/>
+                                    <RefSelectInput v-bind:itemType="'user'" v-bind:label="'Assignee'"
+                                                    v-bind:selectedRef.sync="assignee" v-bind:project="project"
+                                                    v-bind:disabled="!project"/>
                                 </div>
                             </div>
 
                             <div class="filter-item">
-                                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'" v-bind:selectedRef.sync="release" v-bind:project="project"/>
+                                <RefSelectInput v-bind:itemType="'release'" v-bind:label="'Release'"
+                                                v-bind:selectedRef.sync="release" v-bind:project="project"
+                                                v-bind:disabled="!project"/>
                             </div>
 
                             <div class="filter-item">
-                                <RefSelectInput v-bind:itemType="'iteration'" v-bind:label="'Iteration'" v-bind:selectedRef.sync="iteration" v-bind:project="project"/>
+                                <RefSelectInput v-bind:itemType="'iteration'" v-bind:label="'Iteration'"
+                                                v-bind:selectedRef.sync="iteration" v-bind:project="project"
+                                                v-bind:disabled="!project"/>
                             </div>
 
                         </div>
@@ -189,16 +195,17 @@
 
             this.expandSearchFilters = !this.collapseSearchFilters;
 
-            // @ts-ignore
-            let projectRefStr = isRef(this.initialProject) ? this.initialProject._ref : this.initialProject;
+            if (!this.project) {
+                // @ts-ignore
+                let project = isRef(this.initialProject) ? this.initialProject._ref : this.initialProject;
+                if (!project && !this.initialProjectNone) {
+                    const user = this.sharedState.getUser();
+                    project = user.DefaultProject._ref;
+                }
 
-            if (!projectRefStr && !this.initialProjectNone) {
-                const user = this.sharedState.getUser();
-                projectRefStr = user.DefaultProject;
+                // NOTE: this triggers the onSearchFieldChanged watch which triggers a fetch
+                this.project = project;
             }
-
-            // NOTE: this triggers the onSearchFieldChanged watch which triggers a fetch
-            this.project = projectRefStr;
         }
 
         async showMore() {

@@ -10,7 +10,6 @@
    - refesh iteration after adding / removing item from backlog
 -site 
    - include email and more prose on site
-- refreshing search page returns to default project (do any search request params work?)
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
    b/c there are multiple searches the same results get added more than once.
@@ -22,6 +21,7 @@
 
 
 ## Iteration 2
+
    - Refresh thing after changing other things
    - Show total story points on kanban page for iterations
    - integration testing ?
@@ -32,8 +32,10 @@
 
 
 
+
 ## Done
 
+- ~~refreshing search page returns to default project (do any search request params work?)~~
 - ~~in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.~~
 - ~~updating a comment works, but doesn't refresh the comment on the page~~
 - ~~remove assignee from My work page? (or at least default it)~~

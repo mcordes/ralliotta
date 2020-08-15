@@ -2,7 +2,8 @@
     <div>
         <div v-if="(syncedSelectedRef && selectedRefLabel) || (!syncedSelectedRef)">
             <SelectInput v-bind:searchFunc="searchFunc" v-bind:label="label" v-bind:selectedValue.sync="syncedSelectedRef"
-                         v-bind:selectedLabel.sync="selectedRefLabel" v-bind:cssClass="cssClass"/>
+                         v-bind:selectedLabel.sync="selectedRefLabel" v-bind:cssClass="cssClass"
+                         v-bind:disabled="disabled"/>
         </div>
     </div>
 </template>
@@ -38,6 +39,9 @@
 
         @Prop()
         cssClass!: string;
+
+        @Prop({default: false})
+        disabled!: boolean;
 
         async created() {
             if (this.syncedSelectedRef) {

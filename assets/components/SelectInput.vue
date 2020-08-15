@@ -3,7 +3,8 @@
         <md-autocomplete v-model="internalValue"
                 :md-options="options"
                 @md-changed="search" @md-opened="search"
-                @md-selected="setSyncedValue">
+                @md-selected="setSyncedValue"
+                :disabled="disabled">
 
             <label>{{ label }}</label>
             <template slot="md-autocomplete-item" slot-scope="{ item }">{{ getLabelFromLabelAndValue(item) }}</template>
@@ -35,6 +36,9 @@
 
         @Prop()
         cssClass!: string;
+
+        @Prop({default: false})
+        disabled!: boolean;
 
         options: SelectOption[] | Promise<SelectOption[]> = [];
         internalValue: SelectOption | null = null;
