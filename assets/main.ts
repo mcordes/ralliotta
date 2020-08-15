@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './components/App.vue';
 
 // @ts-ignore
-import {MdDialog, MdDialogConfirm, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList, MdRadio, MdAutocomplete, MdProgress} from 'vue-material/dist/components';
+import {MdDialog, MdDialogConfirm, MdButton, MdTabs, MdIcon, MdContent, MdField, MdCheckbox, MdMenu, MdList, MdRadio, MdAutocomplete, MdProgress, MdToolbar, MdDrawer} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
 import ItemDetail from "./components/ItemDetail.vue";
@@ -52,7 +52,10 @@ const router = new VueRouter({
 });
 
 router.afterEach((to, from) => {
-    document.querySelector('.md-drawer').classList.remove('md-active');
+    const selector = document.querySelector('.md-drawer');
+    if (selector) {
+        selector.classList.remove('md-active');
+    }
 });
 
 Vue.config.productionTip = false;
@@ -73,6 +76,8 @@ Vue.use(MdProgress);
 Vue.use(VueRouter);
 Vue.use(VueToast);
 Vue.use(JoditVue)
+Vue.use(MdToolbar);
+Vue.use(MdDrawer);
 
 new Vue({
     render: h => h(App),

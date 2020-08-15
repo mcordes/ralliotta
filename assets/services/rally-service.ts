@@ -86,9 +86,6 @@ export class RallyService extends Service {
         // NOTE: The result isn't wrapped with a top level element like the others
         const user: User = resp;
 
-        console.log("Response: " + JSON.stringify(resp));
-
-
         await Promise.all([
             this.fetchDefaultProject(user),
             this.fetchUserProfileImage(user),

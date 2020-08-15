@@ -56,6 +56,11 @@ export default {
     },
 
     hasCredentials() {
+        // TODO-mrc: this is ugly. Move this into Service?
+        if (config.useMockRallyAPI) {
+            return true;
+        }
+
         const c = this.getCredentials();
         return !!(c.username && c.sessionId && c.securityToken);
     },

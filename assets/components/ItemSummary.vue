@@ -18,6 +18,9 @@
 
         </td>
         <td class="md-table-cell">{{ item.Name }}</td>
+
+        <td v-if="showPlanEstimate">{{ item.PlanEstimate }}</td>
+
         <td class="md-table-cell">
             <div class="avatar-wrapper" v-if="item.Owner">
                 <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
@@ -86,6 +89,9 @@
 
         @Prop({default: false})
         showProject!: boolean;
+
+        @Prop({default: false})
+        showPlanEstimate!: boolean;
 
         async created() {
             if (this.item.Owner) {

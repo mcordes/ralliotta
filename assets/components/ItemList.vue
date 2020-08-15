@@ -58,6 +58,9 @@
 
                     <th class="md-table-head">ID</th>
                     <th class="md-table-head">Title</th>
+
+                    <th v-if="showPlanEstimate">Estimate</th>
+
                     <th class="md-table-head">
                         <Sortable v-bind:field="'Owner'" v-model="sortOrder">Assignee</Sortable>
                     </th>
@@ -76,7 +79,8 @@
 
                 <ItemSummary v-for="item in items" v-bind:item="item"
                              v-bind:showAddToIteration="backlogOnly"
-                             v-bind:showProject="showProject"></ItemSummary>
+                             v-bind:showProject="showProject"
+                             v-bind:showPlanEstimate="showPlanEstimate"></ItemSummary>
             </table>
 
             <div v-if="hasMoreRecords" style="text-align: center;">
@@ -149,6 +153,9 @@
 
         @Prop({default: false})
         initialProjectNone!: boolean;
+
+        @Prop({default: false})
+        showPlanEstimate!: boolean;
 
         @Watch("$route")
         async onRouteChange(to: any, from: any) {

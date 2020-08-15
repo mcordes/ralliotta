@@ -3,6 +3,7 @@
         <ItemList v-bind:backlogOnly="true"
                   v-bind:initialProject="initialProject"
                   v-bind:collapseSearchFilters="true"
+                  v-bind:showPlanEstimate="true"
         />
     </div>
 </template>

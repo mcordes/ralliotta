@@ -124,7 +124,7 @@
     import EditableSelect from "./EditableSelect.vue";
     import TimeSinceDate from "./TimeSinceDate.vue";
     import store from "../store";
-    import {getSelectOptionsFromRefs, refUtils, showErrorToast} from "../utils/util";
+    import {getSelectOptionsFromRefs, isRef, refUtils, showErrorToast} from "../utils/util";
     import {NotFoundError} from "../exceptions";
     import {ActivityItem} from "../services/service";
     import {getService} from "../services/init";
@@ -149,7 +149,7 @@
 
         async created() {
             if (!this._formattedID) {
-                this._formattedID = this.$route.params['formattedID'];
+                this._formattedID = this.formattedID || this.$route.params['formattedID'];
             }
             await this.loadItem();
         }
@@ -170,7 +170,11 @@
                 showErrorToast({e});
             }
 
-            this.itemFields = Object.keys(this.item);
+            // Make a list of 'interesting' fields to show the user
+            this.itemFields = Object.keys(this.item).filter((k: string) => {
+                const value: any = (this.item as any)[k];
+                return !(k.startsWith("_") || isRef(value));
+            });
 
             const projectId = refUtils.getId(this.item.Project);
             const itemObjectId = refUtils.getId(this.item);
