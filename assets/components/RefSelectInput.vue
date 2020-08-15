@@ -53,7 +53,6 @@
         async searchFunc(s: string) {
             let results;
 
-            debugger;
             switch(this.itemType) {
                 case "project":
                     results = await getService().searchProjects(s);

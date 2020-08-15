@@ -59,7 +59,9 @@
             }
         }
 
-        async search(search: string) {
+        async search(searchObj: SelectOption | string) {
+            const search = typeof searchObj === "string" ? searchObj : searchObj?.label ?? "";
+
             this.options = new Promise(async resolve => {
                 const results: SelectOption[] = (await this.searchFunc(search)).map(v => this.hackSelectOption(v));
 
