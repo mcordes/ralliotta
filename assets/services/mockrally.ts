@@ -2,6 +2,7 @@ import {groupBy, isEqual} from "underscore";
 import {transform, orderBy} from "lodash";
 import {refUtils} from "../utils/util";
 import { v4 as uuidv4 } from 'uuid';
+import {DateTime, Duration} from "luxon";
 
 const urlPrefix = "http://localhost:8089/slm/webservice/v2.0"
 
@@ -158,7 +159,7 @@ function search(type: string, fetch = "", start?: number, pageSize?: number, ord
     })
 
     const [field, direction] = `${order}`.split(" ");
-    results = orderBy(results, field, direction === 'ASC');
+    results = orderBy(results, [field], [direction === 'DESC' ? 'desc' : 'asc']);
 
     return {items: results.slice(start-1, pageSize)};
 }
@@ -247,10 +248,15 @@ function initStore() {
         getSampleFlowState("In Progres2", projects[1]),
         getSampleFlowState("Completed2", projects[1]),
     ];
+
+    const now = DateTime.local();
+    const twoWeeksFromToday = DateTime.local().plus(Duration.fromObject({days: 14}));
+    const twoWeeksAgo = DateTime.local().minus(Duration.fromObject({days: 14}));
+
     const iterations = [
-        getSampleIteration("Iteration One", projects[0]),
-        getSampleIteration("Iteration Two", projects[0]),
-        getSampleIteration("Iteration Three", projects[1]),
+        getSampleIteration("Iteration One", projects[0], twoWeeksAgo, now),
+        getSampleIteration("Iteration Two", projects[0], now, twoWeeksFromToday),
+        getSampleIteration("Iteration Three", projects[1], now, twoWeeksFromToday),
     ];
     const epics = [
         // TODO-mrc; don't we need to set the project here too?
@@ -298,7 +304,7 @@ function getSampleDataByType(type: string, project: any) {
         case "release":
             return getSampleRelease("", project);
         case "iteration":
-            return getSampleIteration("", project);
+            return getSampleIteration("", project, DateTime.local(), DateTime.local().plus(Duration.fromObject({days: 14})));
         case "hierarchicalrequirement":
             // TODO-mrc: should get flowstate for project, right?
             return getSampleArtifact(store.users, store.releases, store.epics, "", project, store.flowStates[0], store.iterations[0]);
@@ -313,11 +319,12 @@ function getSampleDataByType(type: string, project: any) {
 
 function getSampleProject(name: string) {
     const oid = uuidv4();
+    const now = DateTime.local();
 
     return {
         "_ref": `${urlPrefix}/project/${oid}`,
         "_refObjectUUID": "XXX",
-        "_objectVersion": "1", "_refObjectName": name, "CreationDate": "2020-01-08T18:26:56.266Z", "ObjectID": oid,
+        "_objectVersion": "1", "_refObjectName": name, "CreationDate": now.toISO(), "ObjectID": oid,
         "ObjectUUID": "XXX", "VersionId": "1",
         "Description": "",
         "Name": name, "Notes": "",
@@ -339,16 +346,18 @@ function getSampleProject(name: string) {
 
 function getSampleUser(username: string, project: any) {
     const oid = uuidv4();
+    const now = DateTime.local();
+
     return {
         "_ref": `${urlPrefix}/user/${oid}`,
-        "_refObjectUUID": "XXX", "_objectVersion": "1", "_refObjectName": username, "CreationDate": "2020-02-01T21:22:17.084Z",
+        "_refObjectUUID": "XXX", "_objectVersion": "1", "_refObjectName": username, "CreationDate": now.toISO(),
         "ObjectID": oid, "ObjectUUID": "XXX", "VersionId": "1",
         "CostCenter": "None", "DateFormat": null, "DateTimeFormat": null, "DefaultDetailPageToViewingMode": false,
         "DefaultProject": getRef(project),
         "Deleted": false, "Department": "None", "Disabled": false, "DisplayName": username, "EmailAddress": "foo@bar.com",
         "EmailNotificationEnabled": false, "FirstName": username, "InvestmentAdmin": false, "LandingPage": "/dashboard",
-        "Language": "en-US", "LastActiveDate": "2020-07-16T06:00:00.000Z", "LastLoginDate": "2020-07-16T00:17:32.768Z",
-        "LastName": "Last name", "LastPasswordUpdateDate": "2020-05-04T03:45:15.894Z",
+        "Language": "en-US", "LastActiveDate": now.toISO(), "LastLoginDate": now.toISO(),
+        "LastName": "Last name", "LastPasswordUpdateDate": now.toISO(),
         "LastSystemTimeZoneName": "America/New_York", "Locale": "en-US", "MiddleName": null, "NetworkID": null,
         "OfficeLocation": "None", "OnpremLdapUsername": null, "PasswordExpires": 0, "Phone": null, "Planner": false,
 
@@ -381,13 +390,14 @@ function nextFormattedId(prefix: string) {
 function getSampleArtifact(users: any, releases: any, epics: any, name: string, project: any, flowState: any, iteration: any) {
     const oid = uuidv4();
     const formattedId = nextFormattedId("US");
+    const now = DateTime.local();
 
     return {
         "_ref": `${urlPrefix}/hierarchicalrequirement/${oid}`,
         "_refObjectUUID": "XXX",
         "_objectVersion": "1",
         "_refObjectName": name,
-        "CreationDate": "2020-04-23T17:49:24.118Z",
+        "CreationDate": now.toISO(),
         "ObjectID": oid,
         "ObjectUUID": "XXX",
         "VersionId": "1",
@@ -396,7 +406,7 @@ function getSampleArtifact(users: any, releases: any, epics: any, name: string, 
         "DisplayColor": "#21a2e0",
         "Expedite": false,
         "FormattedID": formattedId,
-        "LastUpdateDate": "2020-07-16T03:41:23.759Z",
+        "LastUpdateDate": now.toISO(),
         "LatestDiscussionAgeInMinutes": 143,
         "Name": name,
         "Notes": "XXX",
@@ -404,7 +414,7 @@ function getSampleArtifact(users: any, releases: any, epics: any, name: string, 
         "Project": getRef(project),
         "Ready": false,
         "FlowState": getRef(flowState),
-        "FlowStateChangedDate": "2020-07-16T03:41:23.735Z",
+        "FlowStateChangedDate": now.toISO(),
         "LastBuild": null,
         "LastRun": null,
         "PassingTestCaseCount": 0,
@@ -420,7 +430,7 @@ function getSampleArtifact(users: any, releases: any, epics: any, name: string, 
         "DirectChildrenCount": 0,
         "DragAndDropRank": "",
         "HasParent": false,
-        "InProgressDate": "2020-07-16T03:41:23.736Z",
+        "InProgressDate": now.toISO(),
         "Iteration": iteration,
         "Parent": null,
         "PlanEstimate": 3.0,
@@ -462,21 +472,25 @@ function getSampleRelease(name: string, project: any) {
     };
 }
 
-function getSampleIteration(name: string, project: any) {
+function getSampleIteration(name: string, project: any, startDate: DateTime, endDate: DateTime) {
     const oid = uuidv4();
+    const now = DateTime.local();
+
     return {
         "_ref": `${urlPrefix}/iteration/${oid}`, "_refObjectUUID": "XXX", "_objectVersion": "3", "_refObjectName": name,
-        "EndDate": "2020-07-22T06:59:59.000Z", "Name": name,
+        "EndDate": endDate.toISO(), "Name": name,
         "Project": getRef(project),
-        "StartDate": "2020-07-08T07:00:00.000Z", "_type": "Iteration"
+        "StartDate": startDate.toISO(), "_type": "Iteration"
     }
 }
 
 function getSampleComment(users: any, artifact: any, text: string) {
     const oid = uuidv4();
+    const now = DateTime.local();
+
     return {
         "_ref": `${urlPrefix}/conversationpost/${oid}`, "_refObjectUUID": "XXX"
-        , "_objectVersion": "2", "CreationDate": "2020-07-16T01:41:32.669Z",
+        , "_objectVersion": "2", "CreationDate": now.toISO(),
         "Artifact": getRef(artifact, ["Name", "FormattedID"]),
         "PostNumber": 0,
         "ObjectID": oid,
@@ -498,9 +512,10 @@ function getSampleEpic(name: string) {
 
 function getSampleFlowState(name: string, project: any) {
     const oid = uuidv4();
+    const now = DateTime.local();
 
     return {"_ref": `${urlPrefix}/flowstate/${oid}`, "_refObjectUUID": "XXX", "_objectVersion": "1",
-        "_refObjectName": name, "CreationDate": "2020-01-08T18:26:01.082Z", "Name": name,
+        "_refObjectName": name, "CreationDate": now.toISO(), "Name": name,
         "Project": project, "_type": "FlowState"};
 }
 

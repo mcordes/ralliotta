@@ -2,9 +2,6 @@
 ## TODO next:
 
 - Finish sample data
-   - build sample app script in site project
-   - include link to sample site in site project
-   - detail fields and comments look like they work, but aren't persisted
    - kanban needs work
 - kanban
    - refesh iteration after adding / removing item from backlog
@@ -13,7 +10,6 @@
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
    b/c there are multiple searches the same results get added more than once.
-       * this shouldn't happen any more for the list pages, but be careful
 
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 
@@ -29,12 +25,14 @@
    - Link to userstory/defect/task in comments / descriptions
    - Support tasks
    - Cache data (project, user, avatar images, current/previous iteration, etc) - store in session w/ expiration date
+   - Periodically refresh data (probably have to poll, only when active tab?, be somewhat efficient)
 
 
 
 
 ## Done
 
+   - ~~detail fields and comments look like they work, but aren't persisted~~
 - ~~refreshing search page returns to default project (do any search request params work?)~~
 - ~~in mock rally server mode the avatar (and login) endpoints are still hitting the real rally. Fix me.~~
 - ~~updating a comment works, but doesn't refresh the comment on the page~~
