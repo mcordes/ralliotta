@@ -4,11 +4,6 @@
             <div class="swimlane-header">{{ flowStateGroup.Group.Name }}</div>
 
             <div>
-                <!--
-                // TODO-mrc
-                <draggable :list="flowStateGroup.Items" group="kanbanItems" @change="itemDragged(flowStateGroup.Group, $event)">
-                -->
-
                     <div v-for="item in flowStateGroup.Items" v-bind:item="item"
                              class="item" :key="item._ref">
                         <div>
@@ -20,9 +15,6 @@
                         </div>
                         <div class="item-owner">{{ item.Owner ? item.Owner._refObjectName : "" }}</div>
                     </div>
-                <!--
-                </draggable>
-                -->
             </div>
             <br>
         </div>
@@ -37,13 +29,12 @@
     import Avatar from "./Avatar.vue";
     import {Iteration} from "../types/Iteration";
     import {Ref} from "../types/Ref";
-    import draggable from "vuedraggable";
     import ItemDetailModal from "./ItemDetailModal.vue";
     import {FlowState} from "../types/FlowState";
     import {getService} from "../services/init";
 
     @Component({
-        components: {Avatar, ItemDetailModal, draggable}
+        components: {Avatar, ItemDetailModal}
     })
     export default class IterationItemListBySwimlane extends Vue {
         groupedArtifacts: {Group: any, Items: Artifact[]}[] = [];
@@ -67,21 +58,6 @@
 
         async load() {
             this.groupedArtifacts = await getService().getArtifactsGroupedByFlowState(this.project, this.iteration);
-        }
-
-        // TODO-mrc: implement me
-        itemDragged(flowState: FlowState, event: any) {
-            alert("Dragging and dropping not implemented quite yet. We accept PRs!");
-
-            // TODO-mrc: I'm not sure I like this dnd library - I want to show a confirmation page and give the user
-            // a chance to cancel. I don't see how to do that. Also, I don't care about sorting within a list
-            // and I don't see a way to disable that. Maybe try another library?
-            console.log('item dragged: ' + arguments);
-            // flowState._ref
-            // arguments[1].added.element._ref
-            // TODO-mrc: ignore removed event
-            // TODO-mrc: move item to flowstate and return
-            // TODO-mrc: can we do this asynchronously or will that cause issues?
         }
     }
 

@@ -56,7 +56,6 @@ export default {
     },
 
     hasCredentials() {
-        // TODO-mrc: this is ugly. Move this into Service?
         if (config.useMockRallyAPI) {
             return true;
         }

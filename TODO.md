@@ -17,10 +17,6 @@
        * this shouldn't happen any more for the list pages, but be careful
 
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
-- integration testing
-
-- Finish Kanban (backlog, previous sprint and current sprint for now? with previous sprint collapsed, drag and dropping of items between backlog and iterations?)
-
 
 - Add / remove (?) attachment on the detail page 
 - add attachments on new item page? (or just send them to the detail page?)
@@ -31,6 +27,11 @@
 ## Iteration 2
    - Refresh thing after changing other things
    - Show total story points on kanban page for iterations
+   - integration testing ?
+   - Add attachment
+   - Link to userstory/defect/task in comments / descriptions
+   - Support tasks
+   - Cache data (project, user, avatar images, current/previous iteration, etc) - store in session w/ expiration date
 
 
 
