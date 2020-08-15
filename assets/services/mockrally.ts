@@ -39,12 +39,6 @@ function getDataListForType(type: string) {
     return objectTypeMapping[type];
 }
 
-function toLowerKeys(obj: any) {
-    return transform(obj, (result: any, val: string, key: string) => {
-        result[key.toLowerCase()] = val;
-    });
-}
-
 function shouldIncludeItem(chunk: string, item: any) {
     const result = chunk.match(/([^)\s]+) ([^)\s]+) ([^)\s]+)/);
     if (result) {
@@ -476,7 +470,6 @@ function getSampleRelease(name: string, project: any) {
 
 function getSampleIteration(name: string, project: any, startDate: DateTime, endDate: DateTime) {
     const oid = uuidv4();
-    const now = DateTime.local();
 
     return {
         "_ref": `${urlPrefix}/iteration/${oid}`, "_refObjectUUID": "XXX", "_objectVersion": "3", "_refObjectName": name,

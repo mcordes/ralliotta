@@ -1,7 +1,7 @@
 import {User} from "../types/User";
 import {Ref} from "../types/Ref";
 import {AddUpdateFieldData, ListOptions, Service} from "./service";
-import {getRef, MockRallyStore} from "./mockrally";
+import {MockRallyStore} from "./mockrally";
 import {refUtils} from "../utils/util";
 
 const dataStore = MockRallyStore;
@@ -12,11 +12,12 @@ export class MockService extends Service {
         return user;
     }
 
+    // @ts-ignore
     async login(username: string, password: string) {
         return {
             sessionId: "1",
             securityToken: "2"
-        }
+        };
     }
 
     async fetchSingleItemByRef(ref: string | Ref) {
@@ -53,6 +54,7 @@ export class MockService extends Service {
         }
     }
 
+    // @ts-ignore
     getAvatarImageURL(user: User | Ref, size: number): string {
         return "";
     }
