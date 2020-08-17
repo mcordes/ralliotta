@@ -115,7 +115,6 @@
         }
 
         async addToCurrentIteration() {
-            // TODO-mrc: pass this in?
             const now = DateTime.utc();
             const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
 

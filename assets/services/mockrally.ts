@@ -33,7 +33,7 @@ function getDataListForType(type: string) {
         hierarchicalrequirement: store.artifacts,
         attachment: store.attachments,
 
-        // TODO: support defects too?
+        // TODO: implement me
         defect: [],
     };
     return objectTypeMapping[type];
@@ -163,7 +163,7 @@ function searchArtifactGroupByFlowState(project: any, itemQuery: string) {
     // NOTE: itemquery is the query used for actual items when searching and grouping
     const selectedArtifacts = search('artifact', "", 1, 20, "", itemQuery).items;
 
-    // TODO-mrc: handle these too?
+    // TODO: handle these too?
     // itemfetch= - comma separated of fields to return on the item objects (we're returning all fields now)
     // itemorder
     // itemtypes=defect%2ChierarchicalRequirement
@@ -253,7 +253,6 @@ function initStore() {
         getSampleIteration("Iteration Three", projects[1], now, twoWeeksFromToday),
     ];
     const epics = [
-        // TODO-mrc; don't we need to set the project here too?
         getSampleEpic("Epic One"),
         getSampleEpic("Epic Two"),
     ];
@@ -274,7 +273,6 @@ function initStore() {
         getSampleComment(users, artifacts[1], "This is a comment"),
     ];
 
-    // TODO-mrc
     const attachments: any = [];
 
     return {
@@ -302,7 +300,6 @@ function getSampleDataByType(type: string, project: any) {
         case "iteration":
             return getSampleIteration("", project, DateTime.local(), DateTime.local().plus(Duration.fromObject({days: 14})));
         case "hierarchicalrequirement":
-            // TODO-mrc: should get flowstate for project, right?
             return getSampleArtifact(store.users, store.releases, store.epics, "", project, store.flowStates[0], store.iterations[0]);
         case "conversationpost":
             return getSampleComment(store.users, null, "");
@@ -356,10 +353,7 @@ function getSampleUser(username: string, project: any) {
         "LastName": "Last name", "LastPasswordUpdateDate": now.toISO(),
         "LastSystemTimeZoneName": "America/New_York", "Locale": "en-US", "MiddleName": null, "NetworkID": null,
         "OfficeLocation": "None", "OnpremLdapUsername": null, "PasswordExpires": 0, "Phone": null, "Planner": false,
-
-        // TODO-mrc: generic image?
-        "ProfileImage": null, // {"_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/profileimage/387120895968", "_refObjectUUID": "2cb00d75-74e4-40ef-a375-9f7b77f46349", "_type": "ProfileImage"},
-
+        "ProfileImage": null,
         "ProjectScopeDown": false,
         "ProjectScopeUp": false,
         "Role": "Engineer", "sessionTimeout": 1209600, "SessionTimeoutWarning": true, "ShortDisplayName": null, "SubscriptionAdmin": false, "SubscriptionID": 1, "SubscriptionPermission": "Workspace User",
@@ -499,8 +493,6 @@ function getSampleComment(users: any, artifact: any, text: string) {
 function getSampleEpic(name: string) {
     const oid = uuidv4();
 
-    // TODO-mrc: formatted id? add that too!
-
     return {
         "_ref": `${urlPrefix}/portfolioitem/epic/${oid}`, "_refObjectUUID": "XXX", "_refObjectName": name, "_type": "PortfolioItem/EPIC"
     };
@@ -550,12 +542,11 @@ function updateItem(type: string, oid: string, data: any) {
     });
     list[index] = item;
 
-    // TODO-mrc: will this work?
     const store = getStore();
     localStorage.setItem("sampleData", JSON.stringify(store));
 
 
-    // TODO-mrc: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
+    // TODO: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
 
     return item;
 }
@@ -565,10 +556,9 @@ function createItem(type: string, data: any) {
     const list = getDataListForType(type);
     const store = getStore();
 
-    // TODO-mrc: where does project come from? maybe it's already on the incoming data
+    // TODO: where does project come from? maybe it's already on the incoming data
     const sampleData = getSampleDataByType(type, store.projects[0]);
 
-    // TODO-mrc: ignore
     const replacedData = replaceWithRefs(data);
 
     const item = { ...sampleData, ...replacedData};
@@ -581,10 +571,9 @@ function createItem(type: string, data: any) {
     console.log("Adding newly created item to list: " + type);
     list.push(item);
 
-    // TODO-mrc: will this work?
     localStorage.setItem("sampleData", JSON.stringify(store));
 
-    // TODO-mrc: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
+    // TODO: Now filter to just include the fields they asked for along with any field w/ name starting with an underscore
     return item;
 }
 
@@ -602,10 +591,6 @@ function replaceWithRefs(data: any) {
     }
     return data;
 }
-
-// TODO-mrc: maybe store this in the session?
-// TODO-mrc: add an init method to setup the data? (this is nice b/c they'll be able to reload the page).
-// TODO-mrc: should mock use a different session key for the user token and stuff?
 
 export const MockRallyStore = {
     getSingleItem,

@@ -128,7 +128,7 @@
             this.createdItemFormattedID = "";
             this.showSuccessMessage = false;
 
-            // TODO-mrc: these don't get reset. Why?
+            // TODO: these don't get reset. Why?
             this.epic = '';
             this.release = "";
 

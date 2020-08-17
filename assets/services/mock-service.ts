@@ -40,8 +40,6 @@ export class MockService extends Service {
         // function search(type: string, fetch = "", start: 1, pageSize: 20, order = "", query = "") {
         const fetch = fields.join(",");
         const query = options.query ? options.query.toQueryString() : "";
-
-        // TODO-mrc: get project from query?
         const project = dataStore.search("project").items[0];
 
         if (type === "artifact/groupby/flowstate") {
