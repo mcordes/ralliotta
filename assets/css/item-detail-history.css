@@ -78,7 +78,7 @@
     display: inline-block;
     font-weight: 600;
     padding: 6px 12px 6px 8px;
-    width: 120px;
+    width: 140px;
 }
 
 .revision-date {
@@ -96,7 +96,7 @@
     padding: 6px 8px 6px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: calc(100% - 130px);
+    width: calc(100% - 150px);
 }
 
 .revision-author { padding: 4px 8px 4px 0; }
