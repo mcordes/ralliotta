@@ -6,7 +6,7 @@ A FREE, streamlined and easy to use alternative UI to Broadcom's [Rally](https:/
 What's the status of this?
 -----------
 
-Definitely BETA. Some things are incomplete and there will be bugs. What is there now is quite useable, but YMMV depending upon your organizations (crazy) Rally configuration. If something doesn't work for you or my assumptions aren't true for your organization either Let us know at ralliotta.app@gmail.com, via a github issue or (if you're a hero) create a pull request. 
+Definitely BETA. Some things are incomplete and there will be bugs. What is there now is quite useable, but YMMV depending upon your organization's Rally configuration. If something doesn't work for you or our assumptions aren't true for your organization either let us know at ralliotta.app@gmail.com, via a github issue or (if you're a hero) create a pull request. 
 
 You can always try it out at [https://ralliotta.com](https://ralliotta.com) by logging in with your Rally username / password or touring our demo app which doesn't require existing Rally credentials. 
 
@@ -31,7 +31,7 @@ That's it. Now you have your own wonderful Rally UI running locally on your comp
 I'm a developer and I want to contribute.
 -----------
 
-Fantastic! The application is written in [Typescript](https://www.typescriptlang.org/) and the code is pragmatic and relatively well documented. We strive for simplicity and self documenting code as much as possible. 
+Fantastic! The application is written in [Typescript](https://www.typescriptlang.org/) and [Vue.js](https://vuejs.org/). The code is pragmatic and relatively well documented. We strive for simplicity and self documenting code as much as possible. 
 
 Follow these steps to get the application running on your machine for development:
 
@@ -70,5 +70,5 @@ Thank You!
 
 Thank you to Broadcom / Rally for writing Rally in the first place. [Ralliotta](https://ralliotta.com) uses the very functional [rally-node](https://github.com/RallyTools/rally-node) Open source library to talk to their API. Clearly Rally has had great success and we'd like to make that more accessible and pleasant to use to a modern audience.
 
-Thank you to Vuejs and Typescript. Both amazing libraries / frameworks and a pleasure to develop with.
+Thank you to Vuejs and Typescript. Both are amazing libraries / frameworks and a pleasure to develop with.
 
