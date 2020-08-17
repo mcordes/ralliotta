@@ -3,7 +3,7 @@
         <h2>Welcome!</h2>
 
         <p>Another day at the old grind? We hope Ralliotta can be part of making this an
-            extraordinary day! May your Rally woes be (slightly) reduced!
+            extraordinary day!
         </p>
 
         <div class="recent-activity">
