@@ -28,6 +28,8 @@
     import TextAreaInput from "./TextAreaInput.vue";
     import {ActivityItem, toActivityItem} from "../services/service";
     import {getService} from "../services/init";
+    import {DateTime} from "luxon";
+    import {getRef} from "../services/mockrally";
 
     @Component({
         components: {TextAreaInput}
@@ -64,8 +66,15 @@
                 showErrorToast({e});
             }
 
-            // re-retrive comment with all the fields included (the responses above just include a subset of them)
-            const comment = await getService().fetchSingleItemByRef(result._ref);
+            // Fake out comment object with just the fields we need. We're doing this b/c after creating a comment
+            // sometimes rally errors when we try to retrieve the comment we just created soon after (and it's faster)
+            const user = store.getUser();
+            const comment = {
+                CreationDate: DateTime.local().toJSDate(),
+                Text: data.Text,
+                _ref: result._ref,
+                User: getRef(user)
+            };
 
             // add to list of activities
             this.activityItems.push(toActivityItem(comment, "comment"));

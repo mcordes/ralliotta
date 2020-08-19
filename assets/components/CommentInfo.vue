@@ -75,18 +75,14 @@
             this.errorMessage = '';
             const data = {'Text': this.text, 'Artifact': this.item._ref};
 
-            let result;
             try {
-                result = await getService().updateItem(this.comment._ref, data)
+                await getService().updateItem(this.comment._ref, data)
+                this.comment.Text = data.Text;
                 showSuccessToast("Saved.");
             }
             catch(e) {
                 showErrorToast();
             }
-
-            // re-retrive comment with all the fields included (the responses above just include a subset of them)
-            const persistedComment = await getService().fetchSingleItemByRef(result._ref);
-            this.comment = persistedComment;
 
             this.isEdit = false;
         }
@@ -99,7 +95,7 @@
             this.isEdit = false;
         }
 
-    };
+    }
 </script>
 
 
