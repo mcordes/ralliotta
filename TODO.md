@@ -4,15 +4,13 @@
 - Finish sample data
     - implement assignee lookup
 - kanban needs work
--site 
-   - include email and more prose on site
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
    b/c there are multiple searches the same results get added more than once.
 
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 
-- make friendly time (1 min ago, etc) update efficiently. How w/o having each component do it?
+- Periodically refresh data (probably have to poll, only when active tab?, be somewhat efficient)
 
 
 
@@ -20,19 +18,21 @@
 ## Iteration 2
 
    - Refresh thing after changing other things
-   - Show total story points on kanban page for iterations
+       - refresh search after changing item displayed in search results
+          ? re-retrive item? (probably) or just include the fields to refresh event?
    - integration testing ?
    - Add attachment
    - Link to userstory/defect/task in comments / descriptions
    - Support tasks
    - Cache data (project, user, avatar images, current/previous iteration, etc) - store in session w/ expiration date
-   - Periodically refresh data (probably have to poll, only when active tab?, be somewhat efficient)
 
 
 
 
 ## Done
 
+   - ~~Show total story points on kanban page for iterations~~
+   - ~~make friendly time (1 min ago, etc) update efficiently. How w/o having each component do it?~~
    - ~~refesh iteration after adding / removing item from backlog~~
    - ~~detail fields and comments look like they work, but aren't persisted~~
 - ~~refreshing search page returns to default project (do any search request params work?)~~
