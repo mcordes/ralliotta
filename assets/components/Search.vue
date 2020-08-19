@@ -13,7 +13,7 @@
         components: {ItemList},
     })
     export default class Search extends Vue {
-    };
+    }
 
 </script>
 

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div>
+        <!-- NOTE: skip showing this until we have both the ref and the label if we have a ref -->
+        <div v-if="(syncedSelectedRef && selectedRefLabel) || !syncedSelectedRef">
             <SelectInput v-bind:searchFunc="searchFunc" v-bind:label="label" v-bind:selectedValue.sync="syncedSelectedRef"
                          v-bind:selectedLabel.sync="selectedRefLabel" v-bind:cssClass="cssClass"
                          v-bind:disabled="disabled"/>

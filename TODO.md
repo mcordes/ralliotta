@@ -2,6 +2,7 @@
 ## TODO next:
 
 - Finish sample data
+    - implement assignee lookup
 - kanban needs work
 -site 
    - include email and more prose on site
