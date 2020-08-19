@@ -89,7 +89,13 @@
                              v-bind:showAddToIteration="backlogOnly"
                              v-bind:showProject="showProject"
                              v-bind:showPlanEstimate="showPlanEstimate"></ItemSummary>
+
             </table>
+
+            <div v-if="hasNoResults">
+                <div id="no-results">[ No results found ]</div>
+            </div>
+
 
             <div v-if="hasMoreRecords" style="text-align: center;">
                 <md-button class="md-primary md-raised" @click="showMore" :disabled="isLoading">Show more</md-button>
@@ -140,6 +146,7 @@
         release = '';
         iteration = '';
         hasInitializedSearchParams = false;
+        hasNoResults = false;
 
         @Prop()
         showMyItemsOnly!: boolean;
@@ -325,15 +332,20 @@
                 this.items.push(...results.items);
                 this.hasMoreRecords = results.hasMoreResults;
                 this.totalRecords = results.totalRecords;
+                this.hasNoResults = this.totalRecords === 0;
             }
             catch(e) {
                 showErrorToast({e});
             }
         }
-    };
+    }
 
 </script>
 
 
 <style scoped>
+    #no-results {
+        margin-top: 20px;
+        text-align: center;
+    }
 </style>
