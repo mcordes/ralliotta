@@ -219,4 +219,9 @@
 
 <style lang="css" scoped>
     .value, .field { display: inline-block; padding: 10px; }
+    .field {
+        font-weight: bold;
+        width: 210px;
+        margin-left: 20px;
+    }
 </style>

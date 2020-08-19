@@ -18,10 +18,6 @@ import "vue-toast-notification/dist/theme-default.css";
 import './css/app.css';
 import {DateTime} from "luxon";
 
-// @ts-ignore
-import TimeAgo from 'javascript-time-ago';
-// @ts-ignore
-import en from 'javascript-time-ago/locale/en';
 import Kanban from "./components/Kanban.vue";
 import MyWork from "./components/MyWork.vue";
 import {config} from "./config";
@@ -101,19 +97,6 @@ Vue.filter("formatDateTime", function (value: string | Date | DateTime) {
     }
     return toDateTime(value).toFormat("MM/dd/yyyy HH:mm");
 });
-
-
-Vue.filter("timeSince", function (value: string | Date | DateTime) {
-    if (!value) {
-        return "";
-    }
-
-    const date = toDateTime(value).toJSDate();
-    TimeAgo.addLocale(en)
-    const timeAgo = new TimeAgo('en-US')
-    return timeAgo.format(date);
-});
-
 
 // Error handler
 
