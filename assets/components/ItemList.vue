@@ -92,6 +92,11 @@
 
             </table>
 
+
+            <div v-if="isLoading">
+                <LoadingMessage/>
+            </div>
+
             <div v-if="hasNoResults">
                 <div id="no-results">[ No results found ]</div>
             </div>
@@ -126,9 +131,10 @@
     import {debounce} from "underscore";
     import RefSelectInput from "./RefSelectInput.vue";
     import {getService} from "../services/init";
+    import LoadingMessage from "./LoadingMessage.vue";
 
     @Component({
-        components: {ExpandableSection, ItemSummary, SelectInput, Sortable, RefSelectInput},
+        components: {ExpandableSection, ItemSummary, SelectInput, Sortable, RefSelectInput, LoadingMessage},
     })
     export default class ItemList extends Vue {
         items: any[] = [];
@@ -216,7 +222,6 @@
         }
 
         async showMore() {
-            this.isLoading = true;
             const startIndex = this.items.length;
             try {
                 await this.fetchResults(startIndex);
@@ -224,7 +229,6 @@
             catch (e) {
                 showErrorToast({e});
             }
-            this.isLoading = false;
         }
 
         setSearchFieldsFromRequestParams() {
@@ -318,6 +322,8 @@
             }
 
             try {
+                this.isLoading = true;
+
                 const results = await getService().fetchListOfItems('artifact', ARTIFACT_SEARCH_FIELDS, {
                     query,
                     startIndex,
@@ -336,6 +342,9 @@
             }
             catch(e) {
                 showErrorToast({e});
+            }
+            finally {
+                this.isLoading = false;
             }
         }
     }

@@ -1,7 +1,6 @@
 
 ## TODO next:
 
-- show loading animation on itemlist pages
 - Finish sample data
     - implement assignee lookup
 - kanban needs work
@@ -32,6 +31,7 @@
 
 ## Done
 
+- show loading animation on itemlist pages
    - ~~show no results message in itemlist if no results are found~~
    - ~~Show total story points on kanban page for iterations~~
    - ~~make friendly time (1 min ago, etc) update efficiently. How w/o having each component do it?~~
