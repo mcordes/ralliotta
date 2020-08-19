@@ -31,7 +31,7 @@
             </div>
             {{ reporterName }}
         </td>
-        <td class="md-table-cell"> {{ status }}</td>
+        <td class="md-table-cell status-column"> {{ status }}</td>
 
         <td v-if="showProject" class="md-table-cell"> {{ projectName }}</td>
 
@@ -165,6 +165,9 @@
     }
     .added-to-iteration button {
         opacity: 1;
+    }
+    .status-column {
+        white-space: nowrap;
     }
 </style>
 
