@@ -457,6 +457,7 @@ function getSampleRelease(name: string, project: any) {
     const oid = uuidv4();
     return {
         "_ref": `${urlPrefix}/release/${oid}`, "_refObjectUUID": "XXX",
+        "ObjectID": oid,
         "_objectVersion": "1", "_refObjectName": name,
         "Name": name, "_type": "Release", "Project": getRef(project),
     };
@@ -494,7 +495,8 @@ function getSampleEpic(name: string) {
     const oid = uuidv4();
 
     return {
-        "_ref": `${urlPrefix}/portfolioitem/epic/${oid}`, "_refObjectUUID": "XXX", "_refObjectName": name, "_type": "PortfolioItem/EPIC"
+        "_ref": `${urlPrefix}/portfolioitem/epic/${oid}`, "_refObjectUUID": "XXX", "_refObjectName": name,
+        "_type": "PortfolioItem/EPIC", "ObjectID": oid,
     };
 }
 
@@ -503,6 +505,7 @@ function getSampleFlowState(name: string, project: any) {
     const now = DateTime.local();
 
     return {"_ref": `${urlPrefix}/flowstate/${oid}`, "_refObjectUUID": "XXX", "_objectVersion": "1",
+        "ObjectID": oid,
         "_refObjectName": name, "CreationDate": now.toISO(), "Name": name,
         "Project": project, "_type": "FlowState"};
 }

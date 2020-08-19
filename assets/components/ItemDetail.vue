@@ -15,7 +15,8 @@
                     <div>
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
-                                            v-bind:item="item" v-bind:searchFunc="searchAssigneeList"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchAssigneeList"
+                                            v-bind:onChange="this.loadActivityItems"/>
                         </div>
 
                         <div class="item-field">
@@ -27,12 +28,14 @@
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Iteration'" v-bind:initialValue="item.Iteration"
-                                            v-bind:item="item" v-bind:searchFunc="searchIterationList"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchIterationList"
+                                            v-bind:onChange="this.loadActivityItems"/>
                         </div>
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Release'" v-bind:initialValue="item.Release"
-                                            v-bind:item="item" v-bind:searchFunc="searchReleaseList"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchReleaseList"
+                                            v-bind:onChange="this.loadActivityItems"/>
                         </div>
 
                         <div class="item-field">
@@ -55,7 +58,9 @@
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
-                                            v-bind:item="item" v-bind:searchFunc="searchFlowStateList" v-bind:noBlankOption="true"/>
+                                            v-bind:item="item" v-bind:searchFunc="searchFlowStateList"
+                                            v-bind:noBlankOption="true"
+                                            v-bind:onChange="this.loadActivityItems"/>
                         </div>
 
                         <div class="item-field" v-if="isLiveService">
@@ -129,6 +134,7 @@
     import {ActivityItem} from "../services/service";
     import {getService} from "../services/init";
     import {config} from "../config";
+    import {debounce} from "underscore";
 
     @Component({
         components: {
@@ -152,6 +158,20 @@
                 this._formattedID = this.formattedID || this.$route.params['formattedID'];
             }
             await this.loadItem();
+            await this.loadActivityItems();
+
+            // Call the loadActivityItems fn at most once every 2 seconds
+            this.loadActivityItems = debounce(this.loadActivityItems, 2000);
+        }
+
+        async loadActivityItems() {
+            console.log("Loading activity items");
+            try{
+                this.activityItems = await getService().getActivityForItem(this.item);
+            }
+            catch (e) {
+                showErrorToast({e});
+            }
         }
 
         async loadItem() {
@@ -162,13 +182,6 @@
 
             // Show item right away when it's ready, then do the other async calls
             this.isReady = true;
-
-            try{
-                this.activityItems = await getService().getActivityForItem(this.item);
-            }
-            catch (e) {
-                showErrorToast({e});
-            }
 
             // Make a list of 'interesting' fields to show the user
             this.itemFields = Object.keys(this.item).filter((k: string) => {

@@ -60,6 +60,9 @@
         @Prop()
         blankOptionLabel!: string;
 
+        @Prop({default: null})
+        onChange!: () => void | undefined;
+
         errorMessage = '';
         isEdit = false;
         selectedValue = "";
@@ -78,6 +81,10 @@
             this.errorMessage = '';
             await updateSingleItemAndShowToast(this.fieldName, this.selectedValue, this.item._ref);
             this.isEdit = false;
+
+            if (this.onChange) {
+                this.onChange();
+            }
         }
 
         edit() {
