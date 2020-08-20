@@ -1,7 +1,7 @@
 Ralliotta
 -----------
 
-A FREE, streamlined and easy to use alternative UI to Broadcom's [Rally](https://www.broadcom.com/products/software/agile-development/rally-software). Enjoy viewing all your existing Rally data in a format that is pleasant to use, straightforward and heavily simplified for common use cases. 
+A FREE, streamlined and easy to use alternative UI for Broadcom's [Rally](https://www.broadcom.com/products/software/agile-development/rally-software). Enjoy viewing all your existing Rally data in a format that is pleasant to use, straightforward and heavily simplified for common use cases. 
 
 What's the status of this?
 -----------
