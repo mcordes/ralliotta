@@ -47,6 +47,7 @@ const router = new VueRouter({
     routes
 });
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 router.afterEach((to, from) => {
     const selector = document.querySelector('.md-drawer');
     if (selector) {
@@ -99,7 +100,7 @@ Vue.filter("formatDateTime", function (value: string | Date | DateTime) {
 });
 
 // Error handler
-
+// eslint-disable @typescript-eslint/no-unused-vars
 Vue.config.errorHandler = function (err, vm, info) {
     // Show the 404 page if we've catch a NotFoundError
     if (err instanceof NotFoundError) {

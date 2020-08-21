@@ -1,5 +1,5 @@
 import {groupBy, isEqual} from "underscore";
-import {transform, orderBy} from "lodash";
+import {orderBy} from "lodash";
 import {refUtils} from "../utils/util";
 import { v4 as uuidv4 } from 'uuid';
 import {DateTime, Duration} from "luxon";
@@ -102,6 +102,7 @@ function shouldIncludeItem(chunk: string, item: any) {
 
 // fetch - comma delimited list of fields to return. If a field is invalid Rally ignores it
 // query - Rally's query language, you can do =, contains, !=, !contains, <, <=, >, >=
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function search(type: string, fetch = "", start?: number, pageSize?: number, order = "", query = "") {
     console.log("Searching for " + type + " records");
     if (!start) {

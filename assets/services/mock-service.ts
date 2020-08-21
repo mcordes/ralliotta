@@ -12,7 +12,7 @@ export class MockService extends Service {
         return user;
     }
 
-    // @ts-ignore
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     async login(username: string, password: string) {
         return {
             sessionId: "1",
@@ -52,7 +52,7 @@ export class MockService extends Service {
         }
     }
 
-    // @ts-ignore
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     getAvatarImageURL(user: User | Ref, size: number): string {
         return "";
     }
