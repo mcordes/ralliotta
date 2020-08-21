@@ -3,6 +3,7 @@
 
 - Finish sample data
     - implement assignee lookup
+    - project doesn't get set correctly on search page
 - kanban needs work
 - search by text on the search page doesn't work very well. It's hitting the backend 
    multiple times and needs to be throttled / cancelled when you type more. Also 
