@@ -35,6 +35,10 @@
 
     @Component
     export default class EditableText extends Vue {
+        errorMessage = '';
+        isEdit = false;
+        value = "";
+
         // Reference to the item this field is part of
         @Prop()
         item!: Ref;
@@ -45,9 +49,9 @@
         @Prop()
         fieldName!: string;
 
-        errorMessage = '';
-        isEdit = false;
-        value = "";
+        @Prop({default: null})
+        onChange!: () => void | undefined;
+
 
         created() {
             this.value = toStringOrBlank(this.initialValue);
@@ -57,6 +61,10 @@
             this.errorMessage = '';
             this.value = await updateSingleItemAndShowToast(this.fieldName, this.value, this.item._ref)
             this.isEdit = false;
+
+            if (this.onChange) {
+                this.onChange();
+            }
         }
 
         edit() {

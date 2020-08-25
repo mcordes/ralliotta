@@ -23,6 +23,7 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import ItemDetail from "./ItemDetail.vue";
     import {getItemDetailURLPath} from "../utils/util";
+    import LoadingMessage from "./LoadingMessage.vue";
 
     @Component({
         components: {ItemDetail},

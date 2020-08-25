@@ -56,6 +56,7 @@
             console.assert(this.iteration != null);
             console.assert(!!this.iteration);
 
+            // NOTE: listens for EVENT
             // Listen for items to be added to our iteration and reload when we see it
             this.$root.$on("iterationItemsChanged", async (iterationRef: string) => {
                 if (iterationRef === this.iteration._ref) {

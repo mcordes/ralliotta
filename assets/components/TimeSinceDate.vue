@@ -6,11 +6,7 @@
 <script lang="ts">
     import {Component, Vue, Prop} from 'vue-property-decorator';
     import {toDateTime} from "../utils/util";
-
-    // @ts-ignore
     import TimeAgo from 'javascript-time-ago';
-
-    // @ts-ignore
     import en from 'javascript-time-ago/locale/en';
 
     @Component({
@@ -23,8 +19,10 @@
         date!: Date;
 
         created() {
-            this.setFormattedTime();
-            this.intervalId = setInterval(this.setFormattedTime, 60 * 1000);
+            if (this.date) {
+                this.setFormattedTime();
+                this.intervalId = setInterval(this.setFormattedTime, 60 * 1000);
+            }
         }
 
         destroyed() {

@@ -12,22 +12,22 @@
         </td>
 
         <td class="md-table-cell">
-            <ItemDetailModal v-bind:formattedID="item.FormattedID"/>
+            <ItemDetailModal v-bind:formattedID="syncedItem.FormattedID"/>
 
         </td>
-        <td class="md-table-cell">{{ item.Name }}</td>
+        <td class="md-table-cell">{{ syncedItem.Name }}</td>
 
-        <td v-if="showPlanEstimate">{{ item.PlanEstimate }}</td>
+        <td v-if="showPlanEstimate">{{ syncedItem.PlanEstimate }}</td>
 
         <td class="md-table-cell">
-            <div class="avatar-wrapper" v-if="item.Owner">
-                <Avatar v-bind:user="item.Owner" v-bind:size="30"/>
+            <div class="avatar-wrapper" v-if="syncedItem.Owner">
+                <Avatar v-bind:user="syncedItem.Owner" v-bind:size="30"/>
             </div>
             {{ ownerName }}
         </td>
         <td class="md-table-cell">
-            <div class="avatar-wrapper" v-if="item.CreatedBy">
-                <Avatar v-bind:user="item.CreatedBy" v-bind:size="30"/>
+            <div class="avatar-wrapper" v-if="syncedItem.CreatedBy">
+                <Avatar v-bind:user="syncedItem.CreatedBy" v-bind:size="30"/>
             </div>
             {{ reporterName }}
         </td>
@@ -35,8 +35,8 @@
 
         <td v-if="showProject" class="md-table-cell"> {{ projectName }}</td>
 
-        <td class="md-table-cell">{{ item.CreationDate | formatDate }}</td>
-        <td class="md-table-cell">{{ item.LastUpdateDate | formatDate }}
+        <td class="md-table-cell">{{ syncedItem.CreationDate | formatDate }}</td>
+        <td class="md-table-cell">{{ syncedItem.LastUpdateDate | formatDate }}
 
             <div>
                 <md-dialog-confirm
@@ -62,12 +62,13 @@
 
 
 <script lang="ts">
-    import {Component, Vue, Prop} from 'vue-property-decorator';
+import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
     import Avatar from "./Avatar.vue";
     import ItemDetailModal from "./ItemDetailModal.vue";
-    import {showErrorToast, showSuccessToast} from "../utils/util";
+    import {refUtils, showErrorToast, showSuccessToast} from "../utils/util";
     import {DateTime} from "luxon";
     import {getService} from "../services/init";
+    import {debounce} from "underscore";
 
     @Component({
         components: {Avatar, ItemDetailModal}
@@ -81,8 +82,8 @@
         showRemoveFromIterationConfirmation = false;
         addedToIteration = false;
 
-        @Prop()
-        item: any;
+        @PropSync("item")
+        syncedItem: any;
 
         @Prop({default: false})
         showAddToIteration!: boolean;
@@ -94,39 +95,47 @@
         showPlanEstimate!: boolean;
 
         async created() {
-            if (this.item.Owner) {
-                this.ownerName = this.item.Owner._refObjectName;
+            if (this.syncedItem.Owner) {
+                this.ownerName = this.syncedItem.Owner._refObjectName;
             }
 
-            if (this.item.CreatedBy) {
-                this.reporterName = this.item.CreatedBy._refObjectName;
+            if (this.syncedItem.CreatedBy) {
+                this.reporterName = this.syncedItem.CreatedBy._refObjectName;
             }
 
-            if (this.item.FlowState) {
+            if (this.syncedItem.FlowState) {
                 let flowStateName = "";
-                if (this.item.FlowState) {
-                    flowStateName = this.item.FlowState._refObjectName;
+                if (this.syncedItem.FlowState) {
+                    flowStateName = this.syncedItem.FlowState._refObjectName;
                 }
 
                 this.status = flowStateName;
             }
 
-            this.projectName = this.item.Project._refObjectName;
+            this.projectName = this.syncedItem.Project._refObjectName;
+
+            // TODO: it would be nice if this only was triggered if the list page was viewable and just queued up
+            // if it's obscured by the detail page. Fix me.
+
+            // NOTE: Listens for EVENT
+            // Listen for this item to be changed and reload throttled once every 2 seconds
+            this.$root.$on("itemChanged", debounce(this.reloadItem, 2000));
         }
 
         async addToCurrentIteration() {
             const now = DateTime.utc();
-            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
+            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.syncedItem.Project, now);
 
             try {
                 const data = {Iteration: currentIteration._ref};
-                await getService().updateItem(this.item._ref, data);
+                await getService().updateItem(this.syncedItem._ref, data);
 
-                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 + this.item.PlanEstimate ?? 0;
+                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 + this.syncedItem.PlanEstimate ?? 0;
 
                 showSuccessToast(`Added to current iteration (story points: ${newTotalPoints})`);
                 this.addedToIteration = true;
 
+                // NOTE: triggers an event
                 // Trigger an event that Kanban.vue will look for a reload the iteration swimlane breakdown thingey
                 this.$root.$emit("iterationItemsChanged", currentIteration._ref);
             }
@@ -137,22 +146,36 @@
 
         async removeFromCurrentIteration() {
             const now = DateTime.utc();
-            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.item.Project, now);
+            const [currentIteration] = await getService().getCurrentAndPreviousIterations(this.syncedItem.Project, now);
 
             try {
                 const data = {Iteration: null};
-                await getService().updateItem(this.item._ref, data);
+                await getService().updateItem(this.syncedItem._ref, data);
 
-                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 - this.item.PlanEstimate ?? 0;
+                const newTotalPoints = currentIteration.PlannedVelocity ?? 0 - this.syncedItem.PlanEstimate ?? 0;
                 showSuccessToast(`Removed from current iteration (story points: ${newTotalPoints})`);
 
                 this.addedToIteration = false;
 
+                // NOTE: triggers an event
                 // Trigger an event that Kanban.vue will look for a reload the iteration swimlane breakdown thingey
                 this.$root.$emit("iterationItemsChanged", currentIteration._ref);
             }
             catch(e) {
                 showErrorToast({e});
+            }
+        }
+
+        async reloadItem(itemRef: string) {
+            if (itemRef === this.syncedItem._ref) {
+                console.log(`Refreshing item ${this.syncedItem.FormattedID}- ${refUtils.getId(itemRef)}`);
+
+                try {
+                    this.syncedItem = await getService().fetchSingleItemByRef(itemRef);
+                }
+                catch (e) {
+                    showErrorToast({e});
+                }
             }
         }
     }

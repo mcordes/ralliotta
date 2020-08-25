@@ -100,7 +100,7 @@
             this.oldValue = "";
             this.oldLabel = "";
         }
-    };
+    }
 </script>
 
 

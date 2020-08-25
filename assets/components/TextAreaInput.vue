@@ -40,7 +40,7 @@
                 placeholder: this.placeholder || '',
             }
         }
-    };
+    }
 </script>
 
 

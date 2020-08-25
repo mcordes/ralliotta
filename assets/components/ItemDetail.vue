@@ -1,14 +1,21 @@
 <template>
     <div class="item-detail">
+
+        <div v-if="!isReady">
+            <LoadingMessage/>
+        </div>
+
         <div v-if="isReady">
             <h2>
                 <span class="item-id-header">{{ item.FormattedID }} -</span>
-                <EditableText fieldName="Name" v-bind:initialValue="item.Name" v-bind:item="item"/>
+                <EditableText fieldName="Name" v-bind:initialValue="item.Name" v-bind:item="item"
+                    v-bind:onChange="this.itemChanged"/>
             </h2>
 
             <div class="item-summary-wrapper">
                 <div class="item-description">
-                    <EditableTextArea v-bind:initialValue="item.Description" v-bind:fieldName="'Description'" v-bind:item="item"/>
+                    <EditableTextArea v-bind:initialValue="item.Description" v-bind:fieldName="'Description'"
+                                      v-bind:item="item" v-bind:onChange="this.itemChanged"/>
                 </div>
 
                 <div class="item-fields">
@@ -16,7 +23,7 @@
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Owner'" v-bind:initialValue="item.Owner"
                                             v-bind:item="item" v-bind:searchFunc="searchAssigneeList"
-                                            v-bind:onChange="this.loadActivityItems"/>
+                                            v-bind:onChange="this.itemChangedAndReloadActivities"/>
                         </div>
 
                         <div class="item-field">
@@ -29,13 +36,13 @@
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Iteration'" v-bind:initialValue="item.Iteration"
                                             v-bind:item="item" v-bind:searchFunc="searchIterationList"
-                                            v-bind:onChange="this.loadActivityItems"/>
+                                            v-bind:onChange="this.itemChangedAndReloadActivities"/>
                         </div>
 
                         <div class="item-field">
                             <EditableSelect v-bind:fieldName="'Release'" v-bind:initialValue="item.Release"
                                             v-bind:item="item" v-bind:searchFunc="searchReleaseList"
-                                            v-bind:onChange="this.loadActivityItems"/>
+                                            v-bind:onChange="this.itemChangedAndReloadActivities"/>
                         </div>
 
                         <div class="item-field">
@@ -60,7 +67,7 @@
                             <EditableSelect v-bind:fieldName="'FlowState'" v-bind:initialValue="item.FlowState"
                                             v-bind:item="item" v-bind:searchFunc="searchFlowStateList"
                                             v-bind:noBlankOption="true"
-                                            v-bind:onChange="this.loadActivityItems"/>
+                                            v-bind:onChange="this.itemChangedAndReloadActivities"/>
                         </div>
 
                         <div class="item-field" v-if="isLiveService">
@@ -135,11 +142,12 @@
     import {getService} from "../services/init";
     import {config} from "../config";
     import {debounce} from "underscore";
+    import LoadingMessage from "./LoadingMessage.vue";
 
     @Component({
         components: {
             TimeSinceDate, EditableText, EditableTextArea, Comment: CommentInfo, Revision: RevisionInfo, AddComment,
-            ExpandableSection, AttachmentSummary, EditableSelect},
+            ExpandableSection, AttachmentSummary, EditableSelect, LoadingMessage},
     })
     export default class ItemDetail extends Vue {
         item!: Artifact;
@@ -197,12 +205,21 @@
             this.rallyUIDetailURL = `https://rally1.rallydev.com/#/${projectId}/detail/${itemType}/${itemObjectId}`;
         }
 
+        async itemChanged() {
+            console.log("XXX item changed");
+            this.$root.$emit("itemChanged", this.item._ref);
+        }
+
+        async itemChangedAndReloadActivities() {
+            await this.loadActivityItems();
+            await this.itemChanged();
+        }
+
         async searchReleaseList(search: string) {
             return await getSelectOptionsFromRefs(await getService().searchReleases(this.item.Project, search));
         }
 
         async searchAssigneeList(search: string) {
-            const user = store.getUser();
             return await getSelectOptionsFromRefs(await getService().searchProjectTeamMembers(this.item.Project, search));
         }
 
