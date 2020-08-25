@@ -64,6 +64,7 @@
             }
             catch(e) {
                 showErrorToast({e});
+                return;
             }
 
             // Fake out comment object with just the fields we need. We're doing this b/c after creating a comment
