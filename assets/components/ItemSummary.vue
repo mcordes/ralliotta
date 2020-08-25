@@ -94,7 +94,7 @@ import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
         @Prop({default: false})
         showPlanEstimate!: boolean;
 
-        async created() {
+        setProperties() {
             if (this.syncedItem.Owner) {
                 this.ownerName = this.syncedItem.Owner._refObjectName;
             }
@@ -113,6 +113,10 @@ import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
             }
 
             this.projectName = this.syncedItem.Project._refObjectName;
+        }
+
+        async created() {
+            this.setProperties();
 
             // TODO: it would be nice if this only was triggered if the list page was viewable and just queued up
             // if it's obscured by the detail page. Fix me.
@@ -171,7 +175,9 @@ import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
                 console.log(`Refreshing item ${this.syncedItem.FormattedID}- ${refUtils.getId(itemRef)}`);
 
                 try {
-                    this.syncedItem = await getService().fetchSingleItemByRef(itemRef);
+                    const updatedItem = await getService().fetchSingleItemByRef(itemRef);
+                    this.syncedItem = {...updatedItem};
+                    this.setProperties();
                 }
                 catch (e) {
                     showErrorToast({e});

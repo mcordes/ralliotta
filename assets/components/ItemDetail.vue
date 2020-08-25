@@ -206,7 +206,7 @@
         }
 
         async itemChanged() {
-            console.log("XXX item changed");
+            console.log("Triggering item changed");
             this.$root.$emit("itemChanged", this.item._ref);
         }
 
