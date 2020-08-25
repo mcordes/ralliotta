@@ -256,6 +256,11 @@ a:hover { border-color: #222; }
 .jodit-toolbar { border-radius: 6px 6px 0 0; }
 .jodit-statusbar { border-radius: 0 0 6px 6px; }
 
+.jodit-wysiwyg,
+.jodit-wysiwyg * {
+    white-space: pre-wrap; /* fallback */
+    white-space: break-spaces;
+}
 
 
 @media screen and (min-width: 501px) and (max-width: 800px) {

@@ -104,6 +104,8 @@
 .attachment-details,
 .comment-details {
     padding: 14px 6px;
+    white-space: pre-wrap; /* fallback */
+    white-space: break-spaces;
     word-break: break-word;
 }
 
