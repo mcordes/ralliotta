@@ -12,6 +12,7 @@
 - clear button is broken on new item page (this seems to be an issue w/ the autocomplete drop downs again : (
 
 - Periodically refresh data (probably have to poll, only when active tab?, be somewhat efficient)
+- Prevent buttons from being multi-clicked
 
 
 
