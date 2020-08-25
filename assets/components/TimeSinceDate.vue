@@ -32,7 +32,6 @@
         }
 
         setFormattedTime() {
-            console.log("updating time since date");
             const date = toDateTime(this.date).toJSDate();
             TimeAgo.addLocale(en);
             const timeAgo = new TimeAgo('en-US');

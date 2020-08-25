@@ -172,7 +172,7 @@ import {Component, Vue, Prop, PropSync} from 'vue-property-decorator';
 
         async reloadItem(itemRef: string) {
             if (itemRef === this.syncedItem._ref) {
-                console.log(`Refreshing item ${this.syncedItem.FormattedID}- ${refUtils.getId(itemRef)}`);
+                console.log(`Refreshing item ${this.syncedItem.FormattedID} - ${refUtils.getId(itemRef)}`);
 
                 try {
                     const updatedItem = await getService().fetchSingleItemByRef(itemRef);
