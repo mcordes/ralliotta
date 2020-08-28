@@ -1,6 +1,7 @@
 
 ## TODO next:
 
+- creating a defect breaks - fix me
 - Finish sample data
     - implement assignee lookup
     - project doesn't get set correctly on search page
