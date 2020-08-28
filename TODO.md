@@ -13,7 +13,11 @@
 
 - Periodically refresh data (probably have to poll, only when active tab?, be somewhat efficient)
 - Prevent buttons from being multi-clicked
-
+- Add additional fields to the create page and the detail page
+  - iteration
+  - parent
+  - tags
+  - ready / -expedite (yuck :()
 
 
 
