@@ -60,6 +60,13 @@ function validateRallyResponseOrThrow(resp: any) {
         console.log(msg);
         throw new Error(msg)
     }
+
+    // TODO: these are effectively errors as well in most cases, maybe throw on these too?
+    if (resp['Warnings'].length > 0) {
+        for (const warning of resp['Warnings']) {
+            console.log("Rally Warning: " + warning);
+        }
+    }
 }
 
 function getAddUpdateRequestOptions() {

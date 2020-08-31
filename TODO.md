@@ -38,6 +38,7 @@
 
 ## Done
 
+- ~~changing assignee (owner) on the detail page appears to work, but doesn't persist. FIX ME!~~
 - show loading animation on itemlist pages
    - ~~show no results message in itemlist if no results are found~~
    - ~~Show total story points on kanban page for iterations~~

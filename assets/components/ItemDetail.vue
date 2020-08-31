@@ -21,7 +21,9 @@
                 <div class="item-fields">
                     <div>
                         <div class="item-field">
-                            <EditableSelect v-bind:fieldName="'Assignee'" v-bind:initialValue="item.Owner"
+                            <EditableSelect v-bind:fieldName="'Owner'" 
+                                            v-bind:fieldLabel="'Assignee'"
+                                            v-bind:initialValue="item.Owner"
                                             v-bind:item="item" v-bind:searchFunc="searchAssigneeList"
                                             v-bind:onChange="this.itemChangedAndReloadActivities"/>
                         </div>

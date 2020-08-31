@@ -20,7 +20,7 @@
         </span>
         <span class="item-field-content-wrapper" v-else>
             <md-field class="md-has-value">
-                <label>{{ fieldName }}</label>
+                <label>{{ fieldLabel ? fieldLabel : fieldName }}</label>
                 <span v-if="selectedLabel">{{ selectedLabel }}</span>
                 <span v-else>&ndash; No Selection &ndash;</span>
             </md-field>
@@ -56,6 +56,9 @@
 
         @Prop()
         fieldName!: string;
+
+        @Prop({required: false})
+        fieldLabel!: string;
 
         @Prop()
         blankOptionLabel!: string;
