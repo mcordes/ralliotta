@@ -12,8 +12,9 @@ COPY conf/modernizr-conf.json /app/conf
 COPY assets /app/assets
 COPY tsconfig.json /app/
 
+ENV DISABLE_OPENCOLLECTIVE=true
 WORKDIR /app
-RUN npm install && \
+RUN npm --quiet install && \
     npm run build && \
     npm run test && \
     npm run lint

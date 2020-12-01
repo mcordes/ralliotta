@@ -222,7 +222,7 @@
         }
 
         async showMore() {
-            const startIndex = this.items.length;
+            const startIndex = this.items.length + 1;
             try {
                 await this.fetchResults(startIndex);
             }
