@@ -47,7 +47,8 @@
 
         getLabel() {
             const desc = this.revision.Description || '';
-            const changedFields: string[] = desc.split(", ").map((change: any) => {
+            // TODO: hack - the regex still isn't good enough here and could have false positives. Fix me.
+            const changedFields: string[] = desc.split("], ").map((change: any) => {
                 // NOTE: the first words of each change is the FIELD name in caps.
                 const matches = /^([A-Z\s]+)/.exec(change);
                 return matches ? matches[1].trim() : '';
