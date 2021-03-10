@@ -53,7 +53,12 @@
     import IterationItemListBySwimlane from "./IterationItemListBySwimlane.vue";
     import ExpandableSection from "./ExpandableSection.vue";
     import {DateTime} from "luxon";
-    import {getSelectOptionsFromRefs, showErrorToast} from "../utils/util";
+    import {
+      getRecentlyUsedProject,
+      getSelectOptionsFromRefs,
+      setRecentlyUsedProject,
+      showErrorToast
+    } from "../utils/util";
     import {Iteration} from "../types/Iteration";
     import SelectInput from "./SelectInput.vue";
     import Backlog from "./Backlog.vue";
@@ -73,14 +78,17 @@
 
         async created() {
             const user = store.getUser();
-            this.project = user.DefaultProject._ref;
-            this.projectLabel = user.DefaultProject._refObjectName;
+
+            const recentProject = getRecentlyUsedProject();
+            this.project = recentProject ? recentProject.ref : user.DefaultProject._ref;
+            this.projectLabel = recentProject ? recentProject.label : user.DefaultProject._refObjectName;
         }
 
         @Watch("project")
         async projectChanged(to: string, from: string) {
             if (to) {
                 await this.load();
+                setRecentlyUsedProject(this.project, this.projectLabel);
             }
         }
 

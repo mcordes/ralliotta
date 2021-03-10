@@ -81,3 +81,17 @@ export async function getSelectOptionsFromRefs(items: Ref[]) {
 }
 
 export const RALLY_API_ROOT_URL = "https://rally1.rallydev.com/slm/webservice/v2.0";
+
+
+export function getRecentlyUsedProject() {
+    const val = localStorage.getItem("recent-project");
+    if (!val) {
+        return null;
+    }
+    const data = JSON.parse(val);
+    return {ref: data.ref, label: data.label};
+}
+
+export function setRecentlyUsedProject(ref: string, label: string) {
+    localStorage.setItem("recent-project", JSON.stringify({ref, label}));
+}
