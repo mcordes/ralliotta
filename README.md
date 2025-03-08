@@ -8,15 +8,11 @@ What's the status of this?
 
 Definitely BETA. Some things are incomplete and there will be bugs. What is there now is quite useable, but YMMV depending upon your organization's Rally configuration. If something doesn't work for you or our assumptions aren't true for your organization either let us know at ralliotta.app@gmail.com, via a github issue or (if you're a hero) create a pull request. 
 
-You can always try it out at [https://ralliotta.com](https://ralliotta.com) by logging in with your Rally username / password or touring our demo app which doesn't require existing Rally credentials. 
-
 
 I'm an end user, how do I use this? 
 -----------
 
-The easiest way is to use our hosted version at [https://ralliotta.com](https://ralliotta.com). It's *FREE*, secure and gives you instant access to your existing Rally data. 
-
-The other option is to run this application locally using docker like so:
+Run this application locally using docker like so:
 
 * Install docker / docker-compose 
 * git clone https://github.com/mcordes/ralliottta.git
@@ -65,12 +61,6 @@ First try `docker-compose down` and then `docker-compose build && docker-compose
 
 The application runs on ports 8088 and 8089. Verify these are free. You can change them in docker-compose.yml.
 
-Thank You!
-------------
-
-Thank you to Broadcom / Rally for writing Rally in the first place. [Ralliotta](https://ralliotta.com) uses the very functional [rally-node](https://github.com/RallyTools/rally-node) Open source library to talk to their API. Clearly Rally has had great success and we'd like to make that more accessible and pleasant to use to a modern audience.
-
-Thank you to Vuejs and Typescript. Both are amazing libraries / frameworks and a pleasure to develop with.
 
 
 Like what we're doing? 
